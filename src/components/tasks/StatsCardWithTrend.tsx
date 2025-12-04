@@ -1,3 +1,5 @@
+import { VKCard } from '../vk'
+
 interface StatsCardWithTrendProps {
   title: string
   value: number
@@ -17,36 +19,36 @@ export function StatsCardWithTrend({
     trend === 'up'
       ? isGradient
         ? 'text-white'
-        : 'text-green-500'
+        : 'text-vk-status-positive'
       : trend === 'down'
-        ? 'text-red-500'
-        : 'text-[#6B6B6B]'
+        ? 'text-vk-status-negative'
+        : 'text-vk-text-tertiary'
 
   return (
-    <div
-      className={`rounded-[12px] p-3 transition-all duration-200 hover:shadow-sm ${
-        isGradient
-          ? 'bg-gradient-to-br from-[#088ED4] to-[#38AB79]'
-          : 'bg-white border border-[#E5E7EB] hover:border-[#0077FF]'
+    <VKCard
+      variant={isGradient ? 'elevated' : 'default'}
+      padding="s"
+      className={`transition-all duration-vk-base hover:shadow-vk-1 ${
+        isGradient ? 'bg-gradient-to-br from-vk-accent-blue to-vk-status-positive' : ''
       }`}
     >
       <p
-        className={`font-unbounded font-light text-[12px] leading-[14.88px] mb-2 ${
-          isGradient ? 'text-white opacity-90' : 'text-[#6B6B6B]'
+        className={`font-vk-regular text-vk-xs mb-vk-2 ${
+          isGradient ? 'text-white opacity-90' : 'text-vk-text-secondary'
         }`}
       >
         {title}
       </p>
-      <div className="flex items-baseline gap-2">
+      <div className="flex items-baseline gap-vk-2">
         <p
-          className={`font-unbounded font-bold text-[28px] leading-[34.72px] ${
-            isGradient ? 'text-white' : 'text-black'
+          className={`font-vk-bold text-vk-3xl leading-tight ${
+            isGradient ? 'text-white' : 'text-vk-text-primary'
           }`}
         >
           {value}
         </p>
         {change !== '0' && (
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-vk-1">
             {trend === 'up' && (
               <svg
                 className={`w-3 h-3 ${trendColor}`}
@@ -77,13 +79,11 @@ export function StatsCardWithTrend({
                 />
               </svg>
             )}
-            <span className={`font-unbounded font-normal text-[10px] leading-[12.4px] ${trendColor}`}>
-              {change}
-            </span>
+            <span className={`font-vk-regular text-vk-xs ${trendColor}`}>{change}</span>
           </div>
         )}
       </div>
-    </div>
+    </VKCard>
   )
 }
 

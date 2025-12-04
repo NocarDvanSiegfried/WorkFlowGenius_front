@@ -1,10 +1,16 @@
+import { VKCard } from '../vk'
+
 export function AIDistributionBlock() {
   return (
-    <div className="w-full bg-gradient-to-br from-[#A8D5E2] to-[#B8E6C1] rounded-[12px] p-4 mb-4">
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-white bg-opacity-30 flex items-center justify-center flex-shrink-0">
+    <VKCard
+      variant="default"
+      padding="m"
+      className="mb-vk-4 bg-gradient-to-br from-vk-accent-blue-alpha to-vk-status-positive/10"
+    >
+      <div className="flex items-center gap-vk-3">
+        <div className="w-8 h-8 rounded-full bg-vk-accent-blue-alpha flex items-center justify-center flex-shrink-0">
           <svg
-            className="w-4 h-4 text-[#088ED4]"
+            className="w-4 h-4 text-vk-accent-blue"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -18,12 +24,12 @@ export function AIDistributionBlock() {
           </svg>
         </div>
         <div className="flex-1">
-          <p className="text-[#2C3E50] font-unbounded font-normal text-[13px] leading-[16px]">
+          <p className="text-vk-text-primary font-vk-regular text-vk-sm leading-normal">
             Задачи распределены на основе ИИ. Рекомендуем сфокусироваться на задачах с высоким приоритетом.
           </p>
         </div>
       </div>
-    </div>
+    </VKCard>
   )
 }
 

@@ -11,7 +11,7 @@ const mockStats = [
 
 export function StatsCardsExtended() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-vk-3">
       {mockStats.map((stat) => (
         <StatsCardWithTrend
           key={stat.title}

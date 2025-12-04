@@ -1,8 +1,9 @@
 import { useMemo } from 'react'
 
 import { TaskCardFull } from './TaskCardFull'
+import type { TabType } from './types'
 
-export type TabType = 'all' | 'active' | 'completed' | 'review' | 'overdue'
+export type { TabType }
 
 interface TaskListGroupedProps {
   activeTab: TabType
@@ -164,15 +165,15 @@ export function TaskListGrouped({ activeTab }: TaskListGroupedProps) {
     [groupedTasks]
   )
 
-  if (filteredTasks.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-[#6B6B6B] font-unbounded font-normal text-[16px] leading-[19.84px]">
-          Нет задач в этой категории
-        </p>
-      </div>
-    )
-  }
+      if (filteredTasks.length === 0) {
+        return (
+          <div className="text-center py-vk-12">
+            <p className="text-vk-text-secondary font-vk-regular text-vk-md">
+              Нет задач в этой категории
+            </p>
+          </div>
+        )
+      }
 
   return (
     <div>
@@ -181,29 +182,30 @@ export function TaskListGrouped({ activeTab }: TaskListGroupedProps) {
         if (!group) return null
 
         return (
-          <div key={groupKey} className="mb-5">
-            <div className="flex items-center gap-3 mb-2.5">
-              <h3 className="text-[#8B8B8B] font-unbounded font-normal text-[14px] leading-[17.36px]">
+          <div key={groupKey} className="mb-vk-5 animate-fade-in">
+            <div className="flex items-center gap-vk-3 mb-vk-2">
+              <h3 className="text-vk-text-secondary font-vk-regular text-vk-sm">
                 {group.title}
               </h3>
-              <div className="flex-1 h-px bg-[#E5E7EB]" />
+              <div className="flex-1 h-px bg-vk-border-secondary" />
             </div>
-            <div className="space-y-3">
-              {groupedTasks[groupKey].map((task) => (
-                <TaskCardFull
-                  key={task.id}
-                  id={task.id}
-                  title={task.title}
-                  description={task.description}
-                  priority={task.priority}
-                  status={task.status}
-                  assignee={task.assignee}
-                  deadline={task.deadline}
-                  deadlineTime={task.deadlineTime}
-                  tags={task.tags}
-                  progress={task.progress}
-                  rating={task.rating}
-                />
+            <div className="space-y-vk-3">
+              {groupedTasks[groupKey].map((task, index) => (
+                <div key={task.id} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+                  <TaskCardFull
+                    id={task.id}
+                    title={task.title}
+                    description={task.description}
+                    priority={task.priority}
+                    status={task.status}
+                    assignee={task.assignee}
+                    deadline={task.deadline}
+                    deadlineTime={task.deadlineTime}
+                    tags={task.tags}
+                    progress={task.progress}
+                    rating={task.rating}
+                  />
+                </div>
               ))}
             </div>
           </div>

@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { VKCard, VKChartWrapper, VKButton } from '../vk'
 
 type PeriodType = 'week' | 'month' | 'quarter'
 
@@ -45,22 +46,22 @@ export function AnalyticsSidebar() {
   const plannedHours = 160
   const completedHours = 142
   const deviation = completedHours - plannedHours
-  const deviationColor = deviation >= 0 ? 'text-green-600' : 'text-red-500'
+  const deviationColor = deviation >= 0 ? 'text-vk-status-positive' : 'text-vk-status-negative'
 
   return (
-    <div className="space-y-4">
-      <div className="bg-white border border-[#E5E7EB] rounded-[12px] p-4 transition-all duration-200 hover:shadow-sm">
-        <h3 className="text-black font-unbounded font-semibold text-[16px] leading-[19.84px] mb-3">
+    <div className="space-y-vk-4">
+      <VKCard variant="default" padding="m" className="transition-all duration-vk-base hover:shadow-vk-1">
+        <h3 className="text-vk-text-primary font-vk-semibold text-vk-md mb-vk-3">
           Производительность
         </h3>
-        <div className="flex items-center gap-4 mb-3">
+        <div className="flex items-center gap-vk-4 mb-vk-3">
           <div className="relative w-24 h-24 flex-shrink-0">
             <svg className="transform -rotate-90 w-24 h-24">
               <circle
                 cx="48"
                 cy="48"
                 r="44"
-                stroke="#F3F4F6"
+                stroke="var(--vk-color-gray-100)"
                 strokeWidth="6"
                 fill="none"
               />
@@ -68,7 +69,7 @@ export function AnalyticsSidebar() {
                 cx="48"
                 cy="48"
                 r="44"
-                stroke="#0077FF"
+                stroke="var(--vk-color-accent-blue)"
                 strokeWidth="6"
                 fill="none"
                 strokeDasharray={`${(productivity / 100) * 276.46} 276.46`}
@@ -76,72 +77,69 @@ export function AnalyticsSidebar() {
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-black font-unbounded font-semibold text-[18px] leading-[22.32px]">
+              <span className="text-vk-text-primary font-vk-semibold text-vk-lg">
                 {productivity}%
               </span>
             </div>
           </div>
           <div className="flex-1 min-w-0">
-            <div className="space-y-2">
+            <div className="space-y-vk-2">
               <div className="flex items-center justify-between">
-                <span className="text-[#8B8B8B] font-unbounded font-normal text-[11px] leading-[13.64px]">
+                <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
                   Выполнено
                 </span>
-                <span className="text-black font-unbounded font-semibold text-[12px] leading-[14.88px]">
+                <span className="text-vk-text-primary font-vk-semibold text-vk-sm">
                   {tasksCompleted}/{tasksTotal}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[#8B8B8B] font-unbounded font-normal text-[11px] leading-[13.64px]">
+                <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
                   В срок
                 </span>
-                <span className="text-black font-unbounded font-semibold text-[12px] leading-[14.88px]">
+                <span className="text-vk-text-primary font-vk-semibold text-vk-sm">
                   {onTime}/{tasksCompleted}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[#8B8B8B] font-unbounded font-normal text-[11px] leading-[13.64px]">
+                <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
                   Среднее время
                 </span>
-                <span className="text-black font-unbounded font-semibold text-[12px] leading-[14.88px]">
+                <span className="text-vk-text-primary font-vk-semibold text-vk-sm">
                   {averageTime}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-[#8B8B8B] font-unbounded font-normal text-[11px] leading-[13.64px]">
+                <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
                   Эффективность
                 </span>
-                <span className="text-black font-unbounded font-semibold text-[12px] leading-[14.88px]">
+                <span className="text-vk-text-primary font-vk-semibold text-vk-sm">
                   {efficiency}
                 </span>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </VKCard>
 
-      <div className="bg-white border border-[#E5E7EB] rounded-[12px] p-4 transition-all duration-200 hover:shadow-sm">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-black font-unbounded font-semibold text-[16px] leading-[19.84px]">
-            Статистика
-          </h3>
-          <div className="flex gap-1">
+      <VKChartWrapper
+        title="Статистика"
+        className="transition-all duration-vk-base hover:shadow-vk-1"
+      >
+        <div className="flex items-center justify-between mb-vk-3">
+          <div className="flex gap-vk-1">
             {(['week', 'month', 'quarter'] as PeriodType[]).map((p) => (
-              <button
+              <VKButton
                 key={p}
+                variant={period === p ? 'primary' : 'secondary'}
+                size="s"
                 onClick={() => setPeriod(p)}
-                className={`px-2 py-1 rounded-[6px] font-unbounded font-normal text-[11px] leading-[13.64px] transition-all duration-200 ${
-                  period === p
-                    ? 'bg-[#0077FF] text-white shadow-sm'
-                    : 'bg-[#F9FAFB] text-[#6B6B6B] hover:bg-[#F3F4F6]'
-                }`}
               >
                 {p === 'week' ? 'Н' : p === 'month' ? 'М' : 'К'}
-              </button>
+              </VKButton>
             ))}
           </div>
         </div>
-        <div className="flex items-end justify-between gap-1.5 mb-3">
+        <div className="flex items-end justify-between gap-vk-1 mb-vk-3">
           {currentData.map((data) => {
             const completedHeight = (data.completed / maxTasks) * 80
             const inProgressHeight = (data.inProgress / maxTasks) * 80
@@ -149,146 +147,163 @@ export function AnalyticsSidebar() {
 
             return (
               <div key={data[labelKey as keyof typeof data]} className="flex-1 flex flex-col items-center">
-                <div className="relative w-full h-[80px] flex items-end justify-center mb-1.5">
+                <div className="relative w-full h-20 flex items-end justify-center mb-vk-1">
                   <div className="absolute bottom-0 w-full flex flex-col items-center gap-0.5">
                     <div
-                      className="w-full bg-[#E0F2FE] rounded-t-[6px]"
+                      className="w-full bg-vk-accent-blue-alpha rounded-t-vk-sm"
                       style={{ height: `${completedHeight}px` }}
                     />
                     <div
-                      className="w-full bg-[#FEF3C7] rounded-t-[6px]"
+                      className="w-full bg-vk-status-warning/20 rounded-t-vk-sm"
                       style={{ height: `${inProgressHeight}px` }}
                     />
                     <div
-                      className="w-full bg-[#FEE2E2] rounded-t-[6px]"
+                      className="w-full bg-vk-status-negative/20 rounded-t-vk-sm"
                       style={{ height: `${overdueHeight}px` }}
                     />
                   </div>
                 </div>
-                <span className="text-[#8B8B8B] font-unbounded font-normal text-[10px] leading-[12.4px]">
+                <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
                   {data[labelKey as keyof typeof data]}
                 </span>
-                <span className="text-black font-unbounded font-semibold text-[9px] leading-[11px] mt-0.5">
+                <span className="text-vk-text-primary font-vk-semibold text-vk-xs mt-0.5">
                   {data.completed}/{data.tasks}
                 </span>
               </div>
             )
           })}
         </div>
-        <div className="flex items-center justify-center gap-3 pt-3 border-t border-[#F3F4F6]">
-          <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#0EA5E9]" />
-            <span className="text-[#8B8B8B] font-unbounded font-normal text-[9px] leading-[11px]">
+        <div className="flex items-center justify-center gap-vk-3 pt-vk-3 border-t border-vk-border-secondary">
+          <div className="flex items-center gap-vk-1">
+            <div className="w-2.5 h-2.5 rounded-full bg-vk-accent-blue" />
+            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
               Выполнено
             </span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#FCD34D]" />
-            <span className="text-[#8B8B8B] font-unbounded font-normal text-[9px] leading-[11px]">
+          <div className="flex items-center gap-vk-1">
+            <div className="w-2.5 h-2.5 rounded-full bg-vk-status-warning" />
+            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
               В работе
             </span>
           </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#FCA5A5]" />
-            <span className="text-[#8B8B8B] font-unbounded font-normal text-[9px] leading-[11px]">
+          <div className="flex items-center gap-vk-1">
+            <div className="w-2.5 h-2.5 rounded-full bg-vk-status-negative" />
+            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
               Просрочено
             </span>
           </div>
         </div>
-      </div>
+      </VKChartWrapper>
 
-      <div className="grid grid-cols-3 gap-2">
-        <div className="bg-[#F0F9FF] border border-[#E0F2FE] rounded-[10px] p-3 text-center">
-          <div className="w-6 h-6 mx-auto mb-1.5 flex items-center justify-center">
-            <svg className="w-4 h-4 text-[#0EA5E9]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div className="grid grid-cols-3 gap-vk-2">
+        <VKCard variant="default" padding="s" className="text-center bg-vk-accent-blue-alpha/30 border-vk-accent-blue-alpha">
+          <div className="w-6 h-6 mx-auto mb-vk-1 flex items-center justify-center">
+            <svg className="w-4 h-4 text-vk-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <p className="text-[#6B6B6B] font-unbounded font-normal text-[9px] leading-[11px] mb-1">
+          <p className="text-vk-text-secondary font-vk-regular text-vk-xs mb-vk-1">
             План
           </p>
-          <p className="text-black font-unbounded font-semibold text-[12px] leading-[14.88px]">
+          <p className="text-vk-text-primary font-vk-semibold text-vk-sm">
             {plannedHours}ч
           </p>
-        </div>
-        <div className="bg-[#F0FDF4] border border-[#D1FAE5] rounded-[10px] p-3 text-center">
-          <div className="w-6 h-6 mx-auto mb-1.5 flex items-center justify-center">
-            <svg className="w-4 h-4 text-[#10B981]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        </VKCard>
+        <VKCard variant="default" padding="s" className="text-center bg-vk-status-positive/10 border-vk-status-positive/20">
+          <div className="w-6 h-6 mx-auto mb-vk-1 flex items-center justify-center">
+            <svg className="w-4 h-4 text-vk-status-positive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <p className="text-[#6B6B6B] font-unbounded font-normal text-[9px] leading-[11px] mb-1">
+          <p className="text-vk-text-secondary font-vk-regular text-vk-xs mb-vk-1">
             Выполнено
           </p>
-          <p className="text-black font-unbounded font-semibold text-[12px] leading-[14.88px]">
+          <p className="text-vk-text-primary font-vk-semibold text-vk-sm">
             {completedHours}ч
           </p>
-        </div>
-        <div className={`border rounded-[10px] p-3 text-center ${deviation >= 0 ? 'bg-[#F0FDF4] border-[#D1FAE5]' : 'bg-[#FEF2F2] border-[#FEE2E2]'}`}>
-          <div className="w-6 h-6 mx-auto mb-1.5 flex items-center justify-center">
+        </VKCard>
+        <VKCard
+          variant="default"
+          padding="s"
+          className={`text-center ${
+            deviation >= 0
+              ? 'bg-vk-status-positive/10 border-vk-status-positive/20'
+              : 'bg-vk-status-negative/10 border-vk-status-negative/20'
+          }`}
+        >
+          <div className="w-6 h-6 mx-auto mb-vk-1 flex items-center justify-center">
             <svg className={`w-4 h-4 ${deviationColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={deviation >= 0 ? "M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" : "M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"} />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d={deviation >= 0 ? 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' : 'M13 17h8m0 0V9m0 8l-8-8-4 4-6-6'}
+              />
             </svg>
           </div>
-          <p className="text-[#6B6B6B] font-unbounded font-normal text-[9px] leading-[11px] mb-1">
+          <p className="text-vk-text-secondary font-vk-regular text-vk-xs mb-vk-1">
             Отклонение
           </p>
-          <p className={`font-unbounded font-semibold text-[12px] leading-[14.88px] ${deviationColor}`}>
+          <p className={`font-vk-semibold text-vk-sm ${deviationColor}`}>
             {deviation >= 0 ? '+' : ''}
             {deviation}ч
           </p>
-        </div>
+        </VKCard>
       </div>
 
-      <div className="bg-white border border-[#E5E7EB] rounded-[12px] p-4 transition-all duration-200 hover:shadow-sm">
-        <h3 className="text-black font-unbounded font-semibold text-[16px] leading-[19.84px] mb-3">
+      <VKCard variant="default" padding="m" className="transition-all duration-vk-base hover:shadow-vk-1">
+        <h3 className="text-vk-text-primary font-vk-semibold text-vk-md mb-vk-3">
           Аналитика рисков
         </h3>
-        <div className="space-y-2.5">
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#FCD34D] flex-shrink-0" />
-            <span className="text-[#8B8B8B] font-unbounded font-normal text-[11px] leading-[13.64px] flex-1">
+        <div className="space-y-vk-2">
+          <div className="flex items-center gap-vk-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-vk-status-warning flex-shrink-0" />
+            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs flex-1">
               Риск просрочки
             </span>
-            <span className="text-[#F59E0B] font-unbounded font-medium text-[11px] leading-[13.64px]">
+            <span className="text-vk-status-warning font-vk-medium text-vk-xs">
               Средний
             </span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#FCA5A5] flex-shrink-0" />
-            <span className="text-[#8B8B8B] font-unbounded font-normal text-[11px] leading-[13.64px] flex-1">
+          <div className="flex items-center gap-vk-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-vk-status-negative flex-shrink-0" />
+            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs flex-1">
               Рост нагрузки
             </span>
-            <span className="text-[#EF4444] font-unbounded font-medium text-[11px] leading-[13.64px]">
+            <span className="text-vk-status-negative font-vk-medium text-vk-xs">
               +15%
             </span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#86EFAC] flex-shrink-0" />
-            <span className="text-[#8B8B8B] font-unbounded font-normal text-[11px] leading-[13.64px] flex-1">
+          <div className="flex items-center gap-vk-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-vk-status-positive flex-shrink-0" />
+            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs flex-1">
               Количество задач
             </span>
-            <span className="text-[#10B981] font-unbounded font-medium text-[11px] leading-[13.64px]">
+            <span className="text-vk-status-positive font-vk-medium text-vk-xs">
               Стабильно
             </span>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-[#86EFAC] flex-shrink-0" />
-            <span className="text-[#8B8B8B] font-unbounded font-normal text-[11px] leading-[13.64px] flex-1">
+          <div className="flex items-center gap-vk-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-vk-status-positive flex-shrink-0" />
+            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs flex-1">
               Потенциальная перегрузка
             </span>
-            <span className="text-[#10B981] font-unbounded font-medium text-[11px] leading-[13.64px]">
+            <span className="text-vk-status-positive font-vk-medium text-vk-xs">
               Низкая
             </span>
           </div>
         </div>
-      </div>
+      </VKCard>
 
-      <div className="bg-gradient-to-br from-[#DBEAFE] to-[#D1FAE5] rounded-[12px] p-3">
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-2 flex-1 min-w-0">
+      <VKCard
+        variant="default"
+        padding="m"
+        className="bg-gradient-to-br from-vk-accent-blue-alpha to-vk-status-positive/10"
+      >
+        <div className="flex items-center justify-between gap-vk-2">
+          <div className="flex items-center gap-vk-2 flex-1 min-w-0">
             <svg
-              className="w-4 h-4 text-[#088ED4] flex-shrink-0"
+              className="w-4 h-4 text-vk-accent-blue flex-shrink-0"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -300,12 +315,12 @@ export function AnalyticsSidebar() {
                 d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
               />
             </svg>
-            <p className="text-[#2C3E50] font-unbounded font-normal text-[12px] leading-[14.88px]">
+            <p className="text-vk-text-primary font-vk-regular text-vk-sm">
               При текущем темпе вы выполните все задачи через <strong>3 дня</strong>
             </p>
           </div>
           <svg
-            className="w-4 h-4 text-[#088ED4] flex-shrink-0"
+            className="w-4 h-4 text-vk-accent-blue flex-shrink-0"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -313,7 +328,7 @@ export function AnalyticsSidebar() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
           </svg>
         </div>
-      </div>
+      </VKCard>
     </div>
   )
 }

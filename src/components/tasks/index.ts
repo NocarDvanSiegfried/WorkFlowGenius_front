@@ -8,4 +8,5 @@ export { TaskCardFull } from './TaskCardFull'
 export { TaskListGrouped } from './TaskListGrouped'
 export { AnalyticsSidebar } from './AnalyticsSidebar'
 export { AIToast } from './AIToast'
+export type { TabType } from './types'
 

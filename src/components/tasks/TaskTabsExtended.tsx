@@ -1,4 +1,5 @@
-type TabType = 'all' | 'active' | 'completed' | 'review' | 'overdue'
+import { VKTabs, VKTab } from '../vk'
+import type { TabType } from './types'
 
 interface TaskTabsExtendedProps {
   activeTab: TabType
@@ -14,24 +15,15 @@ const TABS = [
 ] as const
 
 export function TaskTabsExtended({ activeTab, onTabChange }: TaskTabsExtendedProps) {
-
   return (
-    <div className="sticky top-0 bg-[#F9FAFB] z-10 py-3 -mx-4 px-4 mb-4 backdrop-blur-sm bg-opacity-95">
-      <div className="flex gap-2 overflow-x-auto scroll-smooth">
+    <div className="sticky top-0 bg-vk-bg-secondary z-10 py-vk-3 -mx-vk-4 px-vk-4 mb-vk-4 backdrop-blur-sm bg-opacity-95">
+      <VKTabs>
         {TABS.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => onTabChange(tab.id)}
-            className={`px-4 h-[36px] rounded-[8px] font-unbounded font-normal text-[14px] leading-[17.36px] transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
-              activeTab === tab.id
-                ? 'bg-[#0077FF] text-white shadow-sm'
-                : 'bg-white border border-[#E5E7EB] text-[#6B6B6B] hover:bg-[#F9FAFB] hover:border-[#0077FF]'
-            }`}
-          >
+          <VKTab key={tab.id} active={activeTab === tab.id} onClick={() => onTabChange(tab.id)}>
             {tab.label}
-          </button>
+          </VKTab>
         ))}
-      </div>
+      </VKTabs>
     </div>
   )
 }

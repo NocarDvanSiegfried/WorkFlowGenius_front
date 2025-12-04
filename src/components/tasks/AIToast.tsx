@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react'
+import { VKCard } from '../vk'
 
 interface Toast {
   id: string
@@ -54,20 +55,22 @@ export function AIToast() {
   }, [])
 
   return (
-    <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex flex-col-reverse gap-2 max-w-[320px] md:max-w-[360px] pointer-events-none">
+    <div className="fixed bottom-vk-4 right-vk-4 md:bottom-vk-6 md:right-vk-6 z-50 flex flex-col-reverse gap-vk-2 max-w-[320px] md:max-w-[360px] pointer-events-none">
       {toasts.map((toast) => (
-        <div
+        <VKCard
           key={toast.id}
-          className={`bg-white border border-[#E5E7EB] rounded-[12px] p-3 shadow-sm pointer-events-auto transition-all duration-200 ${
+          variant="default"
+          padding="s"
+          className={`pointer-events-auto transition-all duration-vk-base ease-vk-standard ${
             toast.isVisible
-              ? 'opacity-100 translate-x-0'
-              : 'opacity-0 translate-x-4 pointer-events-none'
+              ? 'opacity-100 translate-x-0 animate-slide-in-from-right'
+              : 'opacity-0 translate-x-4 pointer-events-none animate-fade-out'
           }`}
         >
-          <div className="flex items-start gap-2.5">
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#A8D5E2] to-[#B8E6C1] flex items-center justify-center flex-shrink-0">
+          <div className="flex items-start gap-vk-2">
+            <div className="w-7 h-7 rounded-full bg-vk-accent-blue-alpha flex items-center justify-center flex-shrink-0">
               <svg
-                className="w-3.5 h-3.5 text-[#088ED4]"
+                className="w-3.5 h-3.5 text-vk-accent-blue"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -80,11 +83,11 @@ export function AIToast() {
                 />
               </svg>
             </div>
-            <p className="text-[#6B6B6B] font-unbounded font-normal text-[13px] leading-[16px] flex-1">
+            <p className="text-vk-text-secondary font-vk-regular text-vk-sm flex-1">
               {toast.message}
             </p>
           </div>
-        </div>
+        </VKCard>
       ))}
     </div>
   )

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
+import { VKButton } from './vk'
 
 export function Header() {
   const user = useAuthStore((state) => state.user)
@@ -10,37 +11,32 @@ export function Header() {
   }
 
   return (
-    <header className="bg-white shadow-sm">
-      <div className="container mx-auto px-4 py-4">
+    <header className="bg-vk-bg-content shadow-vk-1">
+      <div className="container mx-auto px-vk-4 py-vk-4">
         <nav className="flex items-center justify-between">
-          <Link to="/" className="text-xl font-bold text-gray-900">
+          <Link to="/" className="text-vk-xl font-vk-bold text-vk-text-primary hover:opacity-80 transition-opacity duration-vk-base">
             WorkFlowGenius
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-vk-4">
             {user ? (
               <>
-                <span className="text-sm text-gray-600">
+                <span className="text-vk-sm text-vk-text-secondary">
                   {user.name}
                 </span>
-                <Link
-                  to="/dashboard"
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  Дашборд
+                <Link to="/dashboard">
+                  <VKButton variant="tertiary" size="s">
+                    Дашборд
+                  </VKButton>
                 </Link>
-                <button
-                  onClick={handleLogout}
-                  className="text-gray-600 hover:text-gray-900 transition-colors"
-                >
+                <VKButton variant="tertiary" size="s" onClick={handleLogout}>
                   Выход
-                </button>
+                </VKButton>
               </>
             ) : (
-              <Link
-                to="/login"
-                className="text-gray-600 hover:text-gray-900 transition-colors"
-              >
-                Вход
+              <Link to="/login">
+                <VKButton variant="primary" size="s">
+                  Вход
+                </VKButton>
               </Link>
             )}
           </div>

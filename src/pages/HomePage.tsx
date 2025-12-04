@@ -1,27 +1,27 @@
 import { Link } from 'react-router-dom'
+import { VKButton, VKSectionHeader } from '../components/vk'
 
 export function HomePage() {
   return (
-    <div className="max-w-4xl mx-auto text-center py-16">
-      <h1 className="text-5xl font-bold text-gray-900 mb-6">
-        WorkFlowGenius
-      </h1>
-      <p className="text-xl text-gray-600 mb-8">
-        Интеллектуальная система для автоматического распределения задач
-      </p>
-      <div className="flex gap-4 justify-center">
-        <Link
-          to="/login"
-          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        >
-          Войти
-        </Link>
-        <Link
-          to="/dashboard"
-          className="px-6 py-3 bg-gray-200 text-gray-900 rounded-lg hover:bg-gray-300 transition-colors"
-        >
-          Дашборд
-        </Link>
+    <div className="min-h-screen bg-vk-bg-secondary flex items-center justify-center p-vk-4">
+      <div className="max-w-4xl mx-auto text-center animate-fade-in">
+        <VKSectionHeader
+          title="WorkFlowGenius"
+          subtitle="Интеллектуальная система для автоматического распределения задач"
+          className="mb-vk-8"
+        />
+        <div className="flex gap-vk-4 justify-center animate-scale-in">
+          <Link to="/login">
+            <VKButton variant="primary" size="l">
+              Войти
+            </VKButton>
+          </Link>
+          <Link to="/dashboard">
+            <VKButton variant="secondary" size="l">
+              Дашборд
+            </VKButton>
+          </Link>
+        </div>
       </div>
     </div>
   )

@@ -1,14 +1,11 @@
+import { VKInput } from '../vk'
+
 export function SearchPanel() {
   return (
-    <div className="relative mb-3">
-      <input
-        type="text"
-        placeholder="Поиск задач..."
-        className="w-full h-[48px] pl-12 pr-4 bg-white border border-[#E5E7EB] rounded-[10px] font-unbounded font-normal text-[14px] leading-[17.36px] text-black placeholder:text-[#8B8B8B] focus:outline-none focus:border-[#0077FF] focus:ring-1 focus:ring-[#0077FF] transition-all duration-200"
-      />
-      <div className="absolute left-4 top-1/2 -translate-y-1/2">
+    <div className="relative mb-vk-3">
+      <div className="absolute left-vk-4 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
         <svg
-          className="w-5 h-5 text-[#8B8B8B]"
+          className="w-5 h-5 text-vk-text-tertiary"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -21,6 +18,11 @@ export function SearchPanel() {
           />
         </svg>
       </div>
+      <VKInput
+        type="text"
+        placeholder="Поиск задач..."
+        className="pl-vk-12"
+      />
     </div>
   )
 }

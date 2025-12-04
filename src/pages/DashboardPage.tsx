@@ -2,6 +2,7 @@ import { useAuthStore } from '../store/authStore'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '../services/api'
 import { getApiError } from '../utils/errors'
+import { VKCard, VKSectionHeader } from '../components/vk'
 
 export function DashboardPage() {
   const user = useAuthStore((state) => state.user)
@@ -25,8 +26,8 @@ export function DashboardPage() {
 
   if (isPending) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="text-gray-600">Загрузка...</div>
+      <div className="min-h-screen bg-vk-bg-secondary flex justify-center items-center animate-fade-in">
+        <div className="text-vk-text-secondary">Загрузка...</div>
       </div>
     )
   }
@@ -34,60 +35,60 @@ export function DashboardPage() {
   if (isError && error) {
     const apiError = getApiError(error)
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="text-red-600">Ошибка: {apiError.message}</div>
+      <div className="min-h-screen bg-vk-bg-secondary flex justify-center items-center animate-fade-in">
+        <div className="text-vk-status-negative">Ошибка: {apiError.message}</div>
       </div>
     )
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">
-        Дашборд
-      </h1>
-      {user && (
-        <div className="mb-6">
-          <p className="text-gray-600">
-            Привет, <span className="font-semibold">{user.name}</span>!
-          </p>
-          <p className="text-sm text-gray-500">Роль: {user.role}</p>
-        </div>
-      )}
-      {dashboardData && (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {user?.role === 'manager' ? (
-            <>
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Всего задач</h3>
-                <p className="text-3xl font-bold text-blue-600">{dashboardData.tasks?.total || 0}</p>
-              </div>
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">В работе</h3>
-                <p className="text-3xl font-bold text-yellow-600">{dashboardData.tasks?.in_progress || 0}</p>
-              </div>
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Завершено</h3>
-                <p className="text-3xl font-bold text-green-600">{dashboardData.tasks?.completed || 0}</p>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Мои задачи</h3>
-                <p className="text-3xl font-bold text-blue-600">{dashboardData.tasks?.total || 0}</p>
-              </div>
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">В работе</h3>
-                <p className="text-3xl font-bold text-yellow-600">{dashboardData.tasks?.in_progress || 0}</p>
-              </div>
-              <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">Завершено</h3>
-                <p className="text-3xl font-bold text-green-600">{dashboardData.tasks?.completed || 0}</p>
-              </div>
-            </>
-          )}
-        </div>
-      )}
+    <div className="min-h-screen bg-vk-bg-secondary p-vk-8">
+      <div className="max-w-6xl mx-auto animate-fade-in">
+        <VKSectionHeader title="Дашборд" className="mb-vk-6" />
+        {user && (
+          <VKCard variant="default" padding="m" className="mb-vk-6 animate-slide-in-from-bottom">
+            <p className="text-vk-text-secondary">
+              Привет, <span className="font-vk-semibold text-vk-text-primary">{user.name}</span>!
+            </p>
+            <p className="text-vk-sm text-vk-text-tertiary mt-vk-1">Роль: {user.role}</p>
+          </VKCard>
+        )}
+        {dashboardData && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-vk-6">
+            {user?.role === 'manager' ? (
+              <>
+                <VKCard variant="default" padding="m" className="animate-fade-in">
+                  <h3 className="text-vk-lg font-vk-semibold text-vk-text-primary mb-vk-2">Всего задач</h3>
+                  <p className="text-vk-3xl font-vk-bold text-vk-accent-blue">{dashboardData.tasks?.total || 0}</p>
+                </VKCard>
+                <VKCard variant="default" padding="m" className="animate-fade-in">
+                  <h3 className="text-vk-lg font-vk-semibold text-vk-text-primary mb-vk-2">В работе</h3>
+                  <p className="text-vk-3xl font-vk-bold text-vk-status-warning">{dashboardData.tasks?.in_progress || 0}</p>
+                </VKCard>
+                <VKCard variant="default" padding="m" className="animate-fade-in">
+                  <h3 className="text-vk-lg font-vk-semibold text-vk-text-primary mb-vk-2">Завершено</h3>
+                  <p className="text-vk-3xl font-vk-bold text-vk-status-positive">{dashboardData.tasks?.completed || 0}</p>
+                </VKCard>
+              </>
+            ) : (
+              <>
+                <VKCard variant="default" padding="m" className="animate-fade-in">
+                  <h3 className="text-vk-lg font-vk-semibold text-vk-text-primary mb-vk-2">Мои задачи</h3>
+                  <p className="text-vk-3xl font-vk-bold text-vk-accent-blue">{dashboardData.tasks?.total || 0}</p>
+                </VKCard>
+                <VKCard variant="default" padding="m" className="animate-fade-in">
+                  <h3 className="text-vk-lg font-vk-semibold text-vk-text-primary mb-vk-2">В работе</h3>
+                  <p className="text-vk-3xl font-vk-bold text-vk-status-warning">{dashboardData.tasks?.in_progress || 0}</p>
+                </VKCard>
+                <VKCard variant="default" padding="m" className="animate-fade-in">
+                  <h3 className="text-vk-lg font-vk-semibold text-vk-text-primary mb-vk-2">Завершено</h3>
+                  <p className="text-vk-3xl font-vk-bold text-vk-status-positive">{dashboardData.tasks?.completed || 0}</p>
+                </VKCard>
+              </>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   )
 }

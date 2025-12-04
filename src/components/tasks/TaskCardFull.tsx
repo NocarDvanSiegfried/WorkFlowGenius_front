@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { VKCard, VKBadge, VKTag, VKButton } from '../vk'
 
 export type Priority = 'low' | 'medium' | 'high' | 'urgent'
 export type Status = 'assigned' | 'in-progress' | 'review' | 'completed' | 'overdue'
@@ -19,24 +20,24 @@ interface TaskCardFullProps {
 }
 
 const priorityConfig = {
-  low: { label: 'Низкий', color: 'bg-green-500', textColor: 'text-green-500' },
-  medium: { label: 'Средний', color: 'bg-yellow-500', textColor: 'text-yellow-500' },
-  high: { label: 'Высокий', color: 'bg-orange-500', textColor: 'text-orange-500' },
-  urgent: { label: 'Срочно', color: 'bg-red-500', textColor: 'text-red-500' },
+  low: { label: 'Низкий', variant: 'success' as const },
+  medium: { label: 'Средний', variant: 'warning' as const },
+  high: { label: 'Высокий', variant: 'warning' as const },
+  urgent: { label: 'Срочно', variant: 'error' as const },
 }
 
 const statusConfig = {
-  assigned: { label: 'Назначена', color: 'bg-[#0077FF]', textColor: 'text-[#0077FF]' },
-  'in-progress': { label: 'В работе', color: 'bg-[#FFA500]', textColor: 'text-[#FFA500]' },
-  review: { label: 'На проверке', color: 'bg-[#9B59B6]', textColor: 'text-[#9B59B6]' },
-  completed: { label: 'Выполнено', color: 'bg-green-500', textColor: 'text-green-500' },
-  overdue: { label: 'Просрочено', color: 'bg-red-500', textColor: 'text-red-500' },
+  assigned: { label: 'Назначена', variant: 'primary' as const },
+  'in-progress': { label: 'В работе', variant: 'warning' as const },
+  review: { label: 'На проверке', variant: 'primary' as const },
+  completed: { label: 'Выполнено', variant: 'success' as const },
+  overdue: { label: 'Просрочено', variant: 'error' as const },
 }
 
 const progressColor = (progress: number) => {
-  if (progress >= 70) return 'bg-[#0077FF]'
-  if (progress >= 40) return 'bg-[#FFA500]'
-  return 'bg-red-500'
+  if (progress >= 70) return 'bg-vk-accent-blue'
+  if (progress >= 40) return 'bg-vk-status-warning'
+  return 'bg-vk-status-negative'
 }
 
 const getButtonText = (status: Status) => {
@@ -56,16 +57,14 @@ const getButtonText = (status: Status) => {
   }
 }
 
-const getButtonStyle = (status: Status) => {
+const getButtonVariant = (status: Status): 'primary' | 'secondary' => {
   switch (status) {
     case 'completed':
-      return 'bg-green-500 text-white hover:bg-green-600'
     case 'overdue':
-      return 'bg-red-500 text-white hover:bg-red-600'
     case 'review':
-      return 'bg-[#9B59B6] text-white hover:bg-[#8E44AD]'
+      return 'primary'
     default:
-      return 'bg-[#0077FF] text-white hover:bg-[#0066DD]'
+      return 'primary'
   }
 }
 
@@ -85,44 +84,49 @@ function TaskCardFullComponent({
   const statusInfo = statusConfig[status]
 
   return (
-    <div className="w-full bg-white border border-[#E5E7EB] rounded-[12px] p-4 transition-all duration-200 hover:shadow-sm hover:-translate-y-0.5 hover:border-[#0077FF]">
-      <div className="flex items-start justify-between gap-4">
+    <VKCard
+      variant="default"
+      padding="m"
+      className="w-full transition-all duration-vk-base hover:shadow-vk-1 hover:-translate-y-0.5 hover:border-vk-accent-blue"
+    >
+      <div className="flex items-start justify-between gap-vk-4">
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <div className={`w-2 h-2 rounded-full ${priorityInfo.color}`} />
-            <h3 className="text-black font-unbounded font-semibold text-[16px] leading-[19.84px]">
+          <div className="flex items-center gap-vk-2 mb-vk-2 flex-wrap">
+            <div className={`w-2 h-2 rounded-full ${
+              priority === 'low' ? 'bg-vk-status-positive' :
+              priority === 'medium' ? 'bg-vk-status-warning' :
+              priority === 'high' ? 'bg-vk-status-warning' :
+              'bg-vk-status-negative'
+            }`} />
+            <h3 className="text-vk-text-primary font-vk-semibold text-vk-md">
               {title}
             </h3>
-            <span
-              className={`px-1.5 py-0.5 rounded-[4px] font-unbounded font-normal text-[9px] leading-[11px] text-white ${priorityInfo.color}`}
-            >
+            <VKBadge variant={priorityInfo.variant} size="s">
               {priorityInfo.label}
-            </span>
-            <span
-              className={`px-1.5 py-0.5 rounded-[4px] font-unbounded font-normal text-[9px] leading-[11px] text-white ${statusInfo.color}`}
-            >
+            </VKBadge>
+            <VKBadge variant={statusInfo.variant} size="s">
               {statusInfo.label}
-            </span>
+            </VKBadge>
           </div>
 
-          <p className="text-[#6B6B6B] font-unbounded font-normal text-[13px] leading-[16px] mb-2">
+          <p className="text-vk-text-secondary font-vk-regular text-vk-sm mb-vk-2">
             {description}
           </p>
 
-          <div className="flex items-center gap-3 mb-2 flex-wrap">
-            <div className="flex items-center gap-1.5">
-              <span className="text-[#8B8B8B] font-unbounded font-normal text-[11px] leading-[13.64px]">
+          <div className="flex items-center gap-vk-3 mb-vk-2 flex-wrap">
+            <div className="flex items-center gap-vk-1">
+              <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
                 Исполнитель:
               </span>
-              <span className="text-black font-unbounded font-medium text-[11px] leading-[13.64px]">
+              <span className="text-vk-text-primary font-vk-medium text-vk-xs">
                 {assignee}
               </span>
             </div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-[#8B8B8B] font-unbounded font-normal text-[11px] leading-[13.64px]">
+            <div className="flex items-center gap-vk-1">
+              <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
                 Дедлайн:
               </span>
-              <span className="text-black font-unbounded font-medium text-[11px] leading-[13.64px]">
+              <span className="text-vk-text-primary font-vk-medium text-vk-xs">
                 {deadline}
                 {deadlineTime && ` ${deadlineTime}`}
               </span>
@@ -130,37 +134,34 @@ function TaskCardFullComponent({
           </div>
 
           {tags.length > 0 && (
-            <div className="flex items-center gap-1.5 mb-2 flex-wrap">
+            <div className="flex items-center gap-vk-1 mb-vk-2 flex-wrap">
               {tags.map((tag, index) => (
-                <span
-                  key={index}
-                  className="px-1.5 py-0.5 bg-[#F9FAFB] border border-[#E5E7EB] rounded-[3px] font-unbounded font-normal text-[9px] leading-[11px] text-[#6B6B6B]"
-                >
+                <VKTag key={index} variant="default">
                   {tag}
-                </span>
+                </VKTag>
               ))}
             </div>
           )}
 
-          <div className="mb-2">
-            <div className="flex items-center justify-between mb-1">
-              <span className="text-[#8B8B8B] font-unbounded font-normal text-[11px] leading-[13.64px]">
+          <div className="mb-vk-2">
+            <div className="flex items-center justify-between mb-vk-1">
+              <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
                 Прогресс
               </span>
-              <span className="text-black font-unbounded font-semibold text-[11px] leading-[13.64px]">
+              <span className="text-vk-text-primary font-vk-semibold text-vk-xs">
                 {progress}%
               </span>
             </div>
-            <div className="w-full h-1 bg-[#F3F4F6] rounded-full overflow-hidden">
+            <div className="w-full h-1 bg-vk-bg-tertiary rounded-full overflow-hidden">
               <div
-                className={`h-full rounded-full transition-all duration-500 ease-out ${progressColor(progress)}`}
+                className={`h-full rounded-full transition-all duration-vk-base ease-vk-standard ${progressColor(progress)}`}
                 style={{ width: `${progress}%` }}
               />
             </div>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <span className="text-[#8B8B8B] font-unbounded font-normal text-[11px] leading-[13.64px]">
+          <div className="flex items-center gap-vk-1">
+            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
               Рейтинг:
             </span>
             <div className="flex items-center gap-0.5">
@@ -168,7 +169,7 @@ function TaskCardFullComponent({
                 <svg
                   key={star}
                   className={`w-3 h-3 ${
-                    star <= rating ? 'text-[#FFD700] fill-[#FFD700]' : 'text-gray-200'
+                    star <= rating ? 'text-vk-status-warning fill-vk-status-warning' : 'text-vk-gray-300'
                   }`}
                   fill="currentColor"
                   viewBox="0 0 20 20"
@@ -180,13 +181,11 @@ function TaskCardFullComponent({
           </div>
         </div>
 
-        <button
-          className={`px-4 h-[34px] rounded-[8px] font-unbounded font-normal text-[13px] leading-[16px] transition-all duration-200 flex-shrink-0 ${getButtonStyle(status)}`}
-        >
+        <VKButton variant={getButtonVariant(status)} size="m" className="flex-shrink-0">
           {getButtonText(status)}
-        </button>
+        </VKButton>
       </div>
-    </div>
+    </VKCard>
   )
 }
 
