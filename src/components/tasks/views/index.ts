@@ -1,0 +1,2 @@
+export { TasksExtendedView } from './TasksExtendedView'
+

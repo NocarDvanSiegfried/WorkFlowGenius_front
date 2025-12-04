@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { ProtectedRoute } from './components'
-import { MainMenuPage, LoginPage, DashboardPage } from './pages'
+import { MainMenuPage, LoginPage, DashboardPage, TasksPage } from './pages'
 
 function App() {
   return (
@@ -15,6 +15,7 @@ function App() {
           </ProtectedRoute>
         }
       />
+      <Route path="/tasks" element={<TasksPage />} />
     </Routes>
   )
 }

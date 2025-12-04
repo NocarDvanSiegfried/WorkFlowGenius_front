@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom'
 import { HomeIcon, ClipboardListIcon, UsersIcon } from '../components/icons'
-import { HeroSection } from '../components/HeroSection'
-import { CardsRowSmall3, CardsRowLarge2A, CardsRowLarge2B, CardsRowWide } from '../components/cards'
+import { TasksExtendedView } from '../components/tasks/views'
 
-export function MainMenuPage() {
+export function TasksPage() {
   return (
     <div className="min-h-screen bg-[#F9FAFB] w-full">
       <header className="w-full h-[95px] bg-white shadow-[0px_1px_4px_0px_rgba(0,0,0,0.25)]">
@@ -25,22 +24,22 @@ export function MainMenuPage() {
           </div>
 
           <nav className="flex items-center gap-[20px]">
-            <div className="px-[16px] h-[45px] bg-[#0077FF] rounded-[8px] flex items-center gap-[8px] flex-shrink-0">
-              <HomeIcon className="w-5 h-5 text-white flex-shrink-0" />
-              <span className="text-white font-unbounded font-medium text-[18px] leading-[22.32px] whitespace-nowrap">
-                Главная
-              </span>
-            </div>
-
             <Link
-              to="/tasks"
+              to="/"
               className="flex items-center gap-[8px] h-[45px] hover:opacity-80 transition-opacity"
             >
-              <ClipboardListIcon className="w-5 h-5 text-[#8B8B8B] flex-shrink-0" />
+              <HomeIcon className="w-5 h-5 text-[#8B8B8B] flex-shrink-0" />
               <span className="text-[#8B8B8B] font-unbounded font-light text-[18px] leading-[22.32px] whitespace-nowrap">
-                Мои задачи
+                Главная
               </span>
             </Link>
+
+            <div className="px-[16px] h-[45px] bg-[#0077FF] rounded-[8px] flex items-center gap-[8px] flex-shrink-0">
+              <ClipboardListIcon className="w-5 h-5 text-white flex-shrink-0" />
+              <span className="text-white font-unbounded font-medium text-[18px] leading-[22.32px] whitespace-nowrap">
+                Мои задачи
+              </span>
+            </div>
 
             <div className="flex items-center gap-[8px] h-[45px]">
               <UsersIcon className="w-5 h-5 text-[#8B8B8B] flex-shrink-0" />
@@ -53,16 +52,11 @@ export function MainMenuPage() {
       </header>
 
       <main className="w-full pb-[100px]">
-        <div className="max-w-[1780px] mx-auto px-4 flex flex-col">
-          <HeroSection />
-          <div className="flex flex-col gap-[80px] mt-[120px] px-0">
-            <CardsRowSmall3 />
-            <CardsRowLarge2A />
-            <CardsRowLarge2B />
-            <CardsRowWide />
-          </div>
+        <div className="max-w-[1780px] mx-auto px-4 sm:px-6 md:px-[35px] pt-8">
+          <TasksExtendedView />
         </div>
       </main>
     </div>
   )
 }
+
