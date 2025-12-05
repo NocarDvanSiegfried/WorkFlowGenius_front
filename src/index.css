@@ -1,9 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500;600;700&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
   font-family: 'Unbounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.5;
@@ -135,6 +131,8 @@
   --vk-motion-scale-active: 0.98;
   --vk-motion-translate-y-hover: -2px;
   --vk-motion-opacity-disabled: 0.5;
+
+  --vk-spacing-container-padding: var(--vk-spacing-4);
 }
 
 body {
@@ -146,4 +144,463 @@ body {
 
 #root {
   min-height: 100vh;
+}
+
+/* VK Motion Animations */
+@keyframes vk-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vk-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes vk-slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes vk-slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes vk-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Адаптивные стили для разных разрешений */
+@media screen and (min-width: 1280px) {
+  :root {
+    --vk-spacing-container-padding: var(--vk-spacing-4);
+  }
+  
+  [data-vk-grid] {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  :root {
+    --vk-spacing-container-padding: var(--vk-spacing-5);
+  }
+}
+
+@media screen and (min-width: 1920px) {
+  :root {
+    --vk-spacing-container-padding: var(--vk-spacing-6);
+  }
+}
+
+/* Адаптивная сетка для средних экранов */
+@media screen and (max-width: 1279px) and (min-width: 768px) {
+  [data-vk-grid] {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
+  }
+}
+
+/* Адаптивные стили для контейнера страницы */
+@media screen and (max-width: 767px) {
+  [data-vk-page-container] {
+    padding-left: var(--vk-spacing-4) !important;
+    padding-right: var(--vk-spacing-4) !important;
+  }
+  
+  [data-vk-grid] {
+    grid-template-columns: 1fr !important;
+    gap: var(--vk-spacing-4) !important;
+    rowGap: var(--vk-spacing-4) !important;
+    columnGap: var(--vk-spacing-4) !important;
+  }
+  
+  [data-vk-stats-grid] {
+    grid-template-columns: 1fr !important;
+    gap: var(--vk-spacing-4) !important;
+    rowGap: var(--vk-spacing-4) !important;
+    columnGap: var(--vk-spacing-4) !important;
+  }
+  
+  [data-vk-admin-grid] {
+    grid-template-columns: 1fr !important;
+    gap: var(--vk-spacing-4) !important;
+    rowGap: var(--vk-spacing-4) !important;
+    columnGap: var(--vk-spacing-4) !important;
+  }
+  
+  [data-vk-tasks-grid] {
+    grid-template-columns: 1fr !important;
+    gap: var(--vk-spacing-4) !important;
+    rowGap: var(--vk-spacing-4) !important;
+    columnGap: var(--vk-spacing-4) !important;
+  }
+  
+  [data-vk-feature-grid] {
+    gap: var(--vk-spacing-4) !important;
+    rowGap: var(--vk-spacing-4) !important;
+    columnGap: var(--vk-spacing-4) !important;
+  }
+  
+  [data-vk-features-grid] {
+    gap: var(--vk-spacing-4) !important;
+    rowGap: var(--vk-spacing-4) !important;
+    columnGap: var(--vk-spacing-4) !important;
+  }
+  
+  [data-vk-hero-grid] {
+    gap: var(--vk-spacing-4) !important;
+    rowGap: var(--vk-spacing-4) !important;
+    columnGap: var(--vk-spacing-4) !important;
+  }
+}
+
+/* Tablet 768-1023px - одна колонка, боковая панель вниз */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  [data-vk-page-container] {
+    padding-left: var(--vk-spacing-5) !important;
+    padding-right: var(--vk-spacing-5) !important;
+  }
+  
+  [data-vk-stats-grid] {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: var(--vk-spacing-6) !important;
+    rowGap: var(--vk-spacing-6) !important;
+    columnGap: var(--vk-spacing-6) !important;
+  }
+  
+  [data-vk-tasks-grid] {
+    grid-template-columns: 1fr !important;
+    gap: var(--vk-spacing-6) !important;
+    rowGap: var(--vk-spacing-6) !important;
+    columnGap: var(--vk-spacing-6) !important;
+  }
+  
+  [data-vk-tasks-grid] > *:last-child {
+    position: static !important;
+    max-height: none !important;
+    width: 100% !important;
+    margin-top: var(--vk-spacing-6) !important;
+  }
+  
+  [data-vk-admin-grid] {
+    grid-template-columns: 1fr !important;
+    gap: var(--vk-spacing-6) !important;
+    rowGap: var(--vk-spacing-6) !important;
+    columnGap: var(--vk-spacing-6) !important;
+  }
+  
+  [data-vk-admin-grid] > *:last-child {
+    width: 100% !important;
+    margin-top: var(--vk-spacing-6) !important;
+  }
+  
+  [data-vk-feature-grid] {
+    gap: var(--vk-spacing-6) !important;
+    rowGap: var(--vk-spacing-6) !important;
+    columnGap: var(--vk-spacing-6) !important;
+  }
+  
+  [data-vk-features-grid] {
+    gap: var(--vk-spacing-6) !important;
+    rowGap: var(--vk-spacing-6) !important;
+    columnGap: var(--vk-spacing-6) !important;
+  }
+  
+  [data-vk-hero-grid] {
+    gap: var(--vk-spacing-6) !important;
+    rowGap: var(--vk-spacing-6) !important;
+    columnGap: var(--vk-spacing-6) !important;
+  }
+}
+
+/* Tablet 1024-1279px - две колонки с уменьшенной правой панелью */
+@media screen and (min-width: 1024px) and (max-width: 1279px) {
+  [data-vk-page-container] {
+    padding-left: var(--vk-spacing-5) !important;
+    padding-right: var(--vk-spacing-5) !important;
+  }
+  
+  [data-vk-stats-grid] {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: var(--vk-spacing-6) !important;
+    rowGap: var(--vk-spacing-6) !important;
+    columnGap: var(--vk-spacing-6) !important;
+  }
+  
+  [data-vk-tasks-grid] {
+    grid-template-columns: 1fr 360px !important;
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-admin-grid] {
+    grid-template-columns: 1fr 380px !important;
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-feature-grid] {
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-features-grid] {
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-hero-grid] {
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+}
+
+/* Desktop 1280-1439px */
+@media screen and (min-width: 1280px) and (max-width: 1439px) {
+  [data-vk-page-container] {
+    padding-left: var(--vk-spacing-6) !important;
+    padding-right: var(--vk-spacing-6) !important;
+  }
+  
+  [data-vk-stats-grid] {
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: var(--vk-spacing-6) !important;
+    rowGap: var(--vk-spacing-6) !important;
+    columnGap: var(--vk-spacing-6) !important;
+  }
+  
+  [data-vk-tasks-grid] {
+    grid-template-columns: 1fr 380px !important;
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-admin-grid] {
+    grid-template-columns: 1fr 400px !important;
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-feature-grid] {
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-features-grid] {
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-hero-grid] {
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+}
+
+/* Desktop 1440-1919px - аккуратная широкая сетка */
+@media screen and (min-width: 1440px) and (max-width: 1919px) {
+  [data-vk-page-container] {
+    padding-left: var(--vk-spacing-8) !important;
+    padding-right: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-stats-grid] {
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: var(--vk-spacing-6) !important;
+    rowGap: var(--vk-spacing-6) !important;
+    columnGap: var(--vk-spacing-6) !important;
+  }
+  
+  [data-vk-tasks-grid] {
+    grid-template-columns: 1fr 420px !important;
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-admin-grid] {
+    grid-template-columns: 1fr 420px !important;
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-feature-grid] {
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-features-grid] {
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-hero-grid] {
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+}
+
+/* Desktop 1920px+ - максимальная ширина */
+@media screen and (min-width: 1920px) {
+  [data-vk-page-container] {
+    padding-left: var(--vk-spacing-10) !important;
+    padding-right: var(--vk-spacing-10) !important;
+  }
+  
+  [data-vk-stats-grid] {
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: var(--vk-spacing-6) !important;
+    rowGap: var(--vk-spacing-6) !important;
+    columnGap: var(--vk-spacing-6) !important;
+  }
+  
+  [data-vk-tasks-grid] {
+    grid-template-columns: 1fr 450px !important;
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-admin-grid] {
+    grid-template-columns: 1fr 450px !important;
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-feature-grid] {
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  /* Ключевые возможности в 4 колонки на больших экранах */
+  [data-vk-features-grid] {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+  
+  [data-vk-hero-grid] {
+    gap: var(--vk-spacing-8) !important;
+    rowGap: var(--vk-spacing-8) !important;
+    columnGap: var(--vk-spacing-8) !important;
+  }
+}
+
+/* Мягкие hover анимации для карточек */
+[data-vk-card-hover] {
+  transition: box-shadow var(--vk-motion-duration-base) var(--vk-motion-easing-standard),
+              transform var(--vk-motion-duration-base) var(--vk-motion-easing-standard),
+              opacity var(--vk-motion-duration-base) var(--vk-motion-easing-standard);
+  cursor: pointer;
+}
+
+[data-vk-card-hover]:hover {
+  box-shadow: var(--vk-shadow-elevation-2) !important;
+  transform: translateY(-1px);
+}
+
+/* Hover анимации для карточек на главной странице */
+[data-vk-card-hover-main] {
+  transition: box-shadow 0.25s ease,
+              transform 0.25s ease,
+              opacity 0.25s ease;
+  cursor: pointer;
+}
+
+[data-vk-card-hover-main]:hover {
+  box-shadow: var(--vk-shadow-elevation-3) !important;
+  transform: translateY(-4px) scale(1.02);
+}
+
+/* Hover анимации для карточек в админке */
+[data-vk-card-hover-admin] {
+  transition: box-shadow 0.25s ease,
+              transform 0.25s ease,
+              opacity 0.25s ease;
+  cursor: pointer;
+}
+
+[data-vk-card-hover-admin]:hover {
+  box-shadow: var(--vk-shadow-elevation-2) !important;
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Адаптивность для задач на мобильных */
+@media screen and (max-width: 767px) {
+  [data-vk-tasks-grid] {
+    grid-template-columns: 1fr !important;
+    gap: var(--vk-spacing-4) !important;
+    rowGap: var(--vk-spacing-4) !important;
+    columnGap: var(--vk-spacing-4) !important;
+  }
+  
+  [data-vk-tasks-grid] > *:last-child {
+    position: static !important;
+    max-height: none !important;
+    width: 100% !important;
+  }
+  
+  [data-vk-hero-grid] {
+    grid-template-columns: 1fr !important;
+    gap: var(--vk-spacing-4) !important;
+    rowGap: var(--vk-spacing-4) !important;
+    columnGap: var(--vk-spacing-4) !important;
+  }
+}
+
+/* Hero section responsive for tablet */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  [data-vk-hero-grid] {
+    grid-template-columns: 1fr !important;
+    gap: var(--vk-spacing-6) !important;
+    rowGap: var(--vk-spacing-6) !important;
+    columnGap: var(--vk-spacing-6) !important;
+  }
 }

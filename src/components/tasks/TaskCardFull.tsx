@@ -1,5 +1,5 @@
 import { memo } from 'react'
-import { VKCard, VKBadge, VKTag, VKButton } from '../vk'
+import { VKCard, VKBadge, VKTag, VKButton, VKFlex, VKTitle, VKText, VKProgress } from '../vk'
 
 export type Priority = 'low' | 'medium' | 'high' | 'urgent'
 export type Status = 'assigned' | 'in-progress' | 'review' | 'completed' | 'overdue'
@@ -34,10 +34,10 @@ const statusConfig = {
   overdue: { label: 'Просрочено', variant: 'error' as const },
 }
 
-const progressColor = (progress: number) => {
-  if (progress >= 70) return 'bg-vk-accent-blue'
-  if (progress >= 40) return 'bg-vk-status-warning'
-  return 'bg-vk-status-negative'
+const getProgressVariant = (progress: number): 'accent' | 'warning' | 'negative' => {
+  if (progress >= 70) return 'accent'
+  if (progress >= 40) return 'warning'
+  return 'negative'
 }
 
 const getButtonText = (status: Status) => {
@@ -84,110 +84,99 @@ function TaskCardFullComponent({
   const statusInfo = statusConfig[status]
 
   return (
-    <VKCard
-      variant="default"
+    <VKCard 
+      variant="default" 
       padding="m"
-      className="w-full transition-all duration-vk-base hover:shadow-vk-1 hover:-translate-y-0.5 hover:border-vk-accent-blue"
+      data-vk-card-hover
+      style={{ overflow: 'hidden' }}
     >
-      <div className="flex items-start justify-between gap-vk-4">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-vk-2 mb-vk-2 flex-wrap">
-            <div className={`w-2 h-2 rounded-full ${
-              priority === 'low' ? 'bg-vk-status-positive' :
-              priority === 'medium' ? 'bg-vk-status-warning' :
-              priority === 'high' ? 'bg-vk-status-warning' :
-              'bg-vk-status-negative'
-            }`} />
-            <h3 className="text-vk-text-primary font-vk-semibold text-vk-md">
-              {title}
-            </h3>
-            <VKBadge variant={priorityInfo.variant} size="s">
-              {priorityInfo.label}
-            </VKBadge>
-            <VKBadge variant={statusInfo.variant} size="s">
-              {statusInfo.label}
-            </VKBadge>
-          </div>
+      <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-4)' }}>
+        <VKFlex align="center" wrap style={{ gap: 'var(--vk-spacing-2)' }}>
+          <VKBadge variant={priorityInfo.variant} size="s">
+            {priorityInfo.label}
+          </VKBadge>
+          <VKTitle level={5} weight="semibold" style={{ flex: 1, margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+            {title}
+          </VKTitle>
+          <VKBadge variant={statusInfo.variant} size="s">
+            {statusInfo.label}
+          </VKBadge>
+        </VKFlex>
 
-          <p className="text-vk-text-secondary font-vk-regular text-vk-sm mb-vk-2">
-            {description}
-          </p>
+        <VKText size="sm" color="secondary" style={{ lineHeight: '1.6', margin: 0, wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+          {description}
+        </VKText>
 
-          <div className="flex items-center gap-vk-3 mb-vk-2 flex-wrap">
-            <div className="flex items-center gap-vk-1">
-              <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
-                Исполнитель:
-              </span>
-              <span className="text-vk-text-primary font-vk-medium text-vk-xs">
-                {assignee}
-              </span>
-            </div>
-            <div className="flex items-center gap-vk-1">
-              <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
-                Дедлайн:
-              </span>
-              <span className="text-vk-text-primary font-vk-medium text-vk-xs">
-                {deadline}
-                {deadlineTime && ` ${deadlineTime}`}
-              </span>
-            </div>
-          </div>
+        <VKFlex align="center" wrap style={{ gap: 'var(--vk-spacing-4)' }}>
+          <VKFlex align="center" style={{ gap: 'var(--vk-spacing-2)' }}>
+            <VKText size="xs" color="tertiary" style={{ margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              Исполнитель:
+            </VKText>
+            <VKText size="xs" weight="medium" color="primary" style={{ margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              {assignee}
+            </VKText>
+          </VKFlex>
+          <VKFlex align="center" style={{ gap: 'var(--vk-spacing-2)' }}>
+            <VKText size="xs" color="tertiary" style={{ margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              Дедлайн:
+            </VKText>
+            <VKText size="xs" weight="medium" color="primary" style={{ margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              {deadline}
+              {deadlineTime && ` ${deadlineTime}`}
+            </VKText>
+          </VKFlex>
+        </VKFlex>
 
-          {tags.length > 0 && (
-            <div className="flex items-center gap-vk-1 mb-vk-2 flex-wrap">
-              {tags.map((tag, index) => (
-                <VKTag key={index} variant="default">
-                  {tag}
-                </VKTag>
-              ))}
-            </div>
-          )}
+        {tags.length > 0 && (
+          <VKFlex align="center" wrap style={{ gap: 'var(--vk-spacing-2)' }}>
+            {tags.map((tag, index) => (
+              <VKTag key={index} variant="default">
+                {tag}
+              </VKTag>
+            ))}
+          </VKFlex>
+        )}
 
-          <div className="mb-vk-2">
-            <div className="flex items-center justify-between mb-vk-1">
-              <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
-                Прогресс
-              </span>
-              <span className="text-vk-text-primary font-vk-semibold text-vk-xs">
-                {progress}%
-              </span>
-            </div>
-            <div className="w-full h-1 bg-vk-bg-tertiary rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full transition-all duration-vk-base ease-vk-standard ${progressColor(progress)}`}
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-          </div>
+        <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-2)' }}>
+          <VKFlex justify="between" align="center">
+            <VKText size="xs" color="tertiary" style={{ margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              Прогресс
+            </VKText>
+            <VKText size="xs" weight="semibold" color="primary" style={{ margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              {progress}%
+            </VKText>
+          </VKFlex>
+          <VKProgress value={progress} max={100} size="s" variant={getProgressVariant(progress)} />
+        </VKFlex>
 
-          <div className="flex items-center gap-vk-1">
-            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
+        <VKFlex align="center" justify="between">
+          <VKFlex align="center" style={{ gap: 'var(--vk-spacing-2)' }}>
+            <VKText size="xs" color="tertiary" style={{ margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               Рейтинг:
-            </span>
-            <div className="flex items-center gap-vk-0-5">
+            </VKText>
+            <VKFlex align="center" style={{ gap: 'var(--vk-spacing-1)' }}>
               {[1, 2, 3, 4, 5].map((star) => (
                 <svg
                   key={star}
-                  className={`w-3 h-3 ${
-                    star <= rating ? 'text-vk-status-warning fill-vk-status-warning' : 'text-vk-gray-300'
-                  }`}
-                  fill="currentColor"
+                  width="12"
+                  height="12"
+                  fill={star <= rating ? 'currentColor' : 'none'}
+                  stroke={star <= rating ? 'currentColor' : 'var(--vk-color-gray-300)'}
                   viewBox="0 0 20 20"
+                  style={{ color: star <= rating ? 'var(--vk-color-status-warning)' : 'var(--vk-color-gray-300)' }}
                 >
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
               ))}
-            </div>
-          </div>
-        </div>
-
-        <VKButton variant={getButtonVariant(status)} size="m" className="flex-shrink-0">
-          {getButtonText(status)}
-        </VKButton>
-      </div>
+            </VKFlex>
+          </VKFlex>
+          <VKButton variant={getButtonVariant(status)} size="s">
+            {getButtonText(status)}
+          </VKButton>
+        </VKFlex>
+      </VKFlex>
     </VKCard>
   )
 }
 
 export const TaskCardFull = memo(TaskCardFullComponent)
-

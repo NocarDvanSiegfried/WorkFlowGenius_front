@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react'
-import { VKCard, VKChartWrapper, VKButton } from '../vk'
+import { VKCard, VKButton, VKFlex, VKTitle, VKText, VKGrid, VKSeparator, VKGroup } from '../vk'
 
 type PeriodType = 'week' | 'month' | 'quarter'
 
@@ -46,289 +46,424 @@ export function AnalyticsSidebar() {
   const plannedHours = 160
   const completedHours = 142
   const deviation = completedHours - plannedHours
-  const deviationColor = deviation >= 0 ? 'text-vk-status-positive' : 'text-vk-status-negative'
+  const deviationColor = deviation >= 0 ? 'var(--vk-color-status-positive)' : 'var(--vk-color-status-negative)'
 
   return (
-    <div className="space-y-vk-4">
-      <VKCard variant="default" padding="m" className="transition-all duration-vk-base hover:shadow-vk-1">
-        <h3 className="text-vk-text-primary font-vk-semibold text-vk-md mb-vk-3">
-          Производительность
-        </h3>
-        <div className="flex items-center gap-vk-4 mb-vk-3">
-          <div className="relative w-24 h-24 flex-shrink-0">
-            <svg className="transform -rotate-90 w-24 h-24">
-              <circle
-                cx="48"
-                cy="48"
-                r="44"
-                stroke="var(--vk-color-gray-100)"
-                strokeWidth="6"
-                fill="none"
-              />
-              <circle
-                cx="48"
-                cy="48"
-                r="44"
-                stroke="var(--vk-color-accent-blue)"
-                strokeWidth="6"
-                fill="none"
-                strokeDasharray={`${(productivity / 100) * 276.46} 276.46`}
-                strokeLinecap="round"
-              />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-vk-text-primary font-vk-semibold text-vk-lg">
-                {productivity}%
-              </span>
-            </div>
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="space-y-vk-2">
-              <div className="flex items-center justify-between">
-                <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
-                  Выполнено
-                </span>
-                <span className="text-vk-text-primary font-vk-semibold text-vk-sm">
-                  {tasksCompleted}/{tasksTotal}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
-                  В срок
-                </span>
-                <span className="text-vk-text-primary font-vk-semibold text-vk-sm">
-                  {onTime}/{tasksCompleted}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
-                  Среднее время
-                </span>
-                <span className="text-vk-text-primary font-vk-semibold text-vk-sm">
-                  {averageTime}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
-                  Эффективность
-                </span>
-                <span className="text-vk-text-primary font-vk-semibold text-vk-sm">
-                  {efficiency}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </VKCard>
-
-      <VKChartWrapper
-        title="Статистика"
-        className="transition-all duration-vk-base hover:shadow-vk-1"
+    <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-8)' }}>
+      <VKGroup
+        mode="card"
+        header={
+          <VKTitle level={5} weight="semibold" style={{ margin: 0, lineHeight: '1.4', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+            Производительность
+          </VKTitle>
+        }
+        style={{
+          animation: 'vk-fade-in var(--vk-motion-duration-base) var(--vk-motion-easing-standard) forwards',
+          opacity: 0,
+          width: '100%',
+          marginBottom: 'var(--vk-spacing-6)',
+          overflow: 'visible',
+        }}
       >
-        <div className="flex items-center justify-between mb-vk-3">
-          <div className="flex gap-vk-1">
-            {(['week', 'month', 'quarter'] as PeriodType[]).map((p) => (
-              <VKButton
-                key={p}
-                variant={period === p ? 'primary' : 'secondary'}
-                size="s"
-                onClick={() => setPeriod(p)}
+        <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-4)' }}>
+          <VKFlex align="center" gap="m">
+            <div style={{ position: 'relative', width: '60px', height: '60px', flexShrink: 0 }}>
+              <svg
+                style={{
+                  transform: 'rotate(-90deg)',
+                  width: '60px',
+                  height: '60px',
+                }}
               >
-                {p === 'week' ? 'Н' : p === 'month' ? 'М' : 'К'}
-              </VKButton>
-            ))}
-          </div>
-        </div>
-        <div className="flex items-end justify-between gap-vk-1 mb-vk-3">
-          {currentData.map((data) => {
-            const completedHeight = (data.completed / maxTasks) * 80
-            const inProgressHeight = (data.inProgress / maxTasks) * 80
-            const overdueHeight = (data.overdue / maxTasks) * 80
-
-            return (
-              <div key={data[labelKey as keyof typeof data]} className="flex-1 flex flex-col items-center">
-                <div className="relative w-full h-20 flex items-end justify-center mb-vk-1">
-                  <div className="absolute bottom-0 w-full flex flex-col items-center gap-vk-0-5">
-                    <div
-                      className="w-full bg-vk-accent-blue-alpha rounded-t-vk-sm"
-                      style={{ height: `${completedHeight}px` }}
-                    />
-                    <div
-                      className="w-full bg-vk-status-warning/20 rounded-t-vk-sm"
-                      style={{ height: `${inProgressHeight}px` }}
-                    />
-                    <div
-                      className="w-full bg-vk-status-negative/20 rounded-t-vk-sm"
-                      style={{ height: `${overdueHeight}px` }}
-                    />
-                  </div>
-                </div>
-                <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
-                  {data[labelKey as keyof typeof data]}
-                </span>
-                <span className="text-vk-text-primary font-vk-semibold text-vk-xs mt-0.5">
-                  {data.completed}/{data.tasks}
-                </span>
+                <circle
+                  cx="30"
+                  cy="30"
+                  r="26"
+                  stroke="var(--vk-color-gray-100)"
+                  strokeWidth="4"
+                  fill="none"
+                />
+                <circle
+                  cx="30"
+                  cy="30"
+                  r="26"
+                  stroke="var(--vk-color-accent-blue)"
+                  strokeWidth="4"
+                  fill="none"
+                  strokeDasharray={`${(productivity / 100) * 163.4} 163.4`}
+                  strokeLinecap="round"
+                />
+              </svg>
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <VKTitle level={5} weight="semibold" style={{ margin: 0 }}>
+                  {productivity}%
+                </VKTitle>
               </div>
-            )
-          })}
-        </div>
-        <div className="flex items-center justify-center gap-vk-3 pt-vk-3 border-t border-vk-border-secondary">
-          <div className="flex items-center gap-vk-1">
-            <div className="w-2.5 h-2.5 rounded-full bg-vk-accent-blue" />
-            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
-              Выполнено
-            </span>
-          </div>
-          <div className="flex items-center gap-vk-1">
-            <div className="w-2.5 h-2.5 rounded-full bg-vk-status-warning" />
-            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
-              В работе
-            </span>
-          </div>
-          <div className="flex items-center gap-vk-1">
-            <div className="w-2.5 h-2.5 rounded-full bg-vk-status-negative" />
-            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
-              Просрочено
-            </span>
-          </div>
-        </div>
-      </VKChartWrapper>
+            </div>
+            <VKFlex direction="column" grow style={{ gap: 'var(--vk-spacing-3)' }}>
+              <VKFlex justify="between" align="center">
+                <VKText size="xs" color="tertiary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  Выполнено
+                </VKText>
+                <VKText size="sm" weight="semibold" color="primary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  {tasksCompleted}/{tasksTotal}
+                </VKText>
+              </VKFlex>
+              <VKFlex justify="between" align="center">
+                <VKText size="xs" color="tertiary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  В срок
+                </VKText>
+                <VKText size="sm" weight="semibold" color="primary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  {onTime}/{tasksCompleted}
+                </VKText>
+              </VKFlex>
+              <VKFlex justify="between" align="center">
+                <VKText size="xs" color="tertiary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  Среднее время
+                </VKText>
+                <VKText size="sm" weight="semibold" color="primary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  {averageTime}
+                </VKText>
+              </VKFlex>
+              <VKFlex justify="between" align="center">
+                <VKText size="xs" color="tertiary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  Эффективность
+                </VKText>
+                <VKText size="sm" weight="semibold" color="primary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                  {efficiency}
+                </VKText>
+              </VKFlex>
+            </VKFlex>
+          </VKFlex>
+        </VKFlex>
+      </VKGroup>
 
-      <div className="grid grid-cols-3 gap-vk-2">
-        <VKCard variant="default" padding="s" className="text-center bg-vk-accent-blue-alpha/30 border-vk-accent-blue-alpha">
-          <div className="w-vk-6 h-vk-6 mx-auto mb-vk-1 flex items-center justify-center">
-            <svg className="w-vk-icon-s h-vk-icon-s text-vk-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <p className="text-vk-text-secondary font-vk-regular text-vk-xs mb-vk-1">
-            План
-          </p>
-          <p className="text-vk-text-primary font-vk-semibold text-vk-sm">
-            {plannedHours}ч
-          </p>
-        </VKCard>
-        <VKCard variant="default" padding="s" className="text-center bg-vk-status-positive/10 border-vk-status-positive/20">
-          <div className="w-vk-6 h-vk-6 mx-auto mb-vk-1 flex items-center justify-center">
-            <svg className="w-vk-icon-s h-vk-icon-s text-vk-status-positive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </div>
-          <p className="text-vk-text-secondary font-vk-regular text-vk-xs mb-vk-1">
-            Выполнено
-          </p>
-          <p className="text-vk-text-primary font-vk-semibold text-vk-sm">
-            {completedHours}ч
-          </p>
+      <VKGroup
+        mode="card"
+        header={
+          <VKTitle level={5} weight="semibold" style={{ margin: 0, lineHeight: '1.4', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+            Статистика
+          </VKTitle>
+        }
+        style={{
+          animation: 'vk-fade-in var(--vk-motion-duration-base) var(--vk-motion-easing-standard) forwards',
+          animationDelay: '100ms',
+          opacity: 0,
+          width: '100%',
+          marginBottom: 'var(--vk-spacing-6)',
+          overflow: 'visible',
+        }}
+      >
+        <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-4)' }}>
+          <VKFlex justify="between" align="center">
+            <VKFlex gap="s">
+              {(['week', 'month', 'quarter'] as PeriodType[]).map((p) => (
+                <VKButton
+                  key={p}
+                  variant={period === p ? 'primary' : 'secondary'}
+                  size="s"
+                  onClick={() => setPeriod(p)}
+                >
+                  {p === 'week' ? 'Н' : p === 'month' ? 'М' : 'К'}
+                </VKButton>
+              ))}
+            </VKFlex>
+          </VKFlex>
+          <VKFlex align="end" justify="between" gap="s">
+            {currentData.map((data) => {
+              const completedHeight = (data.completed / maxTasks) * 50
+              const inProgressHeight = (data.inProgress / maxTasks) * 50
+              const overdueHeight = (data.overdue / maxTasks) * 50
+
+              return (
+                <VKFlex key={data[labelKey as keyof typeof data]} direction="column" align="center" grow>
+                  <div
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      height: '50px',
+                      display: 'flex',
+                      alignItems: 'flex-end',
+                      justifyContent: 'center',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    <div
+                      style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        gap: '2px',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '100%',
+                          backgroundColor: 'var(--vk-color-accent-blue-alpha)',
+                          borderRadius: '4px 4px 0 0',
+                          height: `${completedHeight}px`,
+                        }}
+                      />
+                      <div
+                        style={{
+                          width: '100%',
+                          backgroundColor: 'rgba(255, 160, 0, 0.2)',
+                          borderRadius: '4px 4px 0 0',
+                          height: `${inProgressHeight}px`,
+                        }}
+                      />
+                      <div
+                        style={{
+                          width: '100%',
+                          backgroundColor: 'rgba(230, 70, 70, 0.2)',
+                          borderRadius: '4px 4px 0 0',
+                          height: `${overdueHeight}px`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <VKText size="xs" color="tertiary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                    {data[labelKey as keyof typeof data]}
+                  </VKText>
+                  <VKText size="xs" weight="semibold" color="primary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                    {data.completed}/{data.tasks}
+                  </VKText>
+                </VKFlex>
+              )
+            })}
+          </VKFlex>
+          <VKSeparator />
+          <VKFlex justify="center" align="center" gap="m">
+            <VKFlex align="center" gap="s">
+              <div
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: 'var(--vk-color-accent-blue)',
+                }}
+              />
+              <VKText size="xs" color="tertiary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                Выполнено
+              </VKText>
+            </VKFlex>
+            <VKFlex align="center" gap="s">
+              <div
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: 'var(--vk-color-status-warning)',
+                }}
+              />
+              <VKText size="xs" color="tertiary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                В работе
+              </VKText>
+            </VKFlex>
+            <VKFlex align="center" gap="s">
+              <div
+                style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  backgroundColor: 'var(--vk-color-status-negative)',
+                }}
+              />
+              <VKText size="xs" color="tertiary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                Просрочено
+              </VKText>
+            </VKFlex>
+          </VKFlex>
+        </VKFlex>
+      </VKGroup>
+
+      <VKGrid columns={3} style={{ width: '100%', gap: 'var(--vk-spacing-3)', rowGap: 'var(--vk-spacing-3)', columnGap: 'var(--vk-spacing-3)', marginBottom: 'var(--vk-spacing-6)' }}>
+        <VKCard
+          variant="default"
+          padding="m"
+          style={{
+            textAlign: 'center',
+            backgroundColor: 'var(--vk-color-accent-blue-alpha)',
+            borderColor: 'var(--vk-color-accent-blue-alpha)',
+            margin: 0,
+            overflow: 'visible',
+          }}
+        >
+          <VKFlex direction="column" align="center" gap="s">
+            <VKText size="xs" color="secondary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              План
+            </VKText>
+            <VKText size="sm" weight="semibold" color="primary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              {plannedHours}ч
+            </VKText>
+          </VKFlex>
         </VKCard>
         <VKCard
           variant="default"
-          padding="s"
-          className={`text-center ${
-            deviation >= 0
-              ? 'bg-vk-status-positive/10 border-vk-status-positive/20'
-              : 'bg-vk-status-negative/10 border-vk-status-negative/20'
-          }`}
+          padding="m"
+          style={{
+            textAlign: 'center',
+            backgroundColor: 'rgba(75, 179, 75, 0.1)',
+            borderColor: 'rgba(75, 179, 75, 0.2)',
+            margin: 0,
+            overflow: 'visible',
+          }}
         >
-          <div className="w-vk-6 h-vk-6 mx-auto mb-vk-1 flex items-center justify-center">
-            <svg className={`w-vk-icon-s h-vk-icon-s ${deviationColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d={deviation >= 0 ? 'M13 7h8m0 0v8m0-8l-8 8-4-4-6 6' : 'M13 17h8m0 0V9m0 8l-8-8-4 4-6-6'}
-              />
-            </svg>
-          </div>
-          <p className="text-vk-text-secondary font-vk-regular text-vk-xs mb-vk-1">
-            Отклонение
-          </p>
-          <p className={`font-vk-semibold text-vk-sm ${deviationColor}`}>
-            {deviation >= 0 ? '+' : ''}
-            {deviation}ч
-          </p>
+          <VKFlex direction="column" align="center" gap="s">
+            <VKText size="xs" color="secondary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              Выполнено
+            </VKText>
+            <VKText size="sm" weight="semibold" color="primary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              {completedHours}ч
+            </VKText>
+          </VKFlex>
         </VKCard>
-      </div>
+        <VKCard
+          variant="default"
+          padding="m"
+          style={{
+            textAlign: 'center',
+            backgroundColor:
+              deviation >= 0
+                ? 'rgba(75, 179, 75, 0.1)'
+                : 'rgba(230, 70, 70, 0.1)',
+            borderColor:
+              deviation >= 0
+                ? 'rgba(75, 179, 75, 0.2)'
+                : 'rgba(230, 70, 70, 0.2)',
+            margin: 0,
+            overflow: 'visible',
+          }}
+        >
+          <VKFlex direction="column" align="center" gap="s">
+            <VKText size="xs" color="secondary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              Отклонение
+            </VKText>
+            <VKText size="sm" weight="semibold" style={{ color: deviationColor, margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              {deviation >= 0 ? '+' : ''}
+              {deviation}ч
+            </VKText>
+          </VKFlex>
+        </VKCard>
+      </VKGrid>
 
-      <VKCard variant="default" padding="m" className="transition-all duration-vk-base hover:shadow-vk-1">
-        <h3 className="text-vk-text-primary font-vk-semibold text-vk-md mb-vk-3">
-          Аналитика рисков
-        </h3>
-        <div className="space-y-vk-2">
-          <div className="flex items-center gap-vk-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-vk-status-warning flex-shrink-0" />
-            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs flex-1">
+      <VKGroup
+        mode="card"
+        header={
+          <VKTitle level={5} weight="semibold" style={{ margin: 0, lineHeight: '1.4', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+            Аналитика рисков
+          </VKTitle>
+        }
+        style={{
+          animation: 'vk-fade-in var(--vk-motion-duration-base) var(--vk-motion-easing-standard) forwards',
+          animationDelay: '200ms',
+          opacity: 0,
+          width: '100%',
+          marginBottom: 'var(--vk-spacing-6)',
+          overflow: 'visible',
+        }}
+      >
+        <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-3)' }}>
+          <VKFlex align="center" gap="s">
+            <div
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--vk-color-status-warning)',
+                flexShrink: 0,
+              }}
+            />
+            <VKText size="xs" color="tertiary" style={{ flex: 1, margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               Риск просрочки
-            </span>
-            <span className="text-vk-status-warning font-vk-medium text-vk-xs">
+            </VKText>
+            <VKText size="xs" weight="medium" style={{ color: 'var(--vk-color-status-warning)', margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               Средний
-            </span>
-          </div>
-          <div className="flex items-center gap-vk-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-vk-status-negative flex-shrink-0" />
-            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs flex-1">
+            </VKText>
+          </VKFlex>
+          <VKFlex align="center" gap="s">
+            <div
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--vk-color-status-negative)',
+                flexShrink: 0,
+              }}
+            />
+            <VKText size="xs" color="tertiary" style={{ flex: 1, margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               Рост нагрузки
-            </span>
-            <span className="text-vk-status-negative font-vk-medium text-vk-xs">
+            </VKText>
+            <VKText size="xs" weight="medium" style={{ color: 'var(--vk-color-status-negative)', margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               +15%
-            </span>
-          </div>
-          <div className="flex items-center gap-vk-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-vk-status-positive flex-shrink-0" />
-            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs flex-1">
+            </VKText>
+          </VKFlex>
+          <VKFlex align="center" gap="s">
+            <div
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--vk-color-status-positive)',
+                flexShrink: 0,
+              }}
+            />
+            <VKText size="xs" color="tertiary" style={{ flex: 1, margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               Количество задач
-            </span>
-            <span className="text-vk-status-positive font-vk-medium text-vk-xs">
+            </VKText>
+            <VKText size="xs" weight="medium" style={{ color: 'var(--vk-color-status-positive)', margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               Стабильно
-            </span>
-          </div>
-          <div className="flex items-center gap-vk-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-vk-status-positive flex-shrink-0" />
-            <span className="text-vk-text-tertiary font-vk-regular text-vk-xs flex-1">
+            </VKText>
+          </VKFlex>
+          <VKFlex align="center" gap="s">
+            <div
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--vk-color-status-positive)',
+                flexShrink: 0,
+              }}
+            />
+            <VKText size="xs" color="tertiary" style={{ flex: 1, margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               Потенциальная перегрузка
-            </span>
-            <span className="text-vk-status-positive font-vk-medium text-vk-xs">
+            </VKText>
+            <VKText size="xs" weight="medium" style={{ color: 'var(--vk-color-status-positive)', margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               Низкая
-            </span>
-          </div>
-        </div>
-      </VKCard>
+            </VKText>
+          </VKFlex>
+        </VKFlex>
+      </VKGroup>
 
       <VKCard
         variant="default"
         padding="m"
-        className="bg-gradient-to-br from-vk-accent-blue-alpha to-vk-status-positive/10"
+        style={{
+          background: 'linear-gradient(to bottom right, var(--vk-color-accent-blue-alpha), rgba(75, 179, 75, 0.1))',
+          width: '100%',
+          margin: 0,
+          overflow: 'visible',
+        }}
       >
-        <div className="flex items-center justify-between gap-vk-2">
-          <div className="flex items-center gap-vk-2 flex-1 min-w-0">
-            <svg
-              className="w-vk-icon-s h-vk-icon-s text-vk-accent-blue flex-shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-              />
-            </svg>
-            <p className="text-vk-text-primary font-vk-regular text-vk-sm">
+        <VKFlex justify="between" align="center" gap="s">
+          <VKFlex align="center" gap="s" grow>
+            <VKText size="sm" color="primary" style={{ margin: 0, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
               При текущем темпе вы выполните все задачи через <strong>3 дня</strong>
-            </p>
-          </div>
-          <svg
-            className="w-4 h-4 text-vk-accent-blue flex-shrink-0"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </div>
+            </VKText>
+          </VKFlex>
+        </VKFlex>
       </VKCard>
-    </div>
+    </VKFlex>
   )
 }

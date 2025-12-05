@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-
+import { VKFlex, VKText, VKTitle, VKSpacing, VKGroup } from '../vk'
 import { TaskCardFull } from './TaskCardFull'
 import type { TabType } from './types'
 
@@ -98,100 +98,119 @@ const mockTasks = [
     description: 'Организовать встречу для обсуждения результатов спринта',
     priority: 'medium' as const,
     status: 'review' as const,
-    assignee: 'Иван Иванов',
-    deadline: '25.07.2024',
-    tags: ['Бизнес', 'Research'],
-    progress: 100,
-    rating: 3,
+    assignee: 'Елена Козлова',
+    deadline: '28.07.2024',
+    tags: ['Менеджмент', 'Команда'],
+    progress: 90,
+    rating: 4,
     group: 'review',
   },
   {
     id: '8',
-    title: 'Исправить баг с авторизацией',
-    description: 'Исправить проблему с токенами при обновлении страницы',
-    priority: 'urgent' as const,
+    title: 'Настроить CI/CD pipeline',
+    description: 'Автоматизировать процесс деплоя приложения',
+    priority: 'high' as const,
     status: 'in-progress' as const,
-    assignee: 'Алексей Сидоров',
-    deadline: '25.07.2024',
-    deadlineTime: '14:00',
-    tags: ['Backend', 'Исправление', 'Срочно'],
+    assignee: 'Дмитрий Волков',
+    deadline: '29.07.2024',
+    tags: ['DevOps', 'CI/CD', 'Инфраструктура'],
     progress: 45,
     rating: 5,
-    group: 'high-priority',
+    group: 'in-progress',
   },
 ]
 
 const groupConfig = {
-  'high-priority': { title: 'Высокий приоритет', order: 1 },
-  'deadline-soon': { title: 'Скоро дедлайн', order: 2 },
-  'in-progress': { title: 'В работе', order: 3 },
-  review: { title: 'На проверке', order: 4 },
-  completed: { title: 'Выполненные', order: 5 },
-  overdue: { title: 'Просроченные', order: 0 },
+  'high-priority': { title: 'Срочно', key: 'high-priority' },
+  'in-progress': { title: 'В работе', key: 'in-progress' },
+  review: { title: 'На проверке', key: 'review' },
+  completed: { title: 'Выполненные', key: 'completed' },
+  overdue: { title: 'Просроченные', key: 'overdue' },
+  'deadline-soon': { title: 'Скоро дедлайн', key: 'deadline-soon' },
 }
 
 export function TaskListGrouped({ activeTab }: TaskListGroupedProps) {
   const filteredTasks = useMemo(() => {
     if (activeTab === 'all') return mockTasks
-    if (activeTab === 'active')
-      return mockTasks.filter((task) => task.status === 'assigned' || task.status === 'in-progress')
-    if (activeTab === 'completed') return mockTasks.filter((task) => task.status === 'completed')
-    if (activeTab === 'review') return mockTasks.filter((task) => task.status === 'review')
-    if (activeTab === 'overdue') return mockTasks.filter((task) => task.status === 'overdue')
+    if (activeTab === 'active') return mockTasks.filter((t) => t.status === 'in-progress' || t.status === 'assigned')
+    if (activeTab === 'completed') return mockTasks.filter((t) => t.status === 'completed')
+    if (activeTab === 'review') return mockTasks.filter((t) => t.status === 'review')
+    if (activeTab === 'overdue') return mockTasks.filter((t) => t.status === 'overdue')
     return mockTasks
   }, [activeTab])
 
-  const groupedTasks = useMemo(
-    () =>
-      filteredTasks.reduce(
-        (acc, task) => {
-          const group = task.group || 'other'
-          if (!acc[group]) acc[group] = []
-          acc[group].push(task)
-          return acc
-        },
-        {} as Record<string, typeof mockTasks>
-      ),
-    [filteredTasks]
-  )
-
-  const sortedGroups = useMemo(
-    () =>
-      Object.keys(groupedTasks).sort(
-        (a, b) =>
-          (groupConfig[a as keyof typeof groupConfig]?.order || 999) -
-          (groupConfig[b as keyof typeof groupConfig]?.order || 999)
-      ),
-    [groupedTasks]
-  )
-
-      if (filteredTasks.length === 0) {
-        return (
-          <div className="text-center py-vk-12">
-            <p className="text-vk-text-secondary font-vk-regular text-vk-md">
-              Нет задач в этой категории
-            </p>
-          </div>
-        )
+  const groupedTasks = useMemo(() => {
+    const groups: Record<string, typeof mockTasks> = {}
+    filteredTasks.forEach((task) => {
+      const groupKey = task.group || 'other'
+      if (!groups[groupKey]) {
+        groups[groupKey] = []
       }
+      groups[groupKey].push(task)
+    })
+    return groups
+  }, [filteredTasks])
+
+  const sortedGroups = useMemo(() => {
+    const order = ['high-priority', 'deadline-soon', 'in-progress', 'review', 'completed', 'overdue']
+    return Object.keys(groupedTasks).sort((a, b) => {
+      const aIndex = order.indexOf(a)
+      const bIndex = order.indexOf(b)
+      if (aIndex === -1 && bIndex === -1) return 0
+      if (aIndex === -1) return 1
+      if (bIndex === -1) return -1
+      return aIndex - bIndex
+    })
+  }, [groupedTasks])
+
+  if (filteredTasks.length === 0) {
+    return (
+      <VKSpacing size="l">
+        <VKFlex direction="column" align="center" justify="center">
+          <VKText size="base" color="secondary">
+            Нет задач
+          </VKText>
+        </VKFlex>
+      </VKSpacing>
+    )
+  }
 
   return (
-    <div>
-      {sortedGroups.map((groupKey) => {
+    <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-10)' }}>
+      {sortedGroups.map((groupKey, groupIndex) => {
         const group = groupConfig[groupKey as keyof typeof groupConfig]
-        if (!group) return null
+        if (!group || !groupedTasks[groupKey] || groupedTasks[groupKey].length === 0) return null
 
         return (
-          <div key={groupKey} className="mb-vk-5 animate-fade-in">
-            <div className="flex items-center gap-vk-3 mb-vk-2">
-              <h3 className="text-vk-text-secondary font-vk-regular text-vk-sm">
+          <VKGroup
+            key={groupKey}
+            mode="card"
+            header={
+              <VKTitle level={5} weight="semibold" style={{ margin: 0, lineHeight: '1.4', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
                 {group.title}
-              </h3>
-              <div className="flex-1 h-px bg-vk-border-secondary" />
-            </div>
-            <div className="space-y-vk-3">
-              {groupedTasks[groupKey].map((task, index) => (
-                <div key={task.id} className="animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+              </VKTitle>
+            }
+            style={{
+              animation: `vk-fade-in var(--vk-motion-duration-base) var(--vk-motion-easing-standard) forwards`,
+              animationDelay: `${groupIndex * 50}ms`,
+              opacity: 0,
+              width: '100%',
+              marginBottom: groupIndex < sortedGroups.length - 1 ? 'var(--vk-spacing-8)' : 0,
+              overflow: 'visible',
+            }}
+          >
+            <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-5)' }}>
+              {groupedTasks[groupKey].map((task, taskIndex) => (
+                <div
+                  key={task.id}
+                  style={{
+                    animation: `vk-slide-up var(--vk-motion-duration-base) var(--vk-motion-easing-standard) forwards`,
+                    animationDelay: `${(groupIndex * 50) + (taskIndex * 50)}ms`,
+                    opacity: 0,
+                    width: '100%',
+                    marginBottom: taskIndex < groupedTasks[groupKey].length - 1 ? 'var(--vk-spacing-5)' : 0,
+                  }}
+                >
                   <TaskCardFull
                     id={task.id}
                     title={task.title}
@@ -204,14 +223,14 @@ export function TaskListGrouped({ activeTab }: TaskListGroupedProps) {
                     tags={task.tags}
                     progress={task.progress}
                     rating={task.rating}
+                    group={task.group}
                   />
                 </div>
               ))}
-            </div>
-          </div>
+            </VKFlex>
+          </VKGroup>
         )
       })}
-    </div>
+    </VKFlex>
   )
 }
-

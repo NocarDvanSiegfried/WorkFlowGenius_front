@@ -204,6 +204,11 @@ export default {
         'scale-in': 'scale-in 0.2s cubic-bezier(0.4, 0.0, 0.2, 1)',
         'scale-out': 'scale-out 0.2s cubic-bezier(0.4, 0.0, 0.2, 1)',
       },
+      transitionDelay: {
+        'vk-100': '100ms',
+        'vk-200': '200ms',
+        'vk-300': '300ms',
+      },
     },
   },
   plugins: [],

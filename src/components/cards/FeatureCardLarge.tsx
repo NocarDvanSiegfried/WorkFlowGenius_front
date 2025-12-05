@@ -1,29 +1,59 @@
-import { VKCard } from '../vk'
-import { CheckIcon } from '../icons'
+import { VKFlex, VKTitle, VKText } from '../vk'
+import { VKAnimatedCard } from '../vk/VKAnimatedCard'
 
 interface FeatureCardLargeProps {
   title: string
   items: string[]
+  index?: number
   className?: string
 }
 
-export function FeatureCardLarge({ title, items, className = '' }: FeatureCardLargeProps) {
+export function FeatureCardLarge({ title, items, index = 0, className = '' }: FeatureCardLargeProps) {
   return (
-    <VKCard
+    <VKAnimatedCard
       variant="outlined"
-      padding="l"
-      className={`w-full h-full flex flex-col transition-all duration-vk-base ease-vk-standard hover:shadow-vk-2 hover:scale-vk-hover active:scale-vk-active ${className}`}
+      padding="none"
+      index={index}
+      animationType="slide-up"
+      className={className}
+      data-vk-card-hover-main
+      style={{ 
+        display: 'flex', 
+        flexDirection: 'column',
+        minHeight: '180px',
+        overflow: 'hidden',
+        padding: 'var(--vk-spacing-6)',
+      }}
     >
-      <h3 className="text-vk-accent-blue font-vk-semibold text-vk-m underline leading-tight mb-vk-4">{title}</h3>
-      <div className="flex flex-col gap-vk-3">
-        {items.map((item, index) => (
-          <div key={index} className="flex items-start gap-vk-3">
-            <CheckIcon className="w-vk-icon-m h-vk-icon-m text-vk-accent-blue flex-shrink-0 mt-vk-0-5" strokeWidth={2} />
-            <p className="text-vk-text-secondary font-vk-regular text-vk-sm leading-normal">{item}</p>
-          </div>
-        ))}
-      </div>
-    </VKCard>
+      <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-5)' }}>
+        <VKTitle level={5} weight="semibold" style={{ lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '18px', fontWeight: 600 }}>
+          {title}
+        </VKTitle>
+        <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-3)' }}>
+          {items.map((item, itemIndex) => (
+            <VKFlex key={itemIndex} align="start" style={{ gap: 'var(--vk-spacing-3)' }}>
+              <VKFlex
+                align="center"
+                justify="center"
+                style={{
+                  width: '16px',
+                  height: '16px',
+                  color: 'var(--vk-color-accent-blue)',
+                  flexShrink: 0,
+                  marginTop: '2px',
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 6L9 17L4 12" />
+                </svg>
+              </VKFlex>
+              <VKText size="sm" color="secondary" style={{ flex: 1, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '14px' }}>
+                {item}
+              </VKText>
+            </VKFlex>
+          ))}
+        </VKFlex>
+      </VKFlex>
+    </VKAnimatedCard>
   )
 }
-

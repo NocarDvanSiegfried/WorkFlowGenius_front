@@ -22,3 +22,4 @@ export function CheckIcon({ className = 'w-6 h-6', strokeWidth = 2 }: CheckIconP
   )
 }
 
+

@@ -31,3 +31,4 @@ export function DollarSignIcon({ className = 'w-6 h-6' }: DollarSignIconProps) {
   )
 }
 
+

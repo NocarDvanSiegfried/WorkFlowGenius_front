@@ -1,5 +1,5 @@
 export { ProtectedRoute } from './ProtectedRoute'
-export { Header } from './Header'
-export { Footer } from './Footer'
+export { GlobalLayout } from './GlobalLayout'
+export { GlobalHeader } from './GlobalHeader'
+export { GlobalFooter } from './GlobalFooter'
 export { Layout } from './Layout'
-

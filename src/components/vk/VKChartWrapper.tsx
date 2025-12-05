@@ -1,4 +1,5 @@
 import { HTMLAttributes, ReactNode } from 'react'
+import { VKCard, VKTitle, VKText, VKFlex } from './index'
 
 interface VKChartWrapperProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
@@ -6,17 +7,24 @@ interface VKChartWrapperProps extends HTMLAttributes<HTMLDivElement> {
   subtitle?: string
 }
 
-export function VKChartWrapper({ children, title, subtitle, className = '', ...props }: VKChartWrapperProps) {
+export function VKChartWrapper({ children, title, subtitle, className = '', style, ...props }: VKChartWrapperProps) {
   return (
-    <div className={`bg-vk-bg-content rounded-vk-lg border border-vk-border-secondary p-vk-4 ${className}`} {...props}>
+    <VKCard variant="default" padding="m" className={className} style={style} {...props}>
       {(title || subtitle) && (
-        <div className="mb-vk-4">
-          {title && <h3 className="text-vk-lg font-vk-semibold text-vk-text-primary mb-vk-1">{title}</h3>}
-          {subtitle && <p className="text-vk-sm text-vk-text-secondary">{subtitle}</p>}
-        </div>
+        <VKFlex direction="column" gap="s" style={{ marginBottom: 'var(--vk-spacing-4)' }}>
+          {title && (
+            <VKTitle level={5} weight="semibold" style={{ margin: 0 }}>
+              {title}
+            </VKTitle>
+          )}
+          {subtitle && (
+            <VKText size="sm" color="secondary" style={{ margin: 0 }}>
+              {subtitle}
+            </VKText>
+          )}
+        </VKFlex>
       )}
       <div>{children}</div>
-    </div>
+    </VKCard>
   )
 }
-

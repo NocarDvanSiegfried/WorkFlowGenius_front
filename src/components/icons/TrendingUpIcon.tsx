@@ -28,3 +28,4 @@ export function TrendingUpIcon({ className = 'w-6 h-6' }: TrendingUpIconProps) {
   )
 }
 
+

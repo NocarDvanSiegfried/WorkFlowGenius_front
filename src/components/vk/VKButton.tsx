@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, forwardRef } from 'react'
+import { ButtonHTMLAttributes, forwardRef, CSSProperties } from 'react'
 
 interface VKButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'tertiary' | 'outline' | 'text'
@@ -6,34 +6,124 @@ interface VKButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean
 }
 
-export const VKButton = forwardRef<HTMLButtonElement, VKButtonProps>(
-  ({ variant = 'primary', size = 'm', loading = false, className = '', children, disabled, ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center font-vk-medium transition-all duration-vk-base ease-vk-standard rounded-vk-md focus:outline-none focus:ring-2 focus:ring-vk-accent-blue focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-vk-hover active:scale-vk-active'
+const sizeValues = {
+  s: {
+    paddingLeft: 'var(--vk-spacing-3)',
+    paddingRight: 'var(--vk-spacing-3)',
+    paddingTop: 'var(--vk-spacing-1)',
+    paddingBottom: 'var(--vk-spacing-1)',
+    fontSize: 'var(--vk-font-size-sm)',
+    height: '32px',
+  },
+  m: {
+    paddingLeft: 'var(--vk-spacing-4)',
+    paddingRight: 'var(--vk-spacing-4)',
+    paddingTop: 'var(--vk-spacing-2)',
+    paddingBottom: 'var(--vk-spacing-2)',
+    fontSize: 'var(--vk-font-size-base)',
+    height: '40px',
+  },
+  l: {
+    paddingLeft: 'var(--vk-spacing-6)',
+    paddingRight: 'var(--vk-spacing-6)',
+    paddingTop: 'var(--vk-spacing-3)',
+    paddingBottom: 'var(--vk-spacing-3)',
+    fontSize: 'var(--vk-font-size-lg)',
+    height: '48px',
+  },
+}
 
-    const variantStyles = {
-      primary: 'bg-vk-accent-blue text-white hover:bg-vk-accent-blue-hover active:bg-vk-accent-blue-active',
-      secondary: 'bg-vk-bg-secondary text-vk-text-primary hover:bg-vk-bg-hover active:bg-vk-bg-active',
-      tertiary: 'bg-transparent text-vk-text-primary hover:bg-vk-bg-hover active:bg-vk-bg-active',
-      outline: 'border border-vk-border text-vk-text-primary hover:bg-vk-bg-hover active:bg-vk-bg-active bg-transparent',
-      text: 'bg-transparent text-vk-text-accent hover:text-vk-text-link-hover active:opacity-70',
+export const VKButton = forwardRef<HTMLButtonElement, VKButtonProps>(
+  ({ variant = 'primary', size = 'm', loading = false, className = '', children, disabled, style, ...props }, ref) => {
+    const baseStyle: CSSProperties = {
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontWeight: 'var(--vk-font-weight-medium)',
+      transition: 'all var(--vk-transition-base)',
+      borderRadius: 'var(--vk-radius-md)',
+      outline: 'none',
+      border: 'none',
+      cursor: disabled || loading ? 'not-allowed' : 'pointer',
+      opacity: disabled || loading ? 0.5 : 1,
+      ...sizeValues[size],
+      ...style,
     }
 
-    const sizeStyles = {
-      s: 'px-vk-3 py-vk-1 text-vk-sm h-vk-8',
-      m: 'px-vk-4 py-vk-2 text-vk-base h-vk-10',
-      l: 'px-vk-6 py-vk-3 text-vk-lg h-vk-12',
+    const variantStyles: Record<string, CSSProperties> = {
+      primary: {
+        backgroundColor: 'var(--vk-color-accent-blue)',
+        color: 'var(--vk-color-background-content)',
+      },
+      secondary: {
+        backgroundColor: 'var(--vk-color-background-secondary)',
+        color: 'var(--vk-color-text-primary)',
+      },
+      tertiary: {
+        backgroundColor: 'transparent',
+        color: 'var(--vk-color-text-primary)',
+      },
+      outline: {
+        backgroundColor: 'transparent',
+        color: 'var(--vk-color-text-primary)',
+        border: '1px solid var(--vk-color-border)',
+      },
+      text: {
+        backgroundColor: 'transparent',
+        color: 'var(--vk-color-text-accent)',
+      },
+    }
+
+    const finalStyle: CSSProperties = {
+      ...baseStyle,
+      ...variantStyles[variant],
     }
 
     return (
       <button
         ref={ref}
-        className={`${baseStyles} ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
+        className={className}
+        style={finalStyle}
         disabled={disabled || loading}
+        onMouseEnter={(e) => {
+          if (!disabled && !loading) {
+            if (variant === 'primary') {
+              e.currentTarget.style.backgroundColor = 'var(--vk-color-accent-blue-hover)'
+            } else if (variant === 'secondary' || variant === 'tertiary' || variant === 'outline') {
+              e.currentTarget.style.backgroundColor = 'var(--vk-color-background-hover)'
+            } else if (variant === 'text') {
+              e.currentTarget.style.color = 'var(--vk-color-text-link-hover)'
+            }
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!disabled && !loading) {
+            if (variant === 'primary') {
+              e.currentTarget.style.backgroundColor = 'var(--vk-color-accent-blue)'
+            } else if (variant === 'secondary' || variant === 'tertiary' || variant === 'outline') {
+              const bgColor = variant === 'outline' ? 'transparent' : (variantStyles[variant].backgroundColor as string)
+              e.currentTarget.style.backgroundColor = bgColor
+            } else if (variant === 'text') {
+              e.currentTarget.style.color = 'var(--vk-color-text-accent)'
+            }
+          }
+        }}
         {...props}
       >
-        {loading ? (
-          <span className="inline-block w-vk-icon-s h-vk-icon-s border-2 border-current border-t-transparent rounded-full animate-spin mr-vk-2" />
-        ) : null}
+        {loading && (
+          <span
+            style={{
+              display: 'inline-block',
+              width: '16px',
+              height: '16px',
+              border: '2px solid currentColor',
+              borderTopColor: 'transparent',
+              borderRadius: '50%',
+              animation: 'spin 1s linear infinite',
+              marginRight: 'var(--vk-spacing-2)',
+            }}
+          />
+        )}
         {children}
       </button>
     )
@@ -41,4 +131,3 @@ export const VKButton = forwardRef<HTMLButtonElement, VKButtonProps>(
 )
 
 VKButton.displayName = 'VKButton'
-

@@ -1,4 +1,5 @@
-import { HTMLAttributes, ReactNode } from 'react'
+import { HTMLAttributes, ReactNode, CSSProperties } from 'react'
+import { VKFlex, VKTitle, VKText } from './index'
 
 interface VKSectionHeaderProps extends HTMLAttributes<HTMLDivElement> {
   title: string
@@ -6,15 +7,26 @@ interface VKSectionHeaderProps extends HTMLAttributes<HTMLDivElement> {
   action?: ReactNode
 }
 
-export function VKSectionHeader({ title, subtitle, action, className = '', ...props }: VKSectionHeaderProps) {
+export function VKSectionHeader({ title, subtitle, action, className = '', style, ...props }: VKSectionHeaderProps) {
+  const headerStyle: CSSProperties = {
+    ...style,
+  }
+
   return (
-    <div className={`flex items-center justify-between mb-vk-4 ${className}`} {...props}>
-      <div>
-        <h2 className="text-vk-xl font-vk-semibold text-vk-text-primary leading-tight">{title}</h2>
-        {subtitle && <p className="mt-vk-1 text-vk-base text-vk-text-secondary">{subtitle}</p>}
-      </div>
-      {action && <div>{action}</div>}
+    <div className={className} style={headerStyle} {...props}>
+      <VKFlex direction="row" align="center" justify="between" gap="m">
+        <VKFlex direction="column" gap="s">
+          <VKTitle level={4} weight="semibold" style={{ margin: 0 }}>
+            {title}
+          </VKTitle>
+          {subtitle && (
+            <VKText size="sm" color="secondary" style={{ margin: 0 }}>
+              {subtitle}
+            </VKText>
+          )}
+        </VKFlex>
+        {action && <div>{action}</div>}
+      </VKFlex>
     </div>
   )
 }
-

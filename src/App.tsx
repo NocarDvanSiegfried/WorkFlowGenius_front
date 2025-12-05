@@ -1,6 +1,11 @@
 import { Routes, Route } from 'react-router-dom'
 import { Layout, ProtectedRoute } from './components'
-import { MainMenuPage, LoginPage, DashboardPage, TasksPage, AdminPage, UIKitPage } from './pages'
+import { MainMenuPage, LoginPage, DashboardPage, TasksPage, UIKitPage } from './pages'
+import { AdminIndexPage } from './pages/admin'
+import { AdminDashboardPage } from './pages/admin/dashboard'
+import { AdminTasksPage } from './pages/admin/tasks'
+import { AdminAIPage } from './pages/admin/ai'
+import { AdminAnalyticsPage } from './pages/admin/analytics'
 
 function App() {
   return (
@@ -17,7 +22,11 @@ function App() {
           }
         />
         <Route path="/tasks" element={<TasksPage />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin" element={<AdminIndexPage />} />
+        <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+        <Route path="/admin/tasks" element={<AdminTasksPage />} />
+        <Route path="/admin/ai" element={<AdminAIPage />} />
+        <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
         <Route path="/ui-kit" element={<UIKitPage />} />
       </Routes>
     </Layout>

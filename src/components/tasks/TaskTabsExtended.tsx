@@ -1,5 +1,6 @@
-import { VKTabs, VKTab } from '../vk'
+import { VKTabs, VKTab, VKCard } from '../vk'
 import type { TabType } from './types'
+import { CSSProperties } from 'react'
 
 interface TaskTabsExtendedProps {
   activeTab: TabType
@@ -15,8 +16,21 @@ const TABS = [
 ] as const
 
 export function TaskTabsExtended({ activeTab, onTabChange }: TaskTabsExtendedProps) {
+  const stickyStyle: CSSProperties = {
+    position: 'sticky',
+    top: 0,
+    backgroundColor: 'var(--vk-color-background-secondary)',
+    zIndex: 10,
+    backdropFilter: 'blur(8px)',
+    opacity: 0.95,
+  }
+
   return (
-    <div className="sticky top-0 bg-vk-bg-secondary z-10 py-vk-3 -mx-vk-4 px-vk-4 mb-vk-4 backdrop-blur-sm bg-opacity-95">
+    <VKCard
+      variant="default"
+      padding="m"
+      style={{ ...stickyStyle, width: '100%' }}
+    >
       <VKTabs>
         {TABS.map((tab) => (
           <VKTab key={tab.id} active={activeTab === tab.id} onClick={() => onTabChange(tab.id)}>
@@ -24,7 +38,6 @@ export function TaskTabsExtended({ activeTab, onTabChange }: TaskTabsExtendedPro
           </VKTab>
         ))}
       </VKTabs>
-    </div>
+    </VKCard>
   )
 }
-

@@ -2,7 +2,7 @@ import { useAuthStore } from '../store/authStore'
 import { useQuery } from '@tanstack/react-query'
 import { api } from '../services/api'
 import { getApiError } from '../utils/errors'
-import { VKCard, VKSectionHeader } from '../components/vk'
+import { VKSectionHeader, VKGrid, VKSpacing, VKTitle, VKText, VKFlex, VKAnimatedCard } from '../components/vk'
 
 export function DashboardPage() {
   const user = useAuthStore((state) => state.user)
@@ -26,70 +26,123 @@ export function DashboardPage() {
 
   if (isPending) {
     return (
-      <div className="min-h-screen bg-vk-bg-secondary flex justify-center items-center animate-fade-in">
-        <div className="text-vk-text-secondary">Загрузка...</div>
-      </div>
+      <VKSpacing size="m">
+        <VKFlex direction="column" align="center" justify="center">
+          <VKText size="base" color="secondary">
+            Загрузка...
+          </VKText>
+        </VKFlex>
+      </VKSpacing>
     )
   }
 
   if (isError && error) {
     const apiError = getApiError(error)
     return (
-      <div className="min-h-screen bg-vk-bg-secondary flex justify-center items-center animate-fade-in">
-        <div className="text-vk-status-negative">Ошибка: {apiError.message}</div>
-      </div>
+      <VKSpacing size="m">
+        <VKFlex direction="column" align="center" justify="center">
+          <VKText size="base" color="primary">
+            Ошибка: {apiError.message}
+          </VKText>
+        </VKFlex>
+      </VKSpacing>
     )
   }
 
   return (
-    <div className="min-h-screen bg-vk-bg-secondary p-vk-8">
-      <div className="max-w-vk-6xl mx-auto animate-fade-in">
-        <VKSectionHeader title="Дашборд" className="mb-vk-6" />
-        {user && (
-          <VKCard variant="default" padding="m" className="mb-vk-6 animate-slide-in-from-bottom">
-            <p className="text-vk-text-secondary">
-              Привет, <span className="font-vk-semibold text-vk-text-primary">{user.name}</span>!
-            </p>
-            <p className="text-vk-sm text-vk-text-tertiary mt-vk-1">Роль: {user.role}</p>
-          </VKCard>
-        )}
-        {dashboardData && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-vk-6">
+    <>
+      <VKSpacing size="s">
+        <VKSectionHeader title="Дашборд" />
+      </VKSpacing>
+
+      {user && (
+        <VKSpacing size="s">
+          <VKAnimatedCard mode="shadow" padding="m" index={0} animationType="fade-in">
+            <VKFlex direction="column" gap="s">
+              <VKText size="base" color="secondary">
+                Привет, {user.name}!
+              </VKText>
+              <VKText size="sm" color="tertiary">
+                Роль: {user.role}
+              </VKText>
+            </VKFlex>
+          </VKAnimatedCard>
+        </VKSpacing>
+      )}
+
+      {dashboardData && (
+        <VKSpacing size="m">
+          <VKGrid columns={3} gap="m">
             {user?.role === 'manager' ? (
               <>
-                <VKCard variant="default" padding="m" className="animate-fade-in">
-                  <h3 className="text-vk-lg font-vk-semibold text-vk-text-primary mb-vk-2">Всего задач</h3>
-                  <p className="text-vk-3xl font-vk-bold text-vk-accent-blue">{dashboardData.tasks?.total || 0}</p>
-                </VKCard>
-                <VKCard variant="default" padding="m" className="animate-fade-in">
-                  <h3 className="text-vk-lg font-vk-semibold text-vk-text-primary mb-vk-2">В работе</h3>
-                  <p className="text-vk-3xl font-vk-bold text-vk-status-warning">{dashboardData.tasks?.in_progress || 0}</p>
-                </VKCard>
-                <VKCard variant="default" padding="m" className="animate-fade-in">
-                  <h3 className="text-vk-lg font-vk-semibold text-vk-text-primary mb-vk-2">Завершено</h3>
-                  <p className="text-vk-3xl font-vk-bold text-vk-status-positive">{dashboardData.tasks?.completed || 0}</p>
-                </VKCard>
+                <VKAnimatedCard mode="shadow" padding="m" index={0} animationType="slide-up">
+                  <VKFlex direction="column" gap="s">
+                    <VKTitle level={5} weight="semibold">
+                      Всего задач
+                    </VKTitle>
+                    <VKTitle level={4} weight="bold">
+                      {dashboardData.tasks?.total || 0}
+                    </VKTitle>
+                  </VKFlex>
+                </VKAnimatedCard>
+                <VKAnimatedCard mode="shadow" padding="m" index={1} animationType="slide-up">
+                  <VKFlex direction="column" gap="s">
+                    <VKTitle level={5} weight="semibold">
+                      В работе
+                    </VKTitle>
+                    <VKTitle level={4} weight="bold">
+                      {dashboardData.tasks?.in_progress || 0}
+                    </VKTitle>
+                  </VKFlex>
+                </VKAnimatedCard>
+                <VKAnimatedCard mode="shadow" padding="m" index={2} animationType="slide-up">
+                  <VKFlex direction="column" gap="s">
+                    <VKTitle level={5} weight="semibold">
+                      Завершено
+                    </VKTitle>
+                    <VKTitle level={4} weight="bold">
+                      {dashboardData.tasks?.completed || 0}
+                    </VKTitle>
+                  </VKFlex>
+                </VKAnimatedCard>
               </>
             ) : (
               <>
-                <VKCard variant="default" padding="m" className="animate-fade-in">
-                  <h3 className="text-vk-lg font-vk-semibold text-vk-text-primary mb-vk-2">Мои задачи</h3>
-                  <p className="text-vk-3xl font-vk-bold text-vk-accent-blue">{dashboardData.tasks?.total || 0}</p>
-                </VKCard>
-                <VKCard variant="default" padding="m" className="animate-fade-in">
-                  <h3 className="text-vk-lg font-vk-semibold text-vk-text-primary mb-vk-2">В работе</h3>
-                  <p className="text-vk-3xl font-vk-bold text-vk-status-warning">{dashboardData.tasks?.in_progress || 0}</p>
-                </VKCard>
-                <VKCard variant="default" padding="m" className="animate-fade-in">
-                  <h3 className="text-vk-lg font-vk-semibold text-vk-text-primary mb-vk-2">Завершено</h3>
-                  <p className="text-vk-3xl font-vk-bold text-vk-status-positive">{dashboardData.tasks?.completed || 0}</p>
-                </VKCard>
+                <VKAnimatedCard mode="shadow" padding="m" index={0} animationType="slide-up">
+                  <VKFlex direction="column" gap="s">
+                    <VKTitle level={5} weight="semibold">
+                      Мои задачи
+                    </VKTitle>
+                    <VKTitle level={4} weight="bold">
+                      {dashboardData.tasks?.total || 0}
+                    </VKTitle>
+                  </VKFlex>
+                </VKAnimatedCard>
+                <VKAnimatedCard mode="shadow" padding="m" index={1} animationType="slide-up">
+                  <VKFlex direction="column" gap="s">
+                    <VKTitle level={5} weight="semibold">
+                      В работе
+                    </VKTitle>
+                    <VKTitle level={4} weight="bold">
+                      {dashboardData.tasks?.in_progress || 0}
+                    </VKTitle>
+                  </VKFlex>
+                </VKAnimatedCard>
+                <VKAnimatedCard mode="shadow" padding="m" index={2} animationType="slide-up">
+                  <VKFlex direction="column" gap="s">
+                    <VKTitle level={5} weight="semibold">
+                      Завершено
+                    </VKTitle>
+                    <VKTitle level={4} weight="bold">
+                      {dashboardData.tasks?.completed || 0}
+                    </VKTitle>
+                  </VKFlex>
+                </VKAnimatedCard>
               </>
             )}
-          </div>
-        )}
-      </div>
-    </div>
+          </VKGrid>
+        </VKSpacing>
+      )}
+    </>
   )
 }
-

@@ -1,13 +1,26 @@
-import { VKCard } from '../vk'
+import { VKAnimatedCard, VKFlex, VKTitle, VKText } from '../vk'
 
 interface FeatureCardSmallProps {
   title: string
   value: string | number
   description: string
   icon: React.ElementType
-  iconColorClass: string
-  bgColorClass: string
+  iconColor: 'info' | 'positive' | 'warning'
+  bgColor: 'blue' | 'positive' | 'warning'
+  index?: number
   className?: string
+}
+
+const iconColorMap = {
+  info: 'var(--vk-color-status-info)',
+  positive: 'var(--vk-color-status-positive)',
+  warning: 'var(--vk-color-status-warning)',
+}
+
+const bgColorMap = {
+  blue: 'var(--vk-color-accent-blue-alpha)',
+  positive: 'rgba(75, 179, 75, 0.1)',
+  warning: 'rgba(255, 160, 0, 0.1)',
 }
 
 export function FeatureCardSmall({
@@ -15,27 +28,63 @@ export function FeatureCardSmall({
   value,
   description,
   icon: Icon,
-  iconColorClass,
-  bgColorClass,
+  iconColor,
+  bgColor,
+  index = 0,
   className = '',
 }: FeatureCardSmallProps) {
   return (
-    <VKCard
+    <VKAnimatedCard
       variant="elevated"
-      padding="l"
-      className={`w-full h-full flex flex-col justify-between bg-vk-bg-content transition-all duration-vk-base ease-vk-standard hover:shadow-vk-2 hover:scale-vk-hover active:scale-vk-active ${className}`}
+      padding="none"
+      index={index}
+      animationType="slide-up"
+      className={className}
+      data-vk-card-hover-main
+      style={{ 
+        display: 'flex', 
+        flexDirection: 'column',
+        minHeight: '210px',
+        height: 'auto',
+        overflow: 'hidden',
+        padding: 'var(--vk-spacing-6)',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+      }}
     >
-      <div className="flex items-center gap-vk-4">
-        <div className={`w-vk-12-5 h-vk-12-5 rounded-full flex items-center justify-center ${bgColorClass}`}>
-          <Icon className={`w-vk-7 h-vk-7 ${iconColorClass}`} strokeWidth={2} />
-        </div>
-        <h3 className="text-vk-accent-blue font-vk-bold text-vk-lg underline leading-tight">{title}</h3>
-      </div>
-      <div className="flex flex-col mt-vk-4">
-        <span className="text-vk-text-primary font-vk-bold text-vk-3xl leading-tight">{value}</span>
-        <p className="text-vk-text-secondary font-vk-regular text-vk-sm leading-normal mt-vk-2">{description}</p>
-      </div>
-    </VKCard>
+      <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-4)', width: '100%', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+        <VKFlex align="start" style={{ gap: 'var(--vk-spacing-4)', width: '100%' }}>
+          <VKFlex
+            align="center"
+            justify="center"
+            style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '50%',
+              backgroundColor: bgColorMap[bgColor],
+              flexShrink: 0,
+            }}
+          >
+            <Icon
+              style={{
+                width: '24px',
+                height: '24px',
+                color: iconColorMap[iconColor],
+              }}
+              strokeWidth={2}
+            />
+          </VKFlex>
+          <VKTitle level={5} weight="bold" style={{ flex: 1, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '18px', fontWeight: 600, color: 'var(--vk-color-text-primary)' }}>
+            {title}
+          </VKTitle>
+        </VKFlex>
+        <VKTitle level={3} weight="bold" style={{ lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '24px', fontWeight: 600, color: 'var(--vk-color-text-primary)' }}>
+          {value}
+        </VKTitle>
+        <VKText size="sm" color="secondary" style={{ lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '14px', fontWeight: 400 }}>
+          {description}
+        </VKText>
+      </VKFlex>
+    </VKAnimatedCard>
   )
 }
-

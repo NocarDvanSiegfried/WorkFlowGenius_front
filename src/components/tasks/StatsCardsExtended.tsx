@@ -1,3 +1,4 @@
+import { VKGrid } from '../vk'
 import { StatsCardWithTrend } from './StatsCardWithTrend'
 
 const mockStats = [
@@ -11,8 +12,17 @@ const mockStats = [
 
 export function StatsCardsExtended() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-vk-3">
-      {mockStats.map((stat) => (
+    <VKGrid
+      columns={3}
+      style={{
+        width: '100%',
+        gap: 'var(--vk-spacing-6)',
+        rowGap: 'var(--vk-spacing-6)',
+        columnGap: 'var(--vk-spacing-6)',
+      }}
+      data-vk-stats-grid
+    >
+      {mockStats.map((stat, index) => (
         <StatsCardWithTrend
           key={stat.title}
           title={stat.title}
@@ -20,9 +30,9 @@ export function StatsCardsExtended() {
           change={stat.change}
           trend={stat.trend}
           isGradient={stat.isGradient}
+          index={index}
         />
       ))}
-    </div>
+    </VKGrid>
   )
 }
-

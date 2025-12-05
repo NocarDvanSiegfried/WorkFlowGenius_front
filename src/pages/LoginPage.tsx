@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useAuthStore } from '../store/authStore'
 import { api } from '../services/api'
 import { getApiError } from '../utils/errors'
-import { VKCard, VKInput, VKButton, VKSectionHeader } from '../components/vk'
+import { VKInput, VKButton, VKSectionHeader, VKFlex, VKFormItem, VKText, VKAnimatedCard } from '../components/vk'
 
 export function LoginPage() {
   const [email, setEmail] = useState('')
@@ -33,51 +33,61 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-vk-bg-secondary flex items-center justify-center p-vk-4 animate-fade-in">
-      <VKCard variant="elevated" padding="l" className="w-full max-w-md animate-scale-in">
-        <VKSectionHeader title="Вход" className="mb-vk-6 text-center" />
-        <form onSubmit={handleSubmit} className="space-y-vk-4">
-          <div>
-            <label htmlFor="email" className="block text-vk-sm font-vk-medium text-vk-text-primary mb-vk-1">
-              Email
-            </label>
-            <VKInput
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              error={!!error}
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-vk-sm font-vk-medium text-vk-text-primary mb-vk-1">
-              Пароль
-            </label>
-            <VKInput
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              error={!!error}
-            />
-          </div>
-          {error && (
-            <div className="text-vk-status-negative text-vk-sm">{error}</div>
-          )}
-          <VKButton
-            type="submit"
-            variant="primary"
-            size="l"
-            loading={loading}
-            className="w-full"
-          >
-            Войти
-          </VKButton>
-        </form>
-      </VKCard>
-    </div>
+    <VKFlex direction="column" align="center" justify="center" style={{ minHeight: 'calc(100vh - 128px)' }}>
+      <VKAnimatedCard 
+        variant="elevated" 
+        padding="l" 
+        index={0} 
+        animationType="fade-in"
+        style={{ width: '100%', maxWidth: '420px' }}
+        data-vk-card-hover
+      >
+        <VKFlex direction="column" gap="m">
+          <VKFlex justify="center">
+            <VKSectionHeader title="Вход" />
+          </VKFlex>
+          <form onSubmit={handleSubmit}>
+            <VKFlex direction="column" gap="m">
+              <VKFormItem label="Email" required>
+                <VKInput
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  error={!!error}
+                />
+              </VKFormItem>
+              <VKFormItem label="Пароль" required>
+                <VKInput
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  error={!!error}
+                />
+              </VKFormItem>
+              {error && (
+                <VKText size="sm" color="primary" style={{ margin: 0 }}>
+                  {error}
+                </VKText>
+              )}
+              <VKFlex>
+                <VKButton
+                  type="submit"
+                  variant="primary"
+                  size="m"
+                  loading={loading}
+                  style={{ width: '100%' }}
+                >
+                  Войти
+                </VKButton>
+              </VKFlex>
+            </VKFlex>
+          </form>
+        </VKFlex>
+      </VKAnimatedCard>
+    </VKFlex>
   )
 }
-

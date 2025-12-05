@@ -1,117 +1,181 @@
-import { Link } from 'react-router-dom'
-import { VKButton, VKSectionHeader, VKCard } from '../components/vk'
+import {
+  VKButton,
+  VKSectionHeader,
+  VKGrid,
+  VKFlex,
+  VKTitle,
+  VKText,
+  VKAnimatedCard,
+  VKLink,
+} from '../components/vk'
 import { FeatureCardSmall, FeatureCardLarge } from '../components/cards'
 import { ClockIcon, TrendingUpIcon, DollarSignIcon } from '../components/icons'
 
 export function MainMenuPage() {
   return (
-    <div className="min-h-screen bg-vk-bg-secondary w-full">
-      <main className="w-full pb-vk-20">
-        <div className="w-full flex flex-col">
-          {/* Hero Section */}
-          <section className="flex flex-col lg:flex-row items-center justify-between w-full max-w-vk-1360 mx-auto pt-vk-20 pb-vk-16 px-vk-4 gap-vk-12 animate-fade-in">
-            <div className="flex flex-col flex-1 max-w-vk-60 w-full lg:w-auto">
-              <h2 className="text-vk-text-primary font-vk-bold text-vk-l leading-tight mb-vk-6 animate-slide-in-from-bottom">
-                VK TaskFlow для умного распределения задач
-              </h2>
-              <p className="text-vk-text-secondary font-vk-regular text-vk-m leading-relaxed mb-vk-8 animate-fade-in">
-                Используйте возможности ИИ для оптимизации рабочего процесса: учитывайте загрузку сотрудников, их предпочтения и компетенции. Это идеальное дополнение к VK WorkSpace, которое сделает вашу работу более эффективной и слаженной
-              </p>
-              <div className="animate-scale-in">
-                <Link to="/login">
-                  <VKButton variant="primary" size="l">
-                    Начать работу
-                  </VKButton>
-                </Link>
-              </div>
-            </div>
-            <VKCard variant="elevated" className="flex-1 max-w-vk-60 w-full lg:w-auto h-vk-75 lg:h-vk-100 rounded-vk-xl shadow-vk-2 flex items-center justify-center bg-gradient-to-br from-vk-accent-blue-alpha to-vk-bg-secondary animate-fade-in">
-              <div className="text-vk-text-tertiary font-vk-regular text-vk-base">Иллюстрация</div>
-            </VKCard>
-          </section>
+    <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-12)' }}>
+      {/* Hero Section - выровнены по высоте и ширине */}
+      <VKGrid 
+        columns={2}
+        style={{
+          gridTemplateColumns: '1fr 1fr',
+          alignItems: 'start',
+          width: '100%',
+          gap: 'var(--vk-spacing-8)',
+          rowGap: 'var(--vk-spacing-8)',
+          columnGap: 'var(--vk-spacing-8)',
+        }}
+        data-vk-hero-grid
+      >
+        <VKAnimatedCard 
+          variant="default" 
+          padding="l" 
+          index={0} 
+          animationType="fade-in"
+          data-vk-card-hover
+          style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            justifyContent: 'center',
+            minHeight: '320px',
+          }}
+        >
+          <VKFlex direction="column" gap="m">
+            <VKTitle level={2} weight="bold" style={{ margin: 0, lineHeight: '1.4', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              VK TaskFlow для умного распределения задач
+            </VKTitle>
+            <VKText size="base" color="secondary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+              Используйте возможности ИИ для оптимизации рабочего процесса: учитывайте загрузку сотрудников, их предпочтения и компетенции. Это идеальное дополнение к VK WorkSpace, которое сделает вашу работу более эффективной и слаженной
+            </VKText>
+            <VKLink to="/login" style={{ textDecoration: 'none' }}>
+              <VKButton variant="primary" size="l">
+                Начать работу
+              </VKButton>
+            </VKLink>
+          </VKFlex>
+        </VKAnimatedCard>
 
-          {/* Benefits Section */}
-          <section className="mt-vk-20">
-            <div className="max-w-vk-1360 mx-auto px-vk-4">
-              <VKSectionHeader title="Преимущества для вашего бизнеса" className="text-center mb-vk-12" />
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-vk-6">
-                <FeatureCardSmall
-                  title="Экономия времени"
-                  value="40%"
-                  description="Автоматическое распределение задач с VK TaskFlow сокращает до 40% времени, которое менеджеры тратят на организацию работы."
-                  icon={ClockIcon}
-                  iconColorClass="text-vk-status-info"
-                  bgColorClass="bg-vk-accent-blue-alpha"
-                  className="animate-scale-in"
-                />
-                <FeatureCardSmall
-                  title="Снижение затрат"
-                  value="25%"
-                  description="Оптимальная загрузка сотрудников снижает операционные расходы на 25%."
-                  icon={DollarSignIcon}
-                  iconColorClass="text-vk-status-positive"
-                  bgColorClass="bg-vk-status-positive/10"
-                  className="animate-scale-in delay-100"
-                />
-                <FeatureCardSmall
-                  title="Рост прибыли"
-                  value="Увеличение"
-                  description="Повышение продуктивности команды увеличивает доход компании."
-                  icon={TrendingUpIcon}
-                  iconColorClass="text-vk-status-warning"
-                  bgColorClass="bg-vk-status-warning/10"
-                  className="animate-scale-in delay-200"
-                />
-              </div>
-            </div>
-          </section>
+        <VKAnimatedCard 
+          variant="elevated" 
+          padding="l" 
+          index={1} 
+          animationType="slide-in-from-right"
+          data-vk-card-hover
+          style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            minHeight: '320px',
+          }}
+        >
+          <VKFlex direction="column" align="center" justify="center">
+            <VKText size="base" color="tertiary">
+              Иллюстрация
+            </VKText>
+          </VKFlex>
+        </VKAnimatedCard>
+      </VKGrid>
 
-          {/* Key Features Section */}
-          <section className="mt-vk-20">
-            <div className="max-w-vk-1360 mx-auto px-vk-4">
-              <VKSectionHeader title="Ключевые возможности" className="text-center mb-vk-12" />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-vk-6">
-              <FeatureCardLarge
-                title="Алгоритмы ИИ для распределения задач"
-                items={[
-                  'Анализ загруженности и компетенций сотрудников',
-                  'Оптимизация распределения для равномерной нагрузки',
-                  'Учет предпочтений и личных режимов работы'
-                ]}
-                className="animate-slide-in-from-left"
-              />
-              <FeatureCardLarge
-                title="Умная система уведомлений"
-                items={[
-                  'Адаптивные уведомления с учетом предпочтений',
-                  'Интеграция с календарями для напоминаний',
-                  'Приоритизация срочных и важных задач'
-                ]}
-                className="animate-fade-in"
-              />
-              <FeatureCardLarge
-                title="Интерфейс для сотрудников"
-                items={[
-                  'Удобная очередь задач с фильтрацией и сортировкой',
-                  'Настройка личных предпочтений уведомлений',
-                  'Простой и интуитивный дизайн'
-                ]}
-                className="animate-slide-in-from-right"
-              />
-              <FeatureCardLarge
-                title="Панель администратора"
-                items={[
-                  'Отслеживание всех задач в реальном времени',
-                  'Аналитика производительности сотрудников',
-                  'Настройка алгоритмов распределения'
-                ]}
-                className="animate-fade-in"
-              />
-              </div>
-            </div>
-          </section>
-        </div>
-      </main>
-    </div>
+      {/* Benefits Section - 3 cards in row, одинаковой высоты, увеличенные отступы */}
+      <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-8)', marginTop: 'var(--vk-spacing-12)' }}>
+        <VKFlex justify="center" style={{ marginBottom: 'var(--vk-spacing-8)' }}>
+          <VKSectionHeader title="Преимущества для вашего бизнеса" />
+        </VKFlex>
+        <VKGrid 
+          columns={3}
+          style={{
+            gridTemplateColumns: 'repeat(3, 1fr)',
+            alignItems: 'start',
+            gap: 'var(--vk-spacing-8)',
+            rowGap: 'var(--vk-spacing-8)',
+            columnGap: 'var(--vk-spacing-8)',
+          }}
+          data-vk-feature-grid
+        >
+          <FeatureCardSmall
+            title="Экономия времени"
+            value="40%"
+            description="Автоматическое распределение задач с VK TaskFlow сокращает до 40% времени, которое менеджеры тратят на организацию работы."
+            icon={ClockIcon}
+            iconColor="info"
+            bgColor="blue"
+            index={0}
+          />
+          <FeatureCardSmall
+            title="Снижение затрат"
+            value="25%"
+            description="Оптимальная загрузка сотрудников снижает операционные расходы на 25%."
+            icon={DollarSignIcon}
+            iconColor="positive"
+            bgColor="positive"
+            index={1}
+          />
+          <FeatureCardSmall
+            title="Рост прибыли"
+            value="Увеличение"
+            description="Повышение продуктивности команды увеличивает доход компании."
+            icon={TrendingUpIcon}
+            iconColor="warning"
+            bgColor="warning"
+            index={2}
+          />
+        </VKGrid>
+      </VKFlex>
+
+      {/* Features Section - 2×2 grid на обычных экранах, 4 колонки на больших (1920+), четкая блочная сетка, равномерные отступы */}
+      <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-8)' }}>
+        <VKFlex justify="center" style={{ marginBottom: 'var(--vk-spacing-8)' }}>
+          <VKSectionHeader title="Ключевые возможности" />
+        </VKFlex>
+        <VKGrid 
+          columns={2}
+          style={{
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            alignItems: 'start',
+            gap: 'var(--vk-spacing-8)',
+            rowGap: 'var(--vk-spacing-8)',
+            columnGap: 'var(--vk-spacing-8)',
+          }}
+          data-vk-features-grid
+        >
+          <FeatureCardLarge
+            title="Алгоритмы ИИ для распределения задач"
+            items={[
+              'Анализ загруженности и компетенций сотрудников',
+              'Оптимизация распределения для равномерной нагрузки',
+              'Учет предпочтений и личных режимов работы'
+            ]}
+            index={0}
+          />
+          <FeatureCardLarge
+            title="Умная система уведомлений"
+            items={[
+              'Адаптивные уведомления с учетом предпочтений',
+              'Интеграция с календарями для напоминаний',
+              'Приоритизация срочных и важных задач'
+            ]}
+            index={1}
+          />
+          <FeatureCardLarge
+            title="Интерфейс для сотрудников"
+            items={[
+              'Удобная очередь задач с фильтрацией и сортировкой',
+              'Настройка личных предпочтений уведомлений',
+              'Простой и интуитивный дизайн'
+            ]}
+            index={2}
+          />
+          <FeatureCardLarge
+            title="Панель администратора"
+            items={[
+              'Отслеживание всех задач в реальном времени',
+              'Аналитика производительности сотрудников',
+              'Настройка алгоритмов распределения'
+            ]}
+            index={3}
+          />
+        </VKGrid>
+      </VKFlex>
+    </VKFlex>
   )
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import { VKGrid, VKFlex } from '../../vk'
 import { AIDistributionBlock } from '../AIDistributionBlock'
 import { AIToast } from '../AIToast'
 import { AnalyticsSidebar } from '../AnalyticsSidebar'
@@ -14,33 +14,56 @@ export function TasksExtendedView() {
   const [activeTab, setActiveTab] = useState<TabType>('all')
 
   return (
-    <div className="w-full relative">
+    <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-10)' }}>
       <AIToast />
-      <div className="animate-fade-in">
-        <PageHeader />
-      </div>
-      <div className="mb-vk-4 animate-slide-in-from-bottom">
-        <StatsCardsExtended />
-      </div>
-      <div className="mb-vk-3 animate-fade-in">
+      
+      {/* Header section */}
+      <PageHeader />
+      
+      {/* Stats counters - ровно и равномерно по горизонтали, выровнены относительно левой границы */}
+      <StatsCardsExtended />
+      
+      {/* Search and filters - сгруппированы, увеличенные отступы */}
+      <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-6)' }}>
         <SearchPanel />
-      </div>
-      <div className="animate-scale-in">
         <AIDistributionBlock />
-      </div>
-      <div className="animate-slide-in-from-bottom">
         <TaskTabsExtended activeTab={activeTab} onTabChange={setActiveTab} />
-      </div>
+      </VKFlex>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-vk-6 mt-vk-4">
-        <div className="lg:col-span-2 animate-fade-in">
+      {/* Main content: Две зоны - слева задачи, справа аналитика (выровнены по вертикали) */}
+      <VKGrid
+        columns={2}
+        style={{
+          gridTemplateColumns: '1fr 400px',
+          alignItems: 'start',
+          width: '100%',
+          gap: 'var(--vk-spacing-8)',
+          rowGap: 'var(--vk-spacing-8)',
+          columnGap: 'var(--vk-spacing-8)',
+        }}
+        data-vk-tasks-grid
+      >
+        {/* Left column: Tasks - выровнены по вертикальной сетке, единая ширина */}
+        <VKFlex direction="column" grow style={{ minWidth: 0, maxWidth: '100%', width: '100%' }}>
           <TaskListGrouped activeTab={activeTab} />
-        </div>
-        <div className="lg:col-span-1 animate-fade-in">
+        </VKFlex>
+        
+        {/* Right column: Analytics - выровнена по вертикали с карточками слева */}
+        <VKFlex 
+          direction="column" 
+          style={{ 
+            width: '400px', 
+            flexShrink: 0, 
+            position: 'sticky', 
+            top: '80px', 
+            maxHeight: 'calc(100vh - 100px)', 
+            overflowY: 'auto',
+            alignSelf: 'start',
+          }}
+        >
           <AnalyticsSidebar />
-        </div>
-      </div>
-    </div>
+        </VKFlex>
+      </VKGrid>
+    </VKFlex>
   )
 }
-

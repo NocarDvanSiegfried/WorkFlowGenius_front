@@ -1,29 +1,30 @@
-import { Link } from 'react-router-dom'
-import { VKButton, VKSectionHeader } from '../components/vk'
+import { VKButton, VKSectionHeader, VKFlex, VKSpacing, VKAnimatedCard, VKLink } from '../components/vk'
 
 export function HomePage() {
   return (
-    <div className="min-h-screen bg-vk-bg-secondary flex items-center justify-center p-vk-4">
-      <div className="max-w-vk-4xl mx-auto text-center animate-fade-in">
-        <VKSectionHeader
-          title="WorkFlowGenius"
-          subtitle="Интеллектуальная система для автоматического распределения задач"
-          className="mb-vk-8"
-        />
-        <div className="flex gap-vk-4 justify-center animate-scale-in">
-          <Link to="/login">
-            <VKButton variant="primary" size="l">
-              Войти
-            </VKButton>
-          </Link>
-          <Link to="/dashboard">
-            <VKButton variant="secondary" size="l">
-              Дашборд
-            </VKButton>
-          </Link>
-        </div>
-      </div>
-    </div>
+    <VKFlex direction="column" align="center" justify="center">
+      <VKAnimatedCard variant="default" padding="m" index={0} animationType="fade-in">
+        <VKSpacing size="m">
+          <VKFlex direction="column" align="center" justify="center" gap="m">
+            <VKSectionHeader
+              title="WorkFlowGenius"
+              subtitle="Интеллектуальная система для автоматического распределения задач"
+            />
+            <VKFlex direction="row" gap="m" justify="center">
+              <VKLink to="/login">
+                <VKButton variant="primary" size="m">
+                  Войти
+                </VKButton>
+              </VKLink>
+              <VKLink to="/dashboard">
+                <VKButton variant="secondary" size="m">
+                  Дашборд
+                </VKButton>
+              </VKLink>
+            </VKFlex>
+          </VKFlex>
+        </VKSpacing>
+      </VKAnimatedCard>
+    </VKFlex>
   )
 }
-

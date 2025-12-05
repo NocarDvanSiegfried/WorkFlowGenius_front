@@ -30,3 +30,4 @@ export function ClockIcon({ className = 'w-6 h-6' }: ClockIconProps) {
   )
 }
 
+
