@@ -5,7 +5,7 @@ export function SearchPanel() {
     <div className="relative mb-vk-3">
       <div className="absolute left-vk-4 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
         <svg
-          className="w-5 h-5 text-vk-text-tertiary"
+          className="w-vk-icon-m h-vk-icon-m text-vk-text-tertiary"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

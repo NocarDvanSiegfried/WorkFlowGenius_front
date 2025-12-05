@@ -8,9 +8,9 @@ export function AIDistributionBlock() {
       className="mb-vk-4 bg-gradient-to-br from-vk-accent-blue-alpha to-vk-status-positive/10"
     >
       <div className="flex items-center gap-vk-3">
-        <div className="w-8 h-8 rounded-full bg-vk-accent-blue-alpha flex items-center justify-center flex-shrink-0">
+        <div className="w-vk-8 h-vk-8 rounded-full bg-vk-accent-blue-alpha flex items-center justify-center flex-shrink-0">
           <svg
-            className="w-4 h-4 text-vk-accent-blue"
+            className="w-vk-icon-s h-vk-icon-s text-vk-accent-blue"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

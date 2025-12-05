@@ -1,3 +1,5 @@
 export { ProtectedRoute } from './ProtectedRoute'
-// Layout и Header не используются в App.tsx, но оставлены для возможного будущего использования
+export { Header } from './Header'
+export { Footer } from './Footer'
+export { Layout } from './Layout'
 

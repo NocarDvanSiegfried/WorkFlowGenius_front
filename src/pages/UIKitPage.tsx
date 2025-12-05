@@ -27,7 +27,7 @@ export function UIKitPage() {
 
   return (
     <div className="min-h-screen bg-vk-bg-secondary w-full p-vk-8">
-      <div className="max-w-[1400px] mx-auto space-y-vk-8">
+      <div className="max-w-vk-1400 mx-auto space-y-vk-8">
         <VKSectionHeader
           title="VK UI Kit - Компоненты"
           subtitle="Превью всех доступных компонентов дизайн-системы"

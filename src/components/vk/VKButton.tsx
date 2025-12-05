@@ -19,9 +19,9 @@ export const VKButton = forwardRef<HTMLButtonElement, VKButtonProps>(
     }
 
     const sizeStyles = {
-      s: 'px-vk-3 py-vk-1 text-vk-sm h-8',
-      m: 'px-vk-4 py-vk-2 text-vk-base h-10',
-      l: 'px-vk-6 py-vk-3 text-vk-lg h-12',
+      s: 'px-vk-3 py-vk-1 text-vk-sm h-vk-8',
+      m: 'px-vk-4 py-vk-2 text-vk-base h-vk-10',
+      l: 'px-vk-6 py-vk-3 text-vk-lg h-vk-12',
     }
 
     return (
@@ -32,7 +32,7 @@ export const VKButton = forwardRef<HTMLButtonElement, VKButtonProps>(
         {...props}
       >
         {loading ? (
-          <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-vk-2" />
+          <span className="inline-block w-vk-icon-s h-vk-icon-s border-2 border-current border-t-transparent rounded-full animate-spin mr-vk-2" />
         ) : null}
         {children}
       </button>

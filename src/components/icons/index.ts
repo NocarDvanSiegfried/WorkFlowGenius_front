@@ -1,3 +1,7 @@
 export { HomeIcon } from './HomeIcon'
 export { ClipboardListIcon } from './ClipboardListIcon'
 export { UsersIcon } from './UsersIcon'
+export { ClockIcon } from './ClockIcon'
+export { TrendingUpIcon } from './TrendingUpIcon'
+export { DollarSignIcon } from './DollarSignIcon'
+export { CheckIcon } from './CheckIcon'

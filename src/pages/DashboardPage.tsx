@@ -43,7 +43,7 @@ export function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-vk-bg-secondary p-vk-8">
-      <div className="max-w-6xl mx-auto animate-fade-in">
+      <div className="max-w-vk-6xl mx-auto animate-fade-in">
         <VKSectionHeader title="Дашборд" className="mb-vk-6" />
         {user && (
           <VKCard variant="default" padding="m" className="mb-vk-6 animate-slide-in-from-bottom">

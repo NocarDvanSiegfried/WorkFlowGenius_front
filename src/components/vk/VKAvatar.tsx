@@ -10,10 +10,10 @@ interface VKAvatarProps extends HTMLAttributes<HTMLDivElement> {
 
 export function VKAvatar({ src, alt, size = 'm', name, online, className = '', ...props }: VKAvatarProps) {
   const sizeStyles = {
-    s: 'w-8 h-8 text-vk-xs',
-    m: 'w-10 h-10 text-vk-sm',
-    l: 'w-12 h-12 text-vk-base',
-    xl: 'w-16 h-16 text-vk-lg',
+    s: 'w-vk-8 h-vk-8 text-vk-xs',
+    m: 'w-vk-10 h-vk-10 text-vk-sm',
+    l: 'w-vk-12 h-vk-12 text-vk-base',
+    xl: 'w-vk-16 h-vk-16 text-vk-lg',
   }
 
   const getInitials = (name: string) => {

@@ -4,7 +4,7 @@ import { VKButton, VKSectionHeader } from '../components/vk'
 export function HomePage() {
   return (
     <div className="min-h-screen bg-vk-bg-secondary flex items-center justify-center p-vk-4">
-      <div className="max-w-4xl mx-auto text-center animate-fade-in">
+      <div className="max-w-vk-4xl mx-auto text-center animate-fade-in">
         <VKSectionHeader
           title="WorkFlowGenius"
           subtitle="Интеллектуальная система для автоматического распределения задач"

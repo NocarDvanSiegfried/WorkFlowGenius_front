@@ -148,7 +148,7 @@ export function AnalyticsSidebar() {
             return (
               <div key={data[labelKey as keyof typeof data]} className="flex-1 flex flex-col items-center">
                 <div className="relative w-full h-20 flex items-end justify-center mb-vk-1">
-                  <div className="absolute bottom-0 w-full flex flex-col items-center gap-0.5">
+                  <div className="absolute bottom-0 w-full flex flex-col items-center gap-vk-0-5">
                     <div
                       className="w-full bg-vk-accent-blue-alpha rounded-t-vk-sm"
                       style={{ height: `${completedHeight}px` }}
@@ -197,8 +197,8 @@ export function AnalyticsSidebar() {
 
       <div className="grid grid-cols-3 gap-vk-2">
         <VKCard variant="default" padding="s" className="text-center bg-vk-accent-blue-alpha/30 border-vk-accent-blue-alpha">
-          <div className="w-6 h-6 mx-auto mb-vk-1 flex items-center justify-center">
-            <svg className="w-4 h-4 text-vk-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-vk-6 h-vk-6 mx-auto mb-vk-1 flex items-center justify-center">
+            <svg className="w-vk-icon-s h-vk-icon-s text-vk-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
@@ -210,8 +210,8 @@ export function AnalyticsSidebar() {
           </p>
         </VKCard>
         <VKCard variant="default" padding="s" className="text-center bg-vk-status-positive/10 border-vk-status-positive/20">
-          <div className="w-6 h-6 mx-auto mb-vk-1 flex items-center justify-center">
-            <svg className="w-4 h-4 text-vk-status-positive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-vk-6 h-vk-6 mx-auto mb-vk-1 flex items-center justify-center">
+            <svg className="w-vk-icon-s h-vk-icon-s text-vk-status-positive" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
@@ -231,8 +231,8 @@ export function AnalyticsSidebar() {
               : 'bg-vk-status-negative/10 border-vk-status-negative/20'
           }`}
         >
-          <div className="w-6 h-6 mx-auto mb-vk-1 flex items-center justify-center">
-            <svg className={`w-4 h-4 ${deviationColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-vk-6 h-vk-6 mx-auto mb-vk-1 flex items-center justify-center">
+            <svg className={`w-vk-icon-s h-vk-icon-s ${deviationColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -303,7 +303,7 @@ export function AnalyticsSidebar() {
         <div className="flex items-center justify-between gap-vk-2">
           <div className="flex items-center gap-vk-2 flex-1 min-w-0">
             <svg
-              className="w-4 h-4 text-vk-accent-blue flex-shrink-0"
+              className="w-vk-icon-s h-vk-icon-s text-vk-accent-blue flex-shrink-0"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

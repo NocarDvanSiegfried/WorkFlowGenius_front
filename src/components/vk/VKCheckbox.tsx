@@ -12,7 +12,7 @@ export const VKCheckbox = forwardRef<HTMLInputElement, VKCheckboxProps>(
         <input
           ref={ref}
           type="checkbox"
-          className={`w-5 h-5 rounded-vk-sm border-2 border-vk-border bg-vk-bg text-vk-accent-blue focus:ring-2 focus:ring-vk-accent-blue focus:ring-offset-1 transition-all duration-vk-base ${
+          className={`w-vk-icon-m h-vk-icon-m rounded-vk-sm border-2 border-vk-border bg-vk-bg text-vk-accent-blue focus:ring-2 focus:ring-vk-accent-blue focus:ring-offset-1 transition-all duration-vk-base ${
             error ? 'border-vk-status-negative' : ''
           }`}
           {...props}

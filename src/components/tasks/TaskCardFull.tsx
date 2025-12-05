@@ -164,7 +164,7 @@ function TaskCardFullComponent({
             <span className="text-vk-text-tertiary font-vk-regular text-vk-xs">
               Рейтинг:
             </span>
-            <div className="flex items-center gap-0.5">
+            <div className="flex items-center gap-vk-0-5">
               {[1, 2, 3, 4, 5].map((star) => (
                 <svg
                   key={star}

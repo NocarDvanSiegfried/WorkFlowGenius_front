@@ -18,8 +18,8 @@ export function VKBadge({ children, variant = 'default', size = 'm', className =
   }
 
   const sizeStyles = {
-    s: 'px-vk-2 py-0.5 text-vk-xs',
-    m: 'px-vk-3 py-1 text-vk-sm',
+    s: 'px-vk-2 py-vk-0-5 text-vk-xs',
+    m: 'px-vk-3 py-vk-1 text-vk-sm',
   }
 
   return (

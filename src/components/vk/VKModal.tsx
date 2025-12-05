@@ -23,10 +23,10 @@ export function VKModal({ isOpen, onClose, title, children, size = 'm', classNam
   if (!isOpen) return null
 
   const sizeStyles = {
-    s: 'max-w-md',
-    m: 'max-w-lg',
-    l: 'max-w-2xl',
-    xl: 'max-w-4xl',
+    s: 'max-w-vk-md',
+    m: 'max-w-vk-lg',
+    l: 'max-w-vk-2xl',
+    xl: 'max-w-vk-4xl',
   }
 
   return (
@@ -50,10 +50,10 @@ export function VKModal({ isOpen, onClose, title, children, size = 'm', classNam
             <h2 className="text-vk-xl font-vk-semibold text-vk-text-primary">{title}</h2>
             <button
               onClick={onClose}
-              className="w-8 h-8 flex items-center justify-center rounded-vk-md hover:bg-vk-bg-hover transition-colors duration-vk-base"
+              className="w-vk-8 h-vk-8 flex items-center justify-center rounded-vk-md hover:bg-vk-bg-hover transition-colors duration-vk-base"
               aria-label="Закрыть"
             >
-              <svg className="w-5 h-5 text-vk-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-vk-icon-m h-vk-icon-m text-vk-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
