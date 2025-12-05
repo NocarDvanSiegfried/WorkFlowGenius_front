@@ -240,47 +240,47 @@ body {
   [data-vk-grid] {
     grid-template-columns: 1fr !important;
     gap: var(--vk-spacing-4) !important;
-    rowGap: var(--vk-spacing-4) !important;
-    columnGap: var(--vk-spacing-4) !important;
+    row-gap: var(--vk-spacing-4) !important;
+    column-gap: var(--vk-spacing-4) !important;
   }
   
   [data-vk-stats-grid] {
     grid-template-columns: 1fr !important;
     gap: var(--vk-spacing-4) !important;
-    rowGap: var(--vk-spacing-4) !important;
-    columnGap: var(--vk-spacing-4) !important;
+    row-gap: var(--vk-spacing-4) !important;
+    column-gap: var(--vk-spacing-4) !important;
   }
   
   [data-vk-admin-grid] {
     grid-template-columns: 1fr !important;
     gap: var(--vk-spacing-4) !important;
-    rowGap: var(--vk-spacing-4) !important;
-    columnGap: var(--vk-spacing-4) !important;
+    row-gap: var(--vk-spacing-4) !important;
+    column-gap: var(--vk-spacing-4) !important;
   }
   
   [data-vk-tasks-grid] {
     grid-template-columns: 1fr !important;
     gap: var(--vk-spacing-4) !important;
-    rowGap: var(--vk-spacing-4) !important;
-    columnGap: var(--vk-spacing-4) !important;
+    row-gap: var(--vk-spacing-4) !important;
+    column-gap: var(--vk-spacing-4) !important;
   }
   
   [data-vk-feature-grid] {
     gap: var(--vk-spacing-4) !important;
-    rowGap: var(--vk-spacing-4) !important;
-    columnGap: var(--vk-spacing-4) !important;
+    row-gap: var(--vk-spacing-4) !important;
+    column-gap: var(--vk-spacing-4) !important;
   }
   
   [data-vk-features-grid] {
     gap: var(--vk-spacing-4) !important;
-    rowGap: var(--vk-spacing-4) !important;
-    columnGap: var(--vk-spacing-4) !important;
+    row-gap: var(--vk-spacing-4) !important;
+    column-gap: var(--vk-spacing-4) !important;
   }
   
   [data-vk-hero-grid] {
     gap: var(--vk-spacing-4) !important;
-    rowGap: var(--vk-spacing-4) !important;
-    columnGap: var(--vk-spacing-4) !important;
+    row-gap: var(--vk-spacing-4) !important;
+    column-gap: var(--vk-spacing-4) !important;
   }
 }
 
@@ -294,15 +294,15 @@ body {
   [data-vk-stats-grid] {
     grid-template-columns: repeat(3, 1fr) !important;
     gap: var(--vk-spacing-6) !important;
-    rowGap: var(--vk-spacing-6) !important;
-    columnGap: var(--vk-spacing-6) !important;
+    row-gap: var(--vk-spacing-6) !important;
+    column-gap: var(--vk-spacing-6) !important;
   }
   
   [data-vk-tasks-grid] {
     grid-template-columns: 1fr !important;
     gap: var(--vk-spacing-6) !important;
-    rowGap: var(--vk-spacing-6) !important;
-    columnGap: var(--vk-spacing-6) !important;
+    row-gap: var(--vk-spacing-6) !important;
+    column-gap: var(--vk-spacing-6) !important;
   }
   
   [data-vk-tasks-grid] > *:last-child {
@@ -315,8 +315,8 @@ body {
   [data-vk-admin-grid] {
     grid-template-columns: 1fr !important;
     gap: var(--vk-spacing-6) !important;
-    rowGap: var(--vk-spacing-6) !important;
-    columnGap: var(--vk-spacing-6) !important;
+    row-gap: var(--vk-spacing-6) !important;
+    column-gap: var(--vk-spacing-6) !important;
   }
   
   [data-vk-admin-grid] > *:last-child {
@@ -326,20 +326,20 @@ body {
   
   [data-vk-feature-grid] {
     gap: var(--vk-spacing-6) !important;
-    rowGap: var(--vk-spacing-6) !important;
-    columnGap: var(--vk-spacing-6) !important;
+    row-gap: var(--vk-spacing-6) !important;
+    column-gap: var(--vk-spacing-6) !important;
   }
   
   [data-vk-features-grid] {
     gap: var(--vk-spacing-6) !important;
-    rowGap: var(--vk-spacing-6) !important;
-    columnGap: var(--vk-spacing-6) !important;
+    row-gap: var(--vk-spacing-6) !important;
+    column-gap: var(--vk-spacing-6) !important;
   }
   
   [data-vk-hero-grid] {
     gap: var(--vk-spacing-6) !important;
-    rowGap: var(--vk-spacing-6) !important;
-    columnGap: var(--vk-spacing-6) !important;
+    row-gap: var(--vk-spacing-6) !important;
+    column-gap: var(--vk-spacing-6) !important;
   }
 }
 
@@ -353,40 +353,40 @@ body {
   [data-vk-stats-grid] {
     grid-template-columns: repeat(3, 1fr) !important;
     gap: var(--vk-spacing-6) !important;
-    rowGap: var(--vk-spacing-6) !important;
-    columnGap: var(--vk-spacing-6) !important;
+    row-gap: var(--vk-spacing-6) !important;
+    column-gap: var(--vk-spacing-6) !important;
   }
   
   [data-vk-tasks-grid] {
     grid-template-columns: 1fr 360px !important;
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-admin-grid] {
     grid-template-columns: 1fr 380px !important;
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-feature-grid] {
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-features-grid] {
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-hero-grid] {
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
 }
 
@@ -400,40 +400,40 @@ body {
   [data-vk-stats-grid] {
     grid-template-columns: repeat(6, 1fr) !important;
     gap: var(--vk-spacing-6) !important;
-    rowGap: var(--vk-spacing-6) !important;
-    columnGap: var(--vk-spacing-6) !important;
+    row-gap: var(--vk-spacing-6) !important;
+    column-gap: var(--vk-spacing-6) !important;
   }
   
   [data-vk-tasks-grid] {
     grid-template-columns: 1fr 380px !important;
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-admin-grid] {
     grid-template-columns: 1fr 400px !important;
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-feature-grid] {
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-features-grid] {
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-hero-grid] {
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
 }
 
@@ -447,40 +447,40 @@ body {
   [data-vk-stats-grid] {
     grid-template-columns: repeat(6, 1fr) !important;
     gap: var(--vk-spacing-6) !important;
-    rowGap: var(--vk-spacing-6) !important;
-    columnGap: var(--vk-spacing-6) !important;
+    row-gap: var(--vk-spacing-6) !important;
+    column-gap: var(--vk-spacing-6) !important;
   }
   
   [data-vk-tasks-grid] {
     grid-template-columns: 1fr 420px !important;
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-admin-grid] {
     grid-template-columns: 1fr 420px !important;
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-feature-grid] {
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-features-grid] {
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-hero-grid] {
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
 }
 
@@ -494,42 +494,42 @@ body {
   [data-vk-stats-grid] {
     grid-template-columns: repeat(6, 1fr) !important;
     gap: var(--vk-spacing-6) !important;
-    rowGap: var(--vk-spacing-6) !important;
-    columnGap: var(--vk-spacing-6) !important;
+    row-gap: var(--vk-spacing-6) !important;
+    column-gap: var(--vk-spacing-6) !important;
   }
   
   [data-vk-tasks-grid] {
     grid-template-columns: 1fr 450px !important;
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-admin-grid] {
     grid-template-columns: 1fr 450px !important;
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-feature-grid] {
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   /* Ключевые возможности в 4 колонки на больших экранах */
   [data-vk-features-grid] {
     grid-template-columns: repeat(4, 1fr) !important;
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
   
   [data-vk-hero-grid] {
     gap: var(--vk-spacing-8) !important;
-    rowGap: var(--vk-spacing-8) !important;
-    columnGap: var(--vk-spacing-8) !important;
+    row-gap: var(--vk-spacing-8) !important;
+    column-gap: var(--vk-spacing-8) !important;
   }
 }
 
@@ -577,8 +577,8 @@ body {
   [data-vk-tasks-grid] {
     grid-template-columns: 1fr !important;
     gap: var(--vk-spacing-4) !important;
-    rowGap: var(--vk-spacing-4) !important;
-    columnGap: var(--vk-spacing-4) !important;
+    row-gap: var(--vk-spacing-4) !important;
+    column-gap: var(--vk-spacing-4) !important;
   }
   
   [data-vk-tasks-grid] > *:last-child {
@@ -590,8 +590,8 @@ body {
   [data-vk-hero-grid] {
     grid-template-columns: 1fr !important;
     gap: var(--vk-spacing-4) !important;
-    rowGap: var(--vk-spacing-4) !important;
-    columnGap: var(--vk-spacing-4) !important;
+    row-gap: var(--vk-spacing-4) !important;
+    column-gap: var(--vk-spacing-4) !important;
   }
 }
 
@@ -600,7 +600,7 @@ body {
   [data-vk-hero-grid] {
     grid-template-columns: 1fr !important;
     gap: var(--vk-spacing-6) !important;
-    rowGap: var(--vk-spacing-6) !important;
-    columnGap: var(--vk-spacing-6) !important;
+    row-gap: var(--vk-spacing-6) !important;
+    column-gap: var(--vk-spacing-6) !important;
   }
 }

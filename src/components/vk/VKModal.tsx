@@ -1,4 +1,6 @@
-import { HTMLAttributes, ReactNode, useEffect } from 'react'
+import { HTMLAttributes, ReactNode, useEffect, CSSProperties } from 'react'
+import { VKCard } from './VKCard'
+import { VKFlex, VKTitle, VKButton } from './index'
 
 interface VKModalProps extends HTMLAttributes<HTMLDivElement> {
   isOpen: boolean
@@ -6,9 +8,27 @@ interface VKModalProps extends HTMLAttributes<HTMLDivElement> {
   title?: string
   children: ReactNode
   size?: 's' | 'm' | 'l' | 'xl'
+  showCloseButton?: boolean
 }
 
-export function VKModal({ isOpen, onClose, title, children, size = 'm', className = '', ...props }: VKModalProps) {
+const sizeStyles: Record<string, CSSProperties> = {
+  s: { maxWidth: '400px' },
+  m: { maxWidth: '600px' },
+  l: { maxWidth: '800px' },
+  xl: { maxWidth: '1200px' },
+}
+
+export function VKModal({
+  isOpen,
+  onClose,
+  title,
+  children,
+  size = 'm',
+  showCloseButton = true,
+  className = '',
+  style,
+  ...props
+}: VKModalProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
@@ -20,47 +40,85 @@ export function VKModal({ isOpen, onClose, title, children, size = 'm', classNam
     }
   }, [isOpen])
 
+  useEffect(() => {
+    if (isOpen) {
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          onClose()
+        }
+      }
+      document.addEventListener('keydown', handleEscape)
+      return () => document.removeEventListener('keydown', handleEscape)
+    }
+  }, [isOpen, onClose])
+
   if (!isOpen) return null
 
-  const sizeStyles = {
-    s: 'max-w-vk-md',
-    m: 'max-w-vk-lg',
-    l: 'max-w-vk-2xl',
-    xl: 'max-w-vk-4xl',
+  const overlayStyle: CSSProperties = {
+    position: 'fixed',
+    inset: 0,
+    zIndex: 50,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 'var(--vk-spacing-4)',
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backdropFilter: 'blur(4px)',
+    transition: 'opacity var(--vk-transition-base) var(--vk-motion-easing-standard)',
+  }
+
+  const modalStyle: CSSProperties = {
+    position: 'relative',
+    width: '100%',
+    maxHeight: '90vh',
+    overflowY: 'auto',
+    opacity: isOpen ? 1 : 0,
+    transform: isOpen ? 'scale(1)' : 'scale(0.95)',
+    transition: 'opacity var(--vk-transition-base) var(--vk-motion-easing-standard), transform var(--vk-transition-base) var(--vk-motion-easing-standard)',
+    ...sizeStyles[size],
+    ...style,
   }
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-vk-4"
-      onClick={onClose}
-    >
-      <div
-        className="fixed inset-0 bg-vk-text-primary/40 backdrop-blur-sm transition-opacity duration-vk-base"
-        onClick={onClose}
-      />
-      <div
-        className={`relative bg-vk-bg-content rounded-vk-lg shadow-vk-4 w-full ${sizeStyles[size]} max-h-[90vh] overflow-y-auto transition-all duration-vk-base ${
-          isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-        } ${className}`}
+    <div style={overlayStyle} onClick={onClose} className={className}>
+      <VKCard
+        variant="elevated"
+        padding="none"
+        style={modalStyle}
         onClick={(e) => e.stopPropagation()}
         {...props}
       >
         {title && (
-          <div className="flex items-center justify-between px-vk-6 py-vk-4 border-b border-vk-border-secondary">
-            <h2 className="text-vk-xl font-vk-semibold text-vk-text-primary">{title}</h2>
-            <button
-              onClick={onClose}
-              className="w-vk-8 h-vk-8 flex items-center justify-center rounded-vk-md hover:bg-vk-bg-hover transition-colors duration-vk-base"
-              aria-label="Закрыть"
-            >
-              <svg className="w-vk-icon-m h-vk-icon-m text-vk-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
+          <VKFlex
+            justify="between"
+            align="center"
+            style={{
+              padding: 'var(--vk-spacing-6)',
+              borderBottom: '1px solid var(--vk-color-border-secondary)',
+            }}
+          >
+            <VKTitle level={3} weight="semibold" style={{ margin: 0 }}>
+              {title}
+            </VKTitle>
+            {showCloseButton && (
+              <VKButton
+                variant="tertiary"
+                size="s"
+                onClick={onClose}
+                style={{
+                  padding: 'var(--vk-spacing-1)',
+                  minWidth: '32px',
+                  height: '32px',
+                }}
+                aria-label="Закрыть"
+              >
+                ×
+              </VKButton>
+            )}
+          </VKFlex>
         )}
-        <div className="px-vk-6 py-vk-4">{children}</div>
-      </div>
+        <div style={{ padding: title ? 'var(--vk-spacing-6)' : 'var(--vk-spacing-6)' }}>{children}</div>
+      </VKCard>
     </div>
   )
 }

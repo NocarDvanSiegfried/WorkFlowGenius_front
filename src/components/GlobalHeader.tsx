@@ -1,6 +1,10 @@
 import { VKHeader, VKContainer, VKFlex, VKGrid, VKTitle, VKButton, VKNavLink, VKLink } from './vk'
+import { NotificationsDropdown } from './notifications/NotificationsDropdown'
+import { authStore } from '../store/authStore'
 
 export function GlobalHeader() {
+  const isAuthenticated = !!authStore.getState().token
+
   return (
     <VKHeader style={{ 
       position: 'sticky', 
@@ -49,11 +53,14 @@ export function GlobalHeader() {
             <VKNavLink to="/admin">
               Администрирование
             </VKNavLink>
-            <VKLink to="/login" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-              <VKButton variant="primary" size="m">
-                Войти
-              </VKButton>
-            </VKLink>
+            {isAuthenticated && <NotificationsDropdown />}
+            {!isAuthenticated && (
+              <VKLink to="/login" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+                <VKButton variant="primary" size="m">
+                  Войти
+                </VKButton>
+              </VKLink>
+            )}
           </VKFlex>
         </VKGrid>
       </VKContainer>

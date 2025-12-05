@@ -3,8 +3,8 @@ import { HTMLAttributes, ReactNode, CSSProperties } from 'react'
 interface VKTextProps extends HTMLAttributes<HTMLParagraphElement> {
   children: ReactNode
   size?: 'xs' | 'sm' | 'base' | 'm' | 'l'
-  weight?: 'regular' | 'medium' | 'semibold'
-  color?: 'primary' | 'secondary' | 'tertiary'
+  weight?: 'regular' | 'medium' | 'semibold' | 'normal'
+  color?: 'primary' | 'secondary' | 'tertiary' | 'danger'
 }
 
 const sizeValues = {
@@ -19,12 +19,14 @@ const weightValues = {
   regular: 'var(--vk-font-weight-regular)',
   medium: 'var(--vk-font-weight-medium)',
   semibold: 'var(--vk-font-weight-semibold)',
+  normal: 'var(--vk-font-weight-regular)',
 }
 
 const colorValues = {
   primary: 'var(--vk-color-text-primary)',
   secondary: 'var(--vk-color-text-secondary)',
   tertiary: 'var(--vk-color-text-tertiary)',
+  danger: 'var(--vk-color-status-negative)',
 }
 
 export function VKText({

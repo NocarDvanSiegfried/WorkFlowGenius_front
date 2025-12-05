@@ -2,7 +2,7 @@ export type TaskStatus = 'active' | 'completed' | 'overdue'
 
 export type RecommendationPriority = 'high' | 'medium' | 'low'
 
-export type AdminTab = 'dashboard' | 'tasks' | 'ai' | 'analytics'
+export type AdminTab = 'dashboard' | 'tasks' | 'ai' | 'analytics' | 'team' | 'ai-settings' | 'team-dna'
 
 export interface Task {
   id: string
@@ -40,5 +40,6 @@ export interface AdminStats {
   overdue: number
   completed: number
 }
+
 
 

@@ -1,66 +1,71 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { VKGrid, VKFlex } from '../../../components/vk'
 import { AdminLayout, AdminStatCard, AdminTasksTable, AdminSidebar } from '../../../components/admin'
 import type { Task, EmployeeLoad, AdminStats, AdminTab } from '../../../types/admin'
-
-const mockTasks: Task[] = [
-  {
-    id: '1',
-    employee: 'Иван Иванов',
-    employeeEmail: 'ivan@example.com',
-    task: 'Разработать API для задач',
-    date: '2025-01-15',
-    progress: 8,
-    maxProgress: 12,
-    status: 'active',
-  },
-  {
-    id: '2',
-    employee: 'Мария Петрова',
-    employeeEmail: 'maria@example.com',
-    task: 'Создать дизайн интерфейса',
-    date: '2025-01-14',
-    progress: 9,
-    maxProgress: 10,
-    status: 'completed',
-  },
-  {
-    id: '3',
-    employee: 'Алексей Сидоров',
-    employeeEmail: 'alex@example.com',
-    task: 'Провести тестирование',
-    date: '2025-01-10',
-    progress: 5,
-    maxProgress: 10,
-    status: 'overdue',
-  },
-]
-
-const mockEmployeeLoads: EmployeeLoad[] = [
-  { name: 'Иван Иванов', load: 8, maxLoad: 12 },
-  { name: 'Мария Петрова', load: 9, maxLoad: 10 },
-  { name: 'Алексей Сидоров', load: 5, maxLoad: 10 },
-  { name: 'Елена Козлова', load: 6, maxLoad: 8 },
-  { name: 'Дмитрий Волков', load: 11, maxLoad: 14 },
-]
-
-const stats: AdminStats = {
-  total: 59,
-  active: 34,
-  overdue: 5,
-  completed: 46,
-}
+import { dashboardApi } from '../../../services/api'
 
 export function AdminDashboardPage() {
   const navigate = useNavigate()
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard')
 
+  const { data: dashboardData, isLoading, error } = useQuery({
+    queryKey: ['dashboard-manager'],
+    queryFn: async () => {
+      const response = await dashboardApi.getManagerDashboard()
+      return response.data.data
+    },
+  })
+
   const handleTabChange = (tab: AdminTab) => {
     setActiveTab(tab)
     if (tab === 'tasks') navigate('/admin/tasks')
+    if (tab === 'team') navigate('/admin/team')
     if (tab === 'ai') navigate('/admin/ai')
+    if (tab === 'ai-settings') navigate('/admin/ai-settings')
     if (tab === 'analytics') navigate('/admin/analytics')
+    if (tab === 'team-dna') navigate('/admin/team-dna')
+  }
+
+  const stats: AdminStats = dashboardData?.stats || {
+    total: 0,
+    active: 0,
+    overdue: 0,
+    completed: 0,
+  }
+
+  const tasks: Task[] = (dashboardData?.tasks || []).map((task: any) => ({
+    id: String(task.id),
+    employee: task.employee || '-',
+    employeeEmail: task.employeeEmail || '-',
+    task: task.title || '-',
+    date: task.deadline ? new Date(task.deadline).toISOString().split('T')[0] : '-',
+    progress: task.progress || 0,
+    maxProgress: task.maxProgress || 0,
+    status: task.status === 'completed' ? 'completed' : task.status === 'assigned' || task.status === 'in_progress' ? 'active' : 'overdue',
+  }))
+
+  const employeeLoads: EmployeeLoad[] = dashboardData?.employeeLoads || []
+
+  if (isLoading) {
+    return (
+      <AdminLayout activeTab={activeTab} onTabChange={handleTabChange}>
+        <VKFlex justify="center" align="center" style={{ padding: 'var(--vk-spacing-8)' }}>
+          <div>Загрузка...</div>
+        </VKFlex>
+      </AdminLayout>
+    )
+  }
+
+  if (error) {
+    return (
+      <AdminLayout activeTab={activeTab} onTabChange={handleTabChange}>
+        <VKFlex justify="center" align="center" style={{ padding: 'var(--vk-spacing-8)' }}>
+          <div>Ошибка загрузки данных</div>
+        </VKFlex>
+      </AdminLayout>
+    )
   }
 
   return (
@@ -89,7 +94,7 @@ export function AdminDashboardPage() {
         >
           {/* Left: Tasks table - придерживается общей сетки, единая высота карточек */}
           <VKFlex direction="column" grow style={{ minWidth: 0, maxWidth: '100%', width: '100%' }}>
-            <AdminTasksTable tasks={mockTasks} />
+            <AdminTasksTable tasks={tasks} />
           </VKFlex>
           
           {/* Right: Employee load + AI analytics - выровнены, одинаковой высоты */}
@@ -102,8 +107,8 @@ export function AdminDashboardPage() {
             }}
           >
             <AdminSidebar
-              employeeLoads={mockEmployeeLoads}
-              aiAnalysis={{ recommendations: 12, applied: 8 }}
+              employeeLoads={employeeLoads}
+              aiAnalysis={dashboardData?.aiAnalysis || { recommendations: 0, applied: 0 }}
             />
           </VKFlex>
         </VKGrid>

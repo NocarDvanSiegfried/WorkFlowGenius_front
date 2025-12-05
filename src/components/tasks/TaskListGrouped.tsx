@@ -1,12 +1,17 @@
 import { useMemo } from 'react'
-import { VKFlex, VKText, VKTitle, VKSpacing, VKGroup } from '../vk'
+import { useQuery } from '@tanstack/react-query'
+import { VKFlex, VKTitle, VKGroup, VKSkeleton, VKEmptyState } from '../vk'
 import { TaskCardFull } from './TaskCardFull'
 import type { TabType } from './types'
+import { tasksApi } from '../../services/api'
 
 export type { TabType }
 
 interface TaskListGroupedProps {
   activeTab: TabType
+  searchQuery?: string
+  statusFilter?: string
+  priorityFilter?: string
 }
 
 const mockTasks = [
@@ -129,19 +134,100 @@ const groupConfig = {
   'deadline-soon': { title: 'Скоро дедлайн', key: 'deadline-soon' },
 }
 
-export function TaskListGrouped({ activeTab }: TaskListGroupedProps) {
+export function TaskListGrouped({ activeTab, searchQuery = '', statusFilter, priorityFilter }: TaskListGroupedProps) {
+  const { data: tasksData, isLoading } = useQuery({
+    queryKey: ['tasks', searchQuery, statusFilter, priorityFilter],
+    queryFn: async () => {
+      const response = await tasksApi.getTasks(searchQuery, statusFilter)
+      return response.data.data
+    },
+  })
+
   const filteredTasks = useMemo(() => {
-    if (activeTab === 'all') return mockTasks
-    if (activeTab === 'active') return mockTasks.filter((t) => t.status === 'in-progress' || t.status === 'assigned')
-    if (activeTab === 'completed') return mockTasks.filter((t) => t.status === 'completed')
-    if (activeTab === 'review') return mockTasks.filter((t) => t.status === 'review')
-    if (activeTab === 'overdue') return mockTasks.filter((t) => t.status === 'overdue')
-    return mockTasks
-  }, [activeTab])
+    if (!tasksData) return []
+    
+    let filtered = tasksData
+    
+    // Фильтрация по вкладке
+    if (activeTab === 'active') {
+      filtered = filtered.filter((t: any) => t.status === 'in_progress' || t.status === 'assigned')
+    } else if (activeTab === 'completed') {
+      filtered = filtered.filter((t: any) => t.status === 'completed')
+    } else if (activeTab === 'overdue') {
+      filtered = filtered.filter((t: any) => {
+        if (!t.deadline) return false
+        return new Date(t.deadline) < new Date() && t.status !== 'completed'
+      })
+    }
+    
+    // Фильтрация по поисковому запросу
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase()
+      filtered = filtered.filter((task: any) => {
+        const title = task.title?.toLowerCase() || ''
+        const description = task.description?.toLowerCase() || ''
+        const employee = task.assignments?.[0]?.assigned_to_user?.name?.toLowerCase() || ''
+        return title.includes(query) || description.includes(query) || employee.includes(query)
+      })
+    }
+    
+    // Фильтрация по приоритету
+    if (priorityFilter && priorityFilter !== 'all') {
+      filtered = filtered.filter((t: any) => t.priority === priorityFilter)
+    }
+    
+    // Преобразуем в формат для TaskCardFull
+    return filtered.map((task: any) => {
+      const assignment = task.assignments?.[0]
+      const user = assignment?.assigned_to_user
+      const deadlineDate = task.deadline ? new Date(task.deadline) : null
+      
+      // Определяем группу
+      let group = 'other'
+      if (task.priority === 'urgent' || task.priority === 'high') {
+        group = 'high-priority'
+      } else if (task.status === 'in_progress') {
+        group = 'in-progress'
+      } else if (task.status === 'completed') {
+        group = 'completed'
+      } else if (deadlineDate && deadlineDate < new Date() && task.status !== 'completed') {
+        group = 'overdue'
+      } else if (deadlineDate && (deadlineDate.getTime() - Date.now()) < 24 * 60 * 60 * 1000) {
+        group = 'deadline-soon'
+      }
+      
+      // Преобразуем статус
+      let displayStatus: 'in-progress' | 'assigned' | 'completed' | 'overdue' | 'review' = 'assigned'
+      if (task.status === 'completed') {
+        displayStatus = 'completed'
+      } else if (task.status === 'in_progress') {
+        displayStatus = 'in-progress'
+      } else if (deadlineDate && deadlineDate < new Date() && task.status !== 'completed') {
+        displayStatus = 'overdue'
+      } else if (task.status === 'assigned') {
+        displayStatus = 'assigned'
+      }
+      
+      return {
+        id: String(task.id),
+        title: task.title || '',
+        description: task.description || '',
+        priority: task.priority || 'medium',
+        status: displayStatus,
+        assignee: user?.name || 'Не назначен',
+        deadline: deadlineDate ? deadlineDate.toLocaleDateString('ru-RU') : '',
+        deadlineTime: deadlineDate ? deadlineDate.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) : undefined,
+        tags: task.tags?.map((tag: any) => tag.tag_name) || task.required_competencies || [],
+        progress: assignment ? Math.round((assignment.workload_points / (user?.max_workload || 100)) * 100) : 0,
+        rating: 4,
+        group,
+      }
+    })
+  }, [tasksData, activeTab, searchQuery, priorityFilter])
 
   const groupedTasks = useMemo(() => {
     const groups: Record<string, typeof mockTasks> = {}
-    filteredTasks.forEach((task) => {
+    filteredTasks.forEach((task: any) => {
       const groupKey = task.group || 'other'
       if (!groups[groupKey]) {
         groups[groupKey] = []
@@ -163,15 +249,33 @@ export function TaskListGrouped({ activeTab }: TaskListGroupedProps) {
     })
   }, [groupedTasks])
 
+  if (isLoading) {
+    return (
+      <VKFlex direction="column" gap="m" style={{ width: '100%' }}>
+        {[1, 2, 3].map((i) => (
+          <VKGroup key={i} mode="card" style={{ width: '100%' }}>
+            <VKFlex direction="column" gap="s">
+              <VKSkeleton width="60%" height="20px" />
+              <VKSkeleton width="100%" height="16px" />
+              <VKSkeleton width="40%" height="16px" />
+            </VKFlex>
+          </VKGroup>
+        ))}
+      </VKFlex>
+    )
+  }
+
   if (filteredTasks.length === 0) {
     return (
-      <VKSpacing size="l">
-        <VKFlex direction="column" align="center" justify="center">
-          <VKText size="base" color="secondary">
-            Нет задач
-          </VKText>
-        </VKFlex>
-      </VKSpacing>
+      <VKEmptyState
+        title={searchQuery ? 'Задачи не найдены' : 'Нет задач'}
+        description={
+          searchQuery
+            ? 'Попробуйте изменить параметры поиска или фильтры'
+            : 'Создайте новую задачу или дождитесь назначения'
+        }
+        icon="📋"
+      />
     )
   }
 

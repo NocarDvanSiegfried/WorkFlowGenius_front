@@ -1,10 +1,11 @@
-import { VKCell, VKFlex, VKText, VKTitle, VKProgress, VKBadge, VKButton, VKAvatar, VKAnimatedCard, VKGroup } from '../vk'
+import { VKFlex, VKText, VKTitle, VKProgress, VKBadge, VKButton, VKAvatar, VKAnimatedCard, VKGroup, VKEmptyState, VKTooltip } from '../vk'
 import type { Task, TaskStatus } from '../../types/admin'
 
 interface AdminTasksTableProps {
   tasks: Task[]
   onEdit?: (id: string) => void
   onDelete?: (id: string) => void
+  onAssign?: (id: string) => void
 }
 
 const statusConfig: Record<
@@ -16,7 +17,7 @@ const statusConfig: Record<
   overdue: { variant: 'error', label: 'Просрочена' },
 }
 
-export function AdminTasksTable({ tasks, onEdit, onDelete }: AdminTasksTableProps) {
+export function AdminTasksTable({ tasks, onEdit, onDelete, onAssign }: AdminTasksTableProps) {
   return (
     <VKGroup
       mode="card"
@@ -33,13 +34,11 @@ export function AdminTasksTable({ tasks, onEdit, onDelete }: AdminTasksTableProp
       }}
     >
       {tasks.length === 0 ? (
-        <VKCell disabled>
-          <VKFlex direction="column" align="center">
-            <VKText size="base" color="secondary" style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
-              Задачи не найдены
-            </VKText>
-          </VKFlex>
-        </VKCell>
+        <VKEmptyState
+          title="Задачи не найдены"
+          description="Создайте новую задачу или измените параметры фильтрации"
+          icon="📋"
+        />
       ) : (
         <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-8)' }}>
           {tasks.map((task, index) => {
@@ -91,12 +90,23 @@ export function AdminTasksTable({ tasks, onEdit, onDelete }: AdminTasksTableProp
                       </VKFlex>
                     </VKFlex>
                     <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-2)' }}>
-                      <VKButton variant="tertiary" size="s" onClick={() => onEdit?.(task.id)}>
-                        Редактировать
-                      </VKButton>
-                      <VKButton variant="tertiary" size="s" onClick={() => onDelete?.(task.id)}>
-                        Удалить
-                      </VKButton>
+                      {task.status === 'active' && task.employee === '-' && (
+                        <VKTooltip content="Назначить задачу сотруднику">
+                          <VKButton variant="primary" size="s" onClick={() => onAssign?.(task.id)}>
+                            Назначить
+                          </VKButton>
+                        </VKTooltip>
+                      )}
+                      <VKTooltip content="Редактировать задачу">
+                        <VKButton variant="tertiary" size="s" onClick={() => onEdit?.(task.id)}>
+                          Редактировать
+                        </VKButton>
+                      </VKTooltip>
+                      <VKTooltip content="Удалить задачу">
+                        <VKButton variant="tertiary" size="s" onClick={() => onDelete?.(task.id)}>
+                          Удалить
+                        </VKButton>
+                      </VKTooltip>
                     </VKFlex>
                   </VKFlex>
                 </VKAnimatedCard>

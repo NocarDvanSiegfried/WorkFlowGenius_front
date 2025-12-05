@@ -1,6 +1,26 @@
+import { useQuery } from '@tanstack/react-query'
 import { VKCard, VKFlex, VKText } from '../vk'
+import { aiRecommendationsApi } from '../../services/api'
 
 export function AIDistributionBlock() {
+  const { data: recommendationsData } = useQuery({
+    queryKey: ['ai-recommendations'],
+    queryFn: async () => {
+      const response = await aiRecommendationsApi.getRecommendations()
+      return response.data.data
+    },
+  })
+
+  const recommendationsCount = recommendationsData?.length || 0
+  const unappliedCount = recommendationsData?.filter((r: any) => !r.applied).length || 0
+
+  const message =
+    unappliedCount > 0
+      ? `У вас ${unappliedCount} новых рекомендаций ИИ. Рекомендуем их применить для оптимизации распределения задач.`
+      : recommendationsCount > 0
+      ? 'Задачи распределены на основе ИИ. Все рекомендации применены.'
+      : 'Задачи распределены на основе ИИ. Рекомендуем сфокусироваться на задачах с высоким приоритетом.'
+
   return (
     <VKCard
       variant="default"
@@ -41,7 +61,7 @@ export function AIDistributionBlock() {
           </svg>
         </VKFlex>
         <VKText size="sm" color="primary" style={{ margin: 0 }}>
-          Задачи распределены на основе ИИ. Рекомендуем сфокусироваться на задачах с высоким приоритетом.
+          {message}
         </VKText>
       </VKFlex>
     </VKCard>

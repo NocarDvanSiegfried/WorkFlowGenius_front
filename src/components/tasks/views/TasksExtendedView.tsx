@@ -12,6 +12,9 @@ import { TaskTabsExtended } from '../TaskTabsExtended'
 
 export function TasksExtendedView() {
   const [activeTab, setActiveTab] = useState<TabType>('all')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [priorityFilter, setPriorityFilter] = useState('all')
 
   return (
     <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-10)' }}>
@@ -25,7 +28,19 @@ export function TasksExtendedView() {
       
       {/* Search and filters - сгруппированы, увеличенные отступы */}
       <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-6)' }}>
-        <SearchPanel />
+        <SearchPanel
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+          statusFilter={statusFilter}
+          onStatusFilterChange={setStatusFilter}
+          priorityFilter={priorityFilter}
+          onPriorityFilterChange={setPriorityFilter}
+          onClear={() => {
+            setSearchQuery('')
+            setStatusFilter('all')
+            setPriorityFilter('all')
+          }}
+        />
         <AIDistributionBlock />
         <TaskTabsExtended activeTab={activeTab} onTabChange={setActiveTab} />
       </VKFlex>
@@ -45,7 +60,12 @@ export function TasksExtendedView() {
       >
         {/* Left column: Tasks - выровнены по вертикальной сетке, единая ширина */}
         <VKFlex direction="column" grow style={{ minWidth: 0, maxWidth: '100%', width: '100%' }}>
-          <TaskListGrouped activeTab={activeTab} />
+          <TaskListGrouped
+            activeTab={activeTab}
+            searchQuery={searchQuery}
+            statusFilter={statusFilter}
+            priorityFilter={priorityFilter}
+          />
         </VKFlex>
         
         {/* Right column: Analytics - выровнена по вертикали с карточками слева */}

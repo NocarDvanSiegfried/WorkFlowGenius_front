@@ -4,6 +4,7 @@ import type { Recommendation, RecommendationPriority } from '../../types/admin'
 interface AdminAIRecommendationsProps {
   recommendations: Recommendation[]
   onApply?: (id: string) => void
+  onApplyAll?: () => void
   onRefresh?: () => void
 }
 
@@ -19,10 +20,12 @@ const priorityConfig: Record<
 export function AdminAIRecommendations({
   recommendations,
   onApply,
+  onApplyAll,
   onRefresh,
 }: AdminAIRecommendationsProps) {
   const appliedCount = recommendations.filter((r) => r.applied).length
   const totalCount = recommendations.length
+  const unappliedRecommendations = recommendations.filter((r) => !r.applied)
 
   return (
     <VKFlex direction="column" gap="m">
@@ -46,9 +49,11 @@ export function AdminAIRecommendations({
             <VKButton variant="primary" size="s" onClick={onRefresh}>
               Обновить
             </VKButton>
-            <VKButton variant="secondary" size="s">
-              Применить рекомендации
-            </VKButton>
+            {unappliedRecommendations.length > 0 && (
+              <VKButton variant="secondary" size="s" onClick={onApplyAll}>
+                Применить все ({unappliedRecommendations.length})
+              </VKButton>
+            )}
           </VKFlex>
         </VKFlex>
       </VKGroup>

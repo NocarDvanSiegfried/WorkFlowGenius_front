@@ -6,4 +6,5 @@ export { AdminAIRecommendations } from './AdminAIRecommendations'
 export { AnalyticsCard } from './AnalyticsCard'
 export { AnalyticsChartPlaceholder } from './AnalyticsChartPlaceholder'
 export { AdminLayout } from './AdminLayout'
+export { AddTaskModal, EditTaskModal } from './modals'
 

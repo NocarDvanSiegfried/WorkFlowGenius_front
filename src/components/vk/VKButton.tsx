@@ -1,7 +1,7 @@
 import { ButtonHTMLAttributes, forwardRef, CSSProperties } from 'react'
 
 interface VKButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'outline' | 'text'
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'outline' | 'text' | 'error'
   size?: 's' | 'm' | 'l'
   loading?: boolean
 }
@@ -72,6 +72,10 @@ export const VKButton = forwardRef<HTMLButtonElement, VKButtonProps>(
         backgroundColor: 'transparent',
         color: 'var(--vk-color-text-accent)',
       },
+      error: {
+        backgroundColor: 'var(--vk-color-status-negative)',
+        color: 'var(--vk-color-background-content)',
+      },
     }
 
     const finalStyle: CSSProperties = {
@@ -89,6 +93,8 @@ export const VKButton = forwardRef<HTMLButtonElement, VKButtonProps>(
           if (!disabled && !loading) {
             if (variant === 'primary') {
               e.currentTarget.style.backgroundColor = 'var(--vk-color-accent-blue-hover)'
+            } else if (variant === 'error') {
+              e.currentTarget.style.backgroundColor = 'var(--vk-color-status-negative-hover)'
             } else if (variant === 'secondary' || variant === 'tertiary' || variant === 'outline') {
               e.currentTarget.style.backgroundColor = 'var(--vk-color-background-hover)'
             } else if (variant === 'text') {
@@ -100,6 +106,8 @@ export const VKButton = forwardRef<HTMLButtonElement, VKButtonProps>(
           if (!disabled && !loading) {
             if (variant === 'primary') {
               e.currentTarget.style.backgroundColor = 'var(--vk-color-accent-blue)'
+            } else if (variant === 'error') {
+              e.currentTarget.style.backgroundColor = 'var(--vk-color-status-negative)'
             } else if (variant === 'secondary' || variant === 'tertiary' || variant === 'outline') {
               const bgColor = variant === 'outline' ? 'transparent' : (variantStyles[variant].backgroundColor as string)
               e.currentTarget.style.backgroundColor = bgColor
