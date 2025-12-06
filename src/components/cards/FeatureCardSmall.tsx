@@ -44,15 +44,16 @@ export function FeatureCardSmall({
       style={{ 
         display: 'flex', 
         flexDirection: 'column',
-        minHeight: '210px',
+        minHeight: '240px',
         height: 'auto',
         overflow: 'hidden',
-        padding: 'var(--vk-spacing-6)',
+        padding: 'var(--vk-spacing-8)',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
+        transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
       }}
     >
-      <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-4)', width: '100%', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+      <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-6)', width: '100%', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
         <VKFlex align="start" style={{ gap: 'var(--vk-spacing-4)', width: '100%' }}>
           <VKFlex
             align="center"
@@ -74,14 +75,47 @@ export function FeatureCardSmall({
               strokeWidth={2}
             />
           </VKFlex>
-          <VKTitle level={5} weight="bold" style={{ flex: 1, lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '18px', fontWeight: 600, color: 'var(--vk-color-text-primary)' }}>
+          <VKTitle 
+            level={5} 
+            weight="bold" 
+            style={{ 
+              flex: 1, 
+              lineHeight: 'var(--vk-line-height-normal)', 
+              wordWrap: 'break-word', 
+              overflowWrap: 'break-word', 
+              fontSize: 'var(--vk-font-size-lg)',
+              fontWeight: 'var(--vk-font-weight-semibold)',
+              color: 'var(--vk-color-text-primary)',
+            }}
+          >
             {title}
           </VKTitle>
         </VKFlex>
-        <VKTitle level={3} weight="bold" style={{ lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '24px', fontWeight: 600, color: 'var(--vk-color-text-primary)' }}>
+        <VKTitle 
+          level={3} 
+          weight="bold" 
+          style={{ 
+            lineHeight: 'var(--vk-line-height-tight)', 
+            wordWrap: 'break-word', 
+            overflowWrap: 'break-word', 
+            fontSize: 'var(--vk-font-size-3xl)',
+            fontWeight: 'var(--vk-font-weight-bold)',
+            color: 'var(--vk-color-text-primary)',
+          }}
+        >
           {value}
         </VKTitle>
-        <VKText size="sm" color="secondary" style={{ lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word', fontSize: '14px', fontWeight: 400 }}>
+        <VKText 
+          size="sm" 
+          color="secondary" 
+          style={{ 
+            lineHeight: 'var(--vk-line-height-relaxed)', 
+            wordWrap: 'break-word', 
+            overflowWrap: 'break-word', 
+            fontSize: 'var(--vk-font-size-sm)',
+            fontWeight: 'var(--vk-font-weight-regular)',
+          }}
+        >
           {description}
         </VKText>
       </VKFlex>

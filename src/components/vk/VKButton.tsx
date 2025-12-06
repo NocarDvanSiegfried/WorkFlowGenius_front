@@ -40,12 +40,12 @@ export const VKButton = forwardRef<HTMLButtonElement, VKButtonProps>(
       alignItems: 'center',
       justifyContent: 'center',
       fontWeight: 'var(--vk-font-weight-medium)',
-      transition: 'all var(--vk-transition-base)',
+      transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
       borderRadius: 'var(--vk-radius-md)',
       outline: 'none',
       border: 'none',
       cursor: disabled || loading ? 'not-allowed' : 'pointer',
-      opacity: disabled || loading ? 0.5 : 1,
+      opacity: disabled || loading ? 'var(--vk-motion-opacity-disabled)' : 1,
       ...sizeValues[size],
       ...style,
     }
@@ -91,6 +91,7 @@ export const VKButton = forwardRef<HTMLButtonElement, VKButtonProps>(
         disabled={disabled || loading}
         onMouseEnter={(e) => {
           if (!disabled && !loading) {
+            e.currentTarget.style.transform = 'scale(var(--vk-motion-scale-hover))'
             if (variant === 'primary') {
               e.currentTarget.style.backgroundColor = 'var(--vk-color-accent-blue-hover)'
             } else if (variant === 'error') {
@@ -104,6 +105,7 @@ export const VKButton = forwardRef<HTMLButtonElement, VKButtonProps>(
         }}
         onMouseLeave={(e) => {
           if (!disabled && !loading) {
+            e.currentTarget.style.transform = 'scale(1)'
             if (variant === 'primary') {
               e.currentTarget.style.backgroundColor = 'var(--vk-color-accent-blue)'
             } else if (variant === 'error') {
@@ -114,6 +116,16 @@ export const VKButton = forwardRef<HTMLButtonElement, VKButtonProps>(
             } else if (variant === 'text') {
               e.currentTarget.style.color = 'var(--vk-color-text-accent)'
             }
+          }
+        }}
+        onMouseDown={(e) => {
+          if (!disabled && !loading) {
+            e.currentTarget.style.transform = 'scale(var(--vk-motion-scale-active))'
+          }
+        }}
+        onMouseUp={(e) => {
+          if (!disabled && !loading) {
+            e.currentTarget.style.transform = 'scale(var(--vk-motion-scale-hover))'
           }
         }}
         {...props}

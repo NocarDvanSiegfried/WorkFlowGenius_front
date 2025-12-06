@@ -14,117 +14,6 @@ interface TaskListGroupedProps {
   priorityFilter?: string
 }
 
-const mockTasks = [
-  {
-    id: '1',
-    title: 'Обновить документацию API',
-    description: 'Добавить описание новых endpoints и примеры использования для разработчиков',
-    priority: 'high' as const,
-    status: 'in-progress' as const,
-    assignee: 'Иван Иванов',
-    deadline: '25.07.2024',
-    deadlineTime: '15:00',
-    tags: ['Backend', 'API', 'Документация'],
-    progress: 65,
-    rating: 4,
-    group: 'high-priority',
-  },
-  {
-    id: '2',
-    title: 'Провести code review',
-    description: 'Проверить код в ветке feature/new-dashboard на соответствие стандартам',
-    priority: 'medium' as const,
-    status: 'review' as const,
-    assignee: 'Мария Петрова',
-    deadline: '25.07.2024',
-    deadlineTime: '18:00',
-    tags: ['Code Review', 'Frontend'],
-    progress: 100,
-    rating: 5,
-    group: 'deadline-soon',
-  },
-  {
-    id: '3',
-    title: 'Написать тесты для модуля авторизации',
-    description: 'Покрыть тестами все методы авторизации, включая edge cases',
-    priority: 'urgent' as const,
-    status: 'assigned' as const,
-    assignee: 'Алексей Сидоров',
-    deadline: '26.07.2024',
-    deadlineTime: '12:00',
-    tags: ['Тестирование', 'Backend', 'Срочно'],
-    progress: 0,
-    rating: 5,
-    group: 'high-priority',
-  },
-  {
-    id: '4',
-    title: 'Оптимизировать запросы к БД',
-    description: 'Улучшить производительность медленных запросов в модуле аналитики',
-    priority: 'low' as const,
-    status: 'completed' as const,
-    assignee: 'Иван Иванов',
-    deadline: '24.07.2024',
-    tags: ['Оптимизация', 'База данных', 'Research'],
-    progress: 100,
-    rating: 4,
-    group: 'completed',
-  },
-  {
-    id: '5',
-    title: 'Обновить дизайн главной страницы',
-    description: 'Привести в соответствие с новым макетом Figma',
-    priority: 'medium' as const,
-    status: 'overdue' as const,
-    assignee: 'Мария Петрова',
-    deadline: '23.07.2024',
-    tags: ['Дизайн', 'Frontend', 'Фича'],
-    progress: 80,
-    rating: 3,
-    group: 'overdue',
-  },
-  {
-    id: '6',
-    title: 'Реализовать систему уведомлений',
-    description: 'Создать систему push-уведомлений для пользователей',
-    priority: 'high' as const,
-    status: 'in-progress' as const,
-    assignee: 'Алексей Сидоров',
-    deadline: '27.07.2024',
-    deadlineTime: '16:00',
-    tags: ['Уведомления', 'Backend', 'Фича'],
-    progress: 30,
-    rating: 4,
-    group: 'in-progress',
-  },
-  {
-    id: '7',
-    title: 'Провести ретроспективу команды',
-    description: 'Организовать встречу для обсуждения результатов спринта',
-    priority: 'medium' as const,
-    status: 'review' as const,
-    assignee: 'Елена Козлова',
-    deadline: '28.07.2024',
-    tags: ['Менеджмент', 'Команда'],
-    progress: 90,
-    rating: 4,
-    group: 'review',
-  },
-  {
-    id: '8',
-    title: 'Настроить CI/CD pipeline',
-    description: 'Автоматизировать процесс деплоя приложения',
-    priority: 'high' as const,
-    status: 'in-progress' as const,
-    assignee: 'Дмитрий Волков',
-    deadline: '29.07.2024',
-    tags: ['DevOps', 'CI/CD', 'Инфраструктура'],
-    progress: 45,
-    rating: 5,
-    group: 'in-progress',
-  },
-]
-
 const groupConfig = {
   'high-priority': { title: 'Срочно', key: 'high-priority' },
   'in-progress': { title: 'В работе', key: 'in-progress' },
@@ -138,7 +27,11 @@ export function TaskListGrouped({ activeTab, searchQuery = '', statusFilter, pri
   const { data: tasksData, isLoading } = useQuery({
     queryKey: ['tasks', searchQuery, statusFilter, priorityFilter],
     queryFn: async () => {
-      const response = await tasksApi.getTasks(searchQuery, statusFilter)
+      const params: any = {}
+      if (searchQuery) params.search = searchQuery
+      if (statusFilter && statusFilter !== 'all') params.status = statusFilter
+      if (priorityFilter && priorityFilter !== 'all') params.priority = priorityFilter
+      const response = await tasksApi.getTasks(params)
       return response.data.data
     },
   })
@@ -202,9 +95,11 @@ export function TaskListGrouped({ activeTab, searchQuery = '', statusFilter, pri
         displayStatus = 'completed'
       } else if (task.status === 'in_progress') {
         displayStatus = 'in-progress'
+      } else if (task.status === 'review') {
+        displayStatus = 'review'
       } else if (deadlineDate && deadlineDate < new Date() && task.status !== 'completed') {
         displayStatus = 'overdue'
-      } else if (task.status === 'assigned') {
+      } else if (task.status === 'assigned' || task.status === 'pending') {
         displayStatus = 'assigned'
       }
       
@@ -219,14 +114,14 @@ export function TaskListGrouped({ activeTab, searchQuery = '', statusFilter, pri
         deadlineTime: deadlineDate ? deadlineDate.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) : undefined,
         tags: task.tags?.map((tag: any) => tag.tag_name) || task.required_competencies || [],
         progress: assignment ? Math.round((assignment.workload_points / (user?.max_workload || 100)) * 100) : 0,
-        rating: 4,
+        rating: task.rating || 0,
         group,
       }
     })
   }, [tasksData, activeTab, searchQuery, priorityFilter])
 
   const groupedTasks = useMemo(() => {
-    const groups: Record<string, typeof mockTasks> = {}
+    const groups: Record<string, any[]> = {}
     filteredTasks.forEach((task: any) => {
       const groupKey = task.group || 'other'
       if (!groups[groupKey]) {

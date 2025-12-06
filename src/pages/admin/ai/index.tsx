@@ -99,14 +99,12 @@ export function AdminAIPage() {
 
   return (
     <AdminLayout activeTab={activeTab} onTabChange={handleTabChange}>
-      <VKFlex direction="column" gap="l">
-        <AdminAIRecommendations
-          recommendations={recommendations}
-          onApply={handleApply}
-          onApplyAll={handleApplyAll}
-          onRefresh={handleRefresh}
-        />
-      </VKFlex>
+      <AdminAIRecommendations
+        recommendations={recommendations}
+        onApply={handleApply}
+        onApplyAll={handleApplyAll}
+        onRefresh={handleRefresh}
+      />
     </AdminLayout>
   )
 }

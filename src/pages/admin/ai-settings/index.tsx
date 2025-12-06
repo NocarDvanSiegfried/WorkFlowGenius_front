@@ -102,6 +102,10 @@ export function AdminAISettingsPage() {
     }
   }
 
+  const handleCheckboxChange = (field: keyof AISettings, value: boolean) => {
+    updateMutation.mutate({ [field]: value })
+  }
+
   const handleToggle = (_id: string) => {
     // В текущей модели все параметры всегда включены
     // Это можно расширить в будущем, если добавить enabled поля в модель
@@ -109,100 +113,282 @@ export function AdminAISettingsPage() {
 
   return (
     <AdminLayout activeTab={activeTab} onTabChange={handleTabChange}>
-      <VKSpacing size="m">
-        <VKFlex direction="column" gap="l">
-          <VKAnimatedCard mode="shadow" padding="l" index={0} animationType="fade-in">
-            <VKFlex direction="column" gap="m">
-              <VKTitle level={2} weight="bold">
+      <VKSpacing size="l">
+        <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-10)', maxWidth: '1400px', margin: '0 auto' }}>
+          <VKAnimatedCard 
+            mode="shadow" 
+            padding="l" 
+            index={0} 
+            animationType="fade-in"
+            data-vk-card-hover-main
+            style={{
+              transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+            }}
+          >
+            <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-6)' }}>
+              <VKTitle 
+                level={2} 
+                weight="bold"
+                style={{
+                  margin: 0,
+                  lineHeight: 'var(--vk-line-height-tight)',
+                  fontSize: 'var(--vk-font-size-2xl)',
+                  fontWeight: 'var(--vk-font-weight-bold)',
+                  color: 'var(--vk-color-text-primary)',
+                }}
+              >
                 Настройки ИИ
               </VKTitle>
-              <VKText size="base" color="secondary">
+              <VKText 
+                size="base" 
+                color="secondary"
+                style={{
+                  lineHeight: 'var(--vk-line-height-relaxed)',
+                  fontSize: 'var(--vk-font-size-base)',
+                }}
+              >
                 Параметры алгоритма автоматического распределения задач
               </VKText>
             </VKFlex>
           </VKAnimatedCard>
 
-          <VKAnimatedCard mode="shadow" padding="l" index={1} animationType="slide-up">
-            <VKFlex direction="column" gap="l">
-              <VKTitle level={3} weight="semibold">
+          <VKAnimatedCard 
+            mode="shadow" 
+            padding="l" 
+            index={1} 
+            animationType="slide-up"
+            data-vk-card-hover-main
+            style={{
+              transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+            }}
+          >
+            <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-10)' }}>
+              <VKTitle
+                level={3}
+                weight="semibold"
+                style={{
+                  margin: 0,
+                  lineHeight: 'var(--vk-line-height-normal)',
+                  fontSize: 'var(--vk-font-size-xl)',
+                  fontWeight: 'var(--vk-font-weight-semibold)',
+                  color: 'var(--vk-color-text-primary)',
+                }}
+              >
                 Параметры алгоритма
               </VKTitle>
 
               {isLoading ? (
-                <VKFlex justify="center" align="center" style={{ padding: 'var(--vk-spacing-8)' }}>
+                <VKFlex justify="center" align="center" style={{ padding: 'var(--vk-spacing-12)' }}>
                   <VKText size="base" color="secondary">
                     Загрузка...
                   </VKText>
                 </VKFlex>
               ) : (
                 parameters.map((param, index) => (
-                <VKAnimatedCard key={param.id} mode="outline" padding="m" index={index + 2} animationType="fade-in">
-                  <VKFlex direction="column" gap="m">
-                    <VKFlex justify="between" align="center">
-                      <VKFlex align="center" gap="m">
-                        <VKCheckbox checked={param.enabled} onChange={() => handleToggle(param.id)} />
-                        <VKTitle level={4} weight="medium">
-                          {param.name}
-                        </VKTitle>
+                  <VKAnimatedCard
+                    key={param.id}
+                    mode="outline"
+                    padding="l"
+                    index={index + 2}
+                    animationType="fade-in"
+                    data-vk-card-hover-main
+                    style={{
+                      border: '1px solid var(--vk-color-border)',
+                      borderRadius: 'var(--vk-radius-lg)',
+                      transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                    }}
+                  >
+                    <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-6)' }}>
+                      <VKFlex justify="between" align="center" style={{ gap: 'var(--vk-spacing-4)' }}>
+                        <VKFlex align="center" style={{ gap: 'var(--vk-spacing-4)', flex: 1 }}>
+                          <VKCheckbox
+                            checked={param.enabled}
+                            onChange={() => handleToggle(param.id)}
+                            style={{ flexShrink: 0 }}
+                          />
+                          <VKTitle
+                            level={4}
+                            weight="medium"
+                            style={{
+                              margin: 0,
+                              lineHeight: '1.4',
+                              fontSize: '16px',
+                              fontWeight: 500,
+                              color: 'var(--vk-color-text-primary)',
+                            }}
+                          >
+                            {param.name}
+                          </VKTitle>
+                        </VKFlex>
+                        <VKText
+                          size="base"
+                          weight="semibold"
+                          color="primary"
+                          style={{
+                            fontSize: '16px',
+                            fontWeight: 600,
+                            flexShrink: 0,
+                            minWidth: '50px',
+                            textAlign: 'right',
+                          }}
+                        >
+                          {param.weight}%
+                        </VKText>
                       </VKFlex>
-                      <VKText size="sm" color="secondary">
-                        {param.weight}%
-                      </VKText>
+                      <VKSlider
+                        value={param.weight}
+                        min={0}
+                        max={100}
+                        step={1}
+                        onChange={(e) => handleWeightChange(param.id, Number(e.target.value))}
+                        disabled={!param.enabled}
+                        style={{ width: '100%' }}
+                      />
                     </VKFlex>
-                    <VKSlider
-                      value={param.weight}
-                      min={0}
-                      max={100}
-                      step={1}
-                      onChange={(e) => handleWeightChange(param.id, Number(e.target.value))}
-                      disabled={!param.enabled}
-                    />
-                  </VKFlex>
-                </VKAnimatedCard>
+                  </VKAnimatedCard>
                 ))
               )}
             </VKFlex>
           </VKAnimatedCard>
 
           <VKAnimatedCard mode="shadow" padding="l" index={6} animationType="slide-up">
-            <VKFlex direction="column" gap="l">
-              <VKTitle level={3} weight="semibold">
+            <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-8)' }}>
+              <VKTitle
+                level={3}
+                weight="semibold"
+                style={{
+                  margin: 0,
+                  lineHeight: '1.4',
+                  fontSize: '20px',
+                  fontWeight: 600,
+                }}
+              >
                 Оптимизация производительности
               </VKTitle>
-              <VKGrid columns={2} gap="m">
-                <VKAnimatedCard mode="outline" padding="m" index={7} animationType="fade-in">
-                  <VKFlex direction="column" gap="s">
-                    <VKTitle level={4} weight="medium">
+              <VKGrid columns={2} style={{ gap: 'var(--vk-spacing-6)' }}>
+                <VKAnimatedCard
+                  mode="outline"
+                  padding="l"
+                  index={7}
+                  animationType="fade-in"
+                  style={{
+                    border: '1px solid var(--vk-color-border)',
+                    borderRadius: 'var(--vk-radius-lg)',
+                    height: '100%',
+                  }}
+                >
+                  <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-4)' }}>
+                    <VKTitle
+                      level={4}
+                      weight="medium"
+                      style={{
+                        margin: 0,
+                        lineHeight: '1.4',
+                        fontSize: '16px',
+                        fontWeight: 500,
+                      }}
+                    >
                       Автоматическая балансировка нагрузки
                     </VKTitle>
-                    <VKText size="sm" color="secondary">
+                    <VKText
+                      size="sm"
+                      color="secondary"
+                      style={{
+                        margin: 0,
+                        lineHeight: '1.5',
+                        fontSize: '14px',
+                      }}
+                    >
                       Равномерное распределение задач
                     </VKText>
-                    <VKCheckbox checked={true} onChange={() => {}} />
+                    <VKCheckbox
+                      checked={settingsData?.auto_balance_enabled || false}
+                      onChange={(e) => handleCheckboxChange('auto_balance_enabled', e.target.checked)}
+                    />
                   </VKFlex>
                 </VKAnimatedCard>
 
-                <VKAnimatedCard mode="outline" padding="m" index={8} animationType="fade-in">
-                  <VKFlex direction="column" gap="s">
-                    <VKTitle level={4} weight="medium">
+                <VKAnimatedCard
+                  mode="outline"
+                  padding="l"
+                  index={8}
+                  animationType="fade-in"
+                  style={{
+                    border: '1px solid var(--vk-color-border)',
+                    borderRadius: 'var(--vk-radius-lg)',
+                    height: '100%',
+                  }}
+                >
+                  <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-4)' }}>
+                    <VKTitle
+                      level={4}
+                      weight="medium"
+                      style={{
+                        margin: 0,
+                        lineHeight: '1.4',
+                        fontSize: '16px',
+                        fontWeight: 500,
+                      }}
+                    >
                       Предсказание сроков выполнения
                     </VKTitle>
-                    <VKText size="sm" color="secondary">
+                    <VKText
+                      size="sm"
+                      color="secondary"
+                      style={{
+                        margin: 0,
+                        lineHeight: '1.5',
+                        fontSize: '14px',
+                      }}
+                    >
                       На основе исторических данных
                     </VKText>
-                    <VKCheckbox checked={true} onChange={() => {}} />
+                    <VKCheckbox
+                      checked={settingsData?.predict_completion_enabled || false}
+                      onChange={(e) => handleCheckboxChange('predict_completion_enabled', e.target.checked)}
+                    />
                   </VKFlex>
                 </VKAnimatedCard>
 
-                <VKAnimatedCard mode="outline" padding="m" index={9} animationType="fade-in">
-                  <VKFlex direction="column" gap="s">
-                    <VKTitle level={4} weight="medium">
+                <VKAnimatedCard
+                  mode="outline"
+                  padding="l"
+                  index={9}
+                  animationType="fade-in"
+                  style={{
+                    border: '1px solid var(--vk-color-border)',
+                    borderRadius: 'var(--vk-radius-lg)',
+                    height: '100%',
+                  }}
+                >
+                  <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-4)' }}>
+                    <VKTitle
+                      level={4}
+                      weight="medium"
+                      style={{
+                        margin: 0,
+                        lineHeight: '1.4',
+                        fontSize: '16px',
+                        fontWeight: 500,
+                      }}
+                    >
                       Умные рекомендации
                     </VKTitle>
-                    <VKText size="sm" color="secondary">
+                    <VKText
+                      size="sm"
+                      color="secondary"
+                      style={{
+                        margin: 0,
+                        lineHeight: '1.5',
+                        fontSize: '14px',
+                      }}
+                    >
                       Персональные советы для сотрудников
                     </VKText>
-                    <VKCheckbox checked={true} onChange={() => {}} />
+                    <VKCheckbox
+                      checked={settingsData?.smart_recommendations_enabled || false}
+                      onChange={(e) => handleCheckboxChange('smart_recommendations_enabled', e.target.checked)}
+                    />
                   </VKFlex>
                 </VKAnimatedCard>
               </VKGrid>
@@ -210,44 +396,144 @@ export function AdminAISettingsPage() {
           </VKAnimatedCard>
 
           <VKAnimatedCard mode="shadow" padding="l" index={10} animationType="slide-up">
-            <VKFlex direction="column" gap="l">
-              <VKTitle level={3} weight="semibold">
+            <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-8)' }}>
+              <VKTitle
+                level={3}
+                weight="semibold"
+                style={{
+                  margin: 0,
+                  lineHeight: '1.4',
+                  fontSize: '20px',
+                  fontWeight: 600,
+                }}
+              >
                 Обучение и конфиденциальность
               </VKTitle>
-              <VKGrid columns={2} gap="m">
-                <VKAnimatedCard mode="outline" padding="m" index={11} animationType="fade-in">
-                  <VKFlex direction="column" gap="s">
-                    <VKTitle level={4} weight="medium">
+              <VKGrid columns={2} style={{ gap: 'var(--vk-spacing-6)' }}>
+                <VKAnimatedCard
+                  mode="outline"
+                  padding="l"
+                  index={11}
+                  animationType="fade-in"
+                  style={{
+                    border: '1px solid var(--vk-color-border)',
+                    borderRadius: 'var(--vk-radius-lg)',
+                    height: '100%',
+                  }}
+                >
+                  <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-4)' }}>
+                    <VKTitle
+                      level={4}
+                      weight="medium"
+                      style={{
+                        margin: 0,
+                        lineHeight: '1.4',
+                        fontSize: '16px',
+                        fontWeight: 500,
+                      }}
+                    >
                       Непрерывное обучение модели
                     </VKTitle>
-                    <VKText size="sm" color="secondary">
+                    <VKText
+                      size="sm"
+                      color="secondary"
+                      style={{
+                        margin: 0,
+                        lineHeight: '1.5',
+                        fontSize: '14px',
+                      }}
+                    >
                       Улучшение на основе обратной связи
                     </VKText>
-                    <VKCheckbox checked={true} onChange={() => {}} />
+                    <VKCheckbox
+                      checked={settingsData?.continuous_learning_enabled || false}
+                      onChange={(e) => handleCheckboxChange('continuous_learning_enabled', e.target.checked)}
+                    />
                   </VKFlex>
                 </VKAnimatedCard>
 
-                <VKAnimatedCard mode="outline" padding="m" index={12} animationType="fade-in">
-                  <VKFlex direction="column" gap="s">
-                    <VKTitle level={4} weight="medium">
+                <VKAnimatedCard
+                  mode="outline"
+                  padding="l"
+                  index={12}
+                  animationType="fade-in"
+                  style={{
+                    border: '1px solid var(--vk-color-border)',
+                    borderRadius: 'var(--vk-radius-lg)',
+                    height: '100%',
+                  }}
+                >
+                  <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-4)' }}>
+                    <VKTitle
+                      level={4}
+                      weight="medium"
+                      style={{
+                        margin: 0,
+                        lineHeight: '1.4',
+                        fontSize: '16px',
+                        fontWeight: 500,
+                      }}
+                    >
                       Анонимизация данных
                     </VKTitle>
-                    <VKText size="sm" color="secondary">
+                    <VKText
+                      size="sm"
+                      color="secondary"
+                      style={{
+                        margin: 0,
+                        lineHeight: '1.5',
+                        fontSize: '14px',
+                      }}
+                    >
                       Защита личной информации
                     </VKText>
-                    <VKCheckbox checked={true} onChange={() => {}} />
+                    <VKCheckbox
+                      checked={settingsData?.anonymization_enabled || false}
+                      onChange={(e) => handleCheckboxChange('anonymization_enabled', e.target.checked)}
+                    />
                   </VKFlex>
                 </VKAnimatedCard>
               </VKGrid>
 
-              <VKFlex direction="column" gap="m" style={{ marginTop: 'var(--vk-spacing-4)' }}>
-                <VKTitle level={4} weight="medium">
-                  Частота обновления модели
-                </VKTitle>
-                <VKText size="sm" color="secondary">
-                  Ежедневно
-                </VKText>
-              </VKFlex>
+              <VKAnimatedCard
+                mode="outline"
+                padding="l"
+                index={13}
+                animationType="fade-in"
+                style={{
+                  border: '1px solid var(--vk-color-border)',
+                  borderRadius: 'var(--vk-radius-lg)',
+                  marginTop: 'var(--vk-spacing-4)',
+                }}
+              >
+                <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-3)' }}>
+                  <VKTitle
+                    level={4}
+                    weight="medium"
+                    style={{
+                      margin: 0,
+                      lineHeight: '1.4',
+                      fontSize: '16px',
+                      fontWeight: 500,
+                    }}
+                  >
+                    Частота обновления модели
+                  </VKTitle>
+                  <VKText
+                    size="base"
+                    color="primary"
+                    weight="medium"
+                    style={{
+                      margin: 0,
+                      lineHeight: '1.5',
+                      fontSize: '14px',
+                      fontWeight: 500,
+                    }}
+                  >
+                    {settingsData?.model_update_frequency === 'daily' ? 'Ежедневно' : settingsData?.model_update_frequency || 'Ежедневно'}
+                  </VKText>
+                </VKFlex>
+              </VKAnimatedCard>
             </VKFlex>
           </VKAnimatedCard>
 

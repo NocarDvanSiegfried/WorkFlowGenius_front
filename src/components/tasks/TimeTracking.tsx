@@ -15,7 +15,7 @@ export function TimeTracking({ taskId }: TimeTrackingProps) {
     queryKey: ['time-tracking', taskId],
     queryFn: async () => {
       const response = await timeTrackingApi.getTimeTracking(taskId)
-      return response.data
+      return response.data.data
     },
     refetchInterval: isTracking ? 1000 : false, // Обновляем каждую секунду при активном отслеживании
   })
@@ -40,8 +40,8 @@ export function TimeTracking({ taskId }: TimeTrackingProps) {
     },
   })
 
-  const entries = timeTrackingData?.data || []
-  const totalMinutes = timeTrackingData?.total_minutes || 0
+  const entries = timeTrackingData?.data?.data || []
+  const totalMinutes = timeTrackingData?.data?.total_minutes || 0
   const totalHours = Math.floor(totalMinutes / 60)
   const remainingMinutes = totalMinutes % 60
 

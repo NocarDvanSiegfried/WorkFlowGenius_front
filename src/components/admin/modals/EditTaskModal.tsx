@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
-import { VKModal, VKFlex, VKFormItem, VKInput, VKSelect, VKButton, VKSeparator, VKSpacing, VKText, VKDatePicker } from '../../vk'
+import { VKFlex, VKFormItem, VKInput, VKSelect, VKButton, VKSeparator, VKSpacing, VKText } from '../../vk'
+import { VKModal } from '../../vk/VKModal'
+import { VKDatePicker } from '../../vk/VKDatePicker'
 import { useQuery } from '@tanstack/react-query'
 import { tasksApi } from '../../../services/api'
 

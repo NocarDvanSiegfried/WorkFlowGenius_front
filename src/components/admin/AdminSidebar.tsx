@@ -29,34 +29,58 @@ export function AdminSidebar({ employeeLoads, aiAnalysis }: AdminSidebarProps) {
             <VKAnimatedCard
               key={`${employee.name}-${index}`}
               variant="default"
-              padding="none"
+              padding="m"
               index={index}
               animationType="slide-up"
               data-vk-card-hover-admin
-              style={{ 
+              style={{
                 overflow: 'hidden',
-                padding: 'var(--vk-spacing-5)',
-                minHeight: '72px',
-                maxHeight: '72px',
                 border: '1px solid var(--vk-color-border-secondary)',
                 borderRadius: 'var(--vk-radius-lg)',
                 boxShadow: 'var(--vk-shadow-elevation-1)',
-                display: 'flex',
-                alignItems: 'center',
+                transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
               }}
             >
-              <VKFlex direction="row" align="center" justify="between" style={{ gap: 'var(--vk-spacing-4)', width: '100%', height: '100%' }}>
-                <VKFlex direction="row" align="center" style={{ gap: 'var(--vk-spacing-4)', flex: 1 }}>
-                  <VKAvatar name={employee.name} size="s" />
-                  <VKText size="sm" weight="medium" style={{ lineHeight: '1.5', wordWrap: 'break-word', overflowWrap: 'break-word', color: 'var(--vk-color-text-primary)' }}>
+              <VKFlex direction="row" align="center" justify="between" style={{ gap: 'var(--vk-spacing-4)', width: '100%' }}>
+                <VKFlex direction="row" align="center" style={{ gap: 'var(--vk-spacing-3)', flex: 1, minWidth: 0 }}>
+                  <VKAvatar name={employee.name} size="m" />
+                  <VKText
+                    size="base"
+                    weight="medium"
+                    style={{
+                      lineHeight: 'var(--vk-line-height-relaxed)',
+                      color: 'var(--vk-color-text-primary)',
+                      fontSize: 'var(--vk-font-size-sm)',
+                      fontWeight: 'var(--vk-font-weight-medium)',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      transition: 'color var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                    }}
+                  >
                     {employee.name}
                   </VKText>
                 </VKFlex>
                 <VKFlex direction="column" align="end" style={{ gap: 'var(--vk-spacing-2)', flexShrink: 0 }}>
-                  <VKText size="xs" color="secondary" style={{ lineHeight: '1.4', wordWrap: 'break-word', overflowWrap: 'break-word', fontWeight: 500 }}>
+                  <VKText
+                    size="sm"
+                    color="secondary"
+                    style={{
+                      lineHeight: 'var(--vk-line-height-normal)',
+                      fontSize: 'var(--vk-font-size-xs)',
+                      fontWeight: 'var(--vk-font-weight-medium)',
+                      transition: 'color var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                    }}
+                  >
                     {employee.load}/{employee.maxLoad}
                   </VKText>
-                  <VKProgress value={employee.load} max={employee.maxLoad} size="s" variant="accent" style={{ width: '60px' }} />
+                  <VKProgress
+                    value={employee.load}
+                    max={employee.maxLoad}
+                    size="s"
+                    variant="accent"
+                    style={{ width: '80px', minWidth: '80px' }}
+                  />
                 </VKFlex>
               </VKFlex>
             </VKAnimatedCard>

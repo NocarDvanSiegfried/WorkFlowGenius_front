@@ -17,7 +17,7 @@ export function TasksExtendedView() {
   const [priorityFilter, setPriorityFilter] = useState('all')
 
   return (
-    <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-10)' }}>
+    <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-12)' }}>
       <AIToast />
       
       {/* Header section */}
@@ -27,7 +27,7 @@ export function TasksExtendedView() {
       <StatsCardsExtended />
       
       {/* Search and filters - сгруппированы, увеличенные отступы */}
-      <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-6)' }}>
+      <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-8)' }}>
         <SearchPanel
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
@@ -52,9 +52,9 @@ export function TasksExtendedView() {
           gridTemplateColumns: '1fr 400px',
           alignItems: 'start',
           width: '100%',
-          gap: 'var(--vk-spacing-8)',
-          rowGap: 'var(--vk-spacing-8)',
-          columnGap: 'var(--vk-spacing-8)',
+          gap: 'var(--vk-spacing-10)',
+          rowGap: 'var(--vk-spacing-10)',
+          columnGap: 'var(--vk-spacing-10)',
         }}
         data-vk-tasks-grid
       >

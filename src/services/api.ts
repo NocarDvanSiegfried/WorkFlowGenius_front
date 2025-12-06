@@ -1,5 +1,4 @@
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios'
-import { authStore } from '../store/authStore'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
@@ -11,10 +10,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = authStore.getState().token
-    if (token && config.headers) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
+    // Без авторизации - не добавляем токен
     return config
   },
   (error) => Promise.reject(error)
@@ -23,17 +19,32 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error: AxiosError) => {
-    if (error.response?.status === 401) {
-      authStore.getState().logout()
-      if (window.location.pathname !== '/login') {
-        window.location.href = '/login'
-      }
+    // Без авторизации - не обрабатываем 401
+    // Логируем ошибки для отладки
+    if (error.response) {
+      console.error('API Error:', {
+        status: error.response.status,
+        statusText: error.response.statusText,
+        data: error.response.data,
+        url: error.config?.url,
+      })
+    } else if (error.request) {
+      console.error('API Request Error:', error.request)
+    } else {
+      console.error('API Error:', error.message)
     }
     return Promise.reject(error)
   }
 )
 
 export { api }
+
+// API функции для аутентификации
+export const authApi = {
+  login: (data: { email: string; password: string }) => api.post('/auth/login', data),
+  register: (data: { email: string; password: string; name: string; role?: string }) => api.post('/auth/register', data),
+  getCurrentUser: () => api.get('/auth/me'),
+}
 
 // API функции для команды
 export const teamApi = {
@@ -85,11 +96,8 @@ export const dashboardApi = {
 
 // API функции для задач
 export const tasksApi = {
-  getTasks: (searchQuery?: string, statusFilter?: string, params?: { status?: string; assigned_to?: number; search?: string }) => {
-    const queryParams: any = { ...params }
-    if (searchQuery) queryParams.search = searchQuery
-    if (statusFilter && statusFilter !== 'all') queryParams.status = statusFilter
-    return api.get('/tasks', { params: queryParams })
+  getTasks: (params?: { status?: string; assigned_to?: number; search?: string; priority?: string }) => {
+    return api.get('/tasks', { params: params || {} })
   },
   getTask: (taskId: number) => api.get(`/tasks/${taskId}`),
   createTask: (data: any) => api.post('/tasks', data),

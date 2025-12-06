@@ -1,20 +1,61 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { VKGrid, VKFlex } from '../../../components/vk'
-import { AdminLayout, AdminStatCard, AdminTasksTable, AdminSidebar } from '../../../components/admin'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { VKGrid, VKFlex, VKSpacing } from '../../../components/vk'
+import { AdminLayout, AdminStatCard, AdminTasksTable, AdminSidebar, ToastNotification } from '../../../components/admin'
 import type { Task, EmployeeLoad, AdminStats, AdminTab } from '../../../types/admin'
-import { dashboardApi } from '../../../services/api'
+import { dashboardApi, tasksApi } from '../../../services/api'
+import type { ToastType } from '../../../components/admin/ToastNotification'
 
 export function AdminDashboardPage() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard')
+  const [toast, setToast] = useState<{ id: string; message: string; type: ToastType; duration?: number } | null>(null)
 
   const { data: dashboardData, isLoading, error } = useQuery({
     queryKey: ['dashboard-manager'],
     queryFn: async () => {
       const response = await dashboardApi.getManagerDashboard()
       return response.data.data
+    },
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: async (taskId: string) => {
+      return await tasksApi.deleteTask(Number(taskId))
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard-manager'] })
+      setToast({ id: Date.now().toString(), message: 'Задача успешно удалена', type: 'success' })
+    },
+    onError: (error: any) => {
+      console.error('Ошибка удаления задачи:', error)
+      setToast({
+        id: Date.now().toString(),
+        message: error.response?.data?.message || 'Не удалось удалить задачу',
+        type: 'error',
+      })
+    },
+  })
+
+  const assignMutation = useMutation({
+    mutationFn: async (taskId: number) => {
+      return await tasksApi.assignTask(taskId)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tasks'] })
+      queryClient.invalidateQueries({ queryKey: ['dashboard-manager'] })
+      setToast({ id: Date.now().toString(), message: 'Задача успешно назначена', type: 'success' })
+    },
+    onError: (error: any) => {
+      console.error('Ошибка назначения задачи:', error)
+      setToast({
+        id: Date.now().toString(),
+        message: error.response?.data?.message || 'Не удалось назначить задачу',
+        type: 'error',
+      })
     },
   })
 
@@ -26,6 +67,20 @@ export function AdminDashboardPage() {
     if (tab === 'ai-settings') navigate('/admin/ai-settings')
     if (tab === 'analytics') navigate('/admin/analytics')
     if (tab === 'team-dna') navigate('/admin/team-dna')
+  }
+
+  const handleEdit = (id: string) => {
+    navigate(`/admin/tasks?edit=${id}`)
+  }
+
+  const handleDelete = (id: string) => {
+    if (confirm('Вы уверены, что хотите удалить эту задачу?')) {
+      deleteMutation.mutate(id)
+    }
+  }
+
+  const handleAssign = (id: string) => {
+    assignMutation.mutate(Number(id))
   }
 
   const stats: AdminStats = dashboardData?.stats || {
@@ -70,49 +125,51 @@ export function AdminDashboardPage() {
 
   return (
     <AdminLayout activeTab={activeTab} onTabChange={handleTabChange}>
-      <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-10)' }}>
-        {/* Stats cards - выровнены в одну строку, увеличенные отступы */}
-        <VKGrid columns={4} style={{ width: '100%', gap: 'var(--vk-spacing-8)', rowGap: 'var(--vk-spacing-8)', columnGap: 'var(--vk-spacing-8)' }}>
-          <AdminStatCard label="Всего задач" value={stats.total} index={0} />
-          <AdminStatCard label="Активных" value={stats.active} index={1} />
-          <AdminStatCard label="Просроченных" value={stats.overdue} index={2} />
-          <AdminStatCard label="Выполнено" value={stats.completed} index={3} />
-        </VKGrid>
+      <VKSpacing size="l">
+        <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-10)', maxWidth: '1400px', margin: '0 auto' }}>
+          {/* Stats cards - выровнены в одну строку с правильными отступами */}
+          <VKGrid columns={4} style={{ width: '100%', gap: 'var(--vk-spacing-6)' }}>
+            <AdminStatCard label="Всего задач" value={stats.total} index={0} />
+            <AdminStatCard label="Активных" value={stats.active} index={1} />
+            <AdminStatCard label="Просроченных" value={stats.overdue} index={2} />
+            <AdminStatCard label="Выполнено" value={stats.completed} index={3} />
+          </VKGrid>
 
-        {/* Main content: Двухколоночный макет - слева задачи, справа загрузка + аналитика */}
-        <VKGrid
-          columns={2}
-          style={{
-            gridTemplateColumns: '1fr 400px',
-            alignItems: 'start',
-            width: '100%',
-            gap: 'var(--vk-spacing-8)',
-            rowGap: 'var(--vk-spacing-8)',
-            columnGap: 'var(--vk-spacing-8)',
-          }}
-          data-vk-admin-grid
-        >
-          {/* Left: Tasks table - придерживается общей сетки, единая высота карточек */}
-          <VKFlex direction="column" grow style={{ minWidth: 0, maxWidth: '100%', width: '100%' }}>
-            <AdminTasksTable tasks={tasks} />
-          </VKFlex>
-          
-          {/* Right: Employee load + AI analytics - выровнены, одинаковой высоты */}
-          <VKFlex 
-            direction="column" 
-            style={{ 
-              width: '400px', 
-              flexShrink: 0,
+          {/* Main content: Двухколоночный макет - слева задачи, справа загрузка + аналитика */}
+          <VKGrid
+            columns={2}
+            style={{
+              gridTemplateColumns: '1fr 420px',
+              alignItems: 'start',
+              width: '100%',
               gap: 'var(--vk-spacing-8)',
             }}
+            data-vk-admin-grid
           >
-            <AdminSidebar
-              employeeLoads={employeeLoads}
-              aiAnalysis={dashboardData?.aiAnalysis || { recommendations: 0, applied: 0 }}
-            />
-          </VKFlex>
-        </VKGrid>
-      </VKFlex>
+            {/* Left: Tasks table */}
+            <VKFlex direction="column" grow style={{ minWidth: 0, maxWidth: '100%', width: '100%' }}>
+              <AdminTasksTable tasks={tasks} onEdit={handleEdit} onDelete={handleDelete} onAssign={handleAssign} />
+            </VKFlex>
+            
+            {/* Right: Employee load + AI analytics */}
+            <VKFlex 
+              direction="column" 
+              style={{ 
+                width: '100%',
+                maxWidth: '420px',
+                flexShrink: 0,
+                gap: 'var(--vk-spacing-8)',
+              }}
+            >
+              <AdminSidebar
+                employeeLoads={employeeLoads}
+                aiAnalysis={dashboardData?.aiAnalysis || { recommendations: 0, applied: 0 }}
+              />
+            </VKFlex>
+          </VKGrid>
+        </VKFlex>
+      </VKSpacing>
+      <ToastNotification toast={toast} onClose={() => setToast(null)} />
     </AdminLayout>
   )
 }

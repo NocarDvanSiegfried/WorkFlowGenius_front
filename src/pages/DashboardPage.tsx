@@ -51,18 +51,40 @@ export function DashboardPage() {
 
   return (
     <>
-      <VKSpacing size="s">
+      <VKSpacing size="l">
         <VKSectionHeader title="Дашборд" />
       </VKSpacing>
 
       {user && (
-        <VKSpacing size="s">
-          <VKAnimatedCard mode="shadow" padding="m" index={0} animationType="fade-in">
-            <VKFlex direction="column" gap="s">
-              <VKText size="base" color="secondary">
+        <VKSpacing size="m">
+          <VKAnimatedCard 
+            mode="shadow" 
+            padding="l" 
+            index={0} 
+            animationType="fade-in"
+            data-vk-card-hover-main
+            style={{
+              transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+            }}
+          >
+            <VKFlex direction="column" gap="m">
+              <VKText 
+                size="base" 
+                color="primary"
+                style={{
+                  fontSize: 'var(--vk-font-size-lg)',
+                  fontWeight: 'var(--vk-font-weight-medium)',
+                }}
+              >
                 Привет, {user.name}!
               </VKText>
-              <VKText size="sm" color="tertiary">
+              <VKText 
+                size="sm" 
+                color="secondary"
+                style={{
+                  fontSize: 'var(--vk-font-size-sm)',
+                }}
+              >
                 Роль: {user.role}
               </VKText>
             </VKFlex>
@@ -71,36 +93,120 @@ export function DashboardPage() {
       )}
 
       {dashboardData && (
-        <VKSpacing size="m">
-          <VKGrid columns={3} gap="m">
+        <VKSpacing size="l">
+          <VKGrid columns={3} gap="l">
             {user?.role === 'manager' ? (
               <>
-                <VKAnimatedCard mode="shadow" padding="m" index={0} animationType="slide-up">
-                  <VKFlex direction="column" gap="s">
-                    <VKTitle level={5} weight="semibold">
+                <VKAnimatedCard 
+                  mode="shadow" 
+                  padding="l" 
+                  index={0} 
+                  animationType="slide-up"
+                  data-vk-card-hover-main
+                  style={{
+                    transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                  }}
+                >
+                  <VKFlex direction="column" gap="m">
+                    <VKTitle 
+                      level={5} 
+                      weight="semibold"
+                      style={{
+                        fontSize: 'var(--vk-font-size-sm)',
+                        fontWeight: 'var(--vk-font-weight-semibold)',
+                        color: 'var(--vk-color-text-secondary)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                      }}
+                    >
                       Всего задач
                     </VKTitle>
-                    <VKTitle level={4} weight="bold">
+                    <VKTitle 
+                      level={4} 
+                      weight="bold"
+                      style={{
+                        fontSize: 'var(--vk-font-size-3xl)',
+                        fontWeight: 'var(--vk-font-weight-bold)',
+                        color: 'var(--vk-color-text-primary)',
+                        lineHeight: 'var(--vk-line-height-tight)',
+                      }}
+                    >
                       {dashboardData.tasks?.total || 0}
                     </VKTitle>
                   </VKFlex>
                 </VKAnimatedCard>
-                <VKAnimatedCard mode="shadow" padding="m" index={1} animationType="slide-up">
-                  <VKFlex direction="column" gap="s">
-                    <VKTitle level={5} weight="semibold">
+                <VKAnimatedCard 
+                  mode="shadow" 
+                  padding="l" 
+                  index={1} 
+                  animationType="slide-up"
+                  data-vk-card-hover-main
+                  style={{
+                    transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                  }}
+                >
+                  <VKFlex direction="column" gap="m">
+                    <VKTitle 
+                      level={5} 
+                      weight="semibold"
+                      style={{
+                        fontSize: 'var(--vk-font-size-sm)',
+                        fontWeight: 'var(--vk-font-weight-semibold)',
+                        color: 'var(--vk-color-text-secondary)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                      }}
+                    >
                       В работе
                     </VKTitle>
-                    <VKTitle level={4} weight="bold">
+                    <VKTitle 
+                      level={4} 
+                      weight="bold"
+                      style={{
+                        fontSize: 'var(--vk-font-size-3xl)',
+                        fontWeight: 'var(--vk-font-weight-bold)',
+                        color: 'var(--vk-color-text-primary)',
+                        lineHeight: 'var(--vk-line-height-tight)',
+                      }}
+                    >
                       {dashboardData.tasks?.in_progress || 0}
                     </VKTitle>
                   </VKFlex>
                 </VKAnimatedCard>
-                <VKAnimatedCard mode="shadow" padding="m" index={2} animationType="slide-up">
-                  <VKFlex direction="column" gap="s">
-                    <VKTitle level={5} weight="semibold">
+                <VKAnimatedCard 
+                  mode="shadow" 
+                  padding="l" 
+                  index={2} 
+                  animationType="slide-up"
+                  data-vk-card-hover-main
+                  style={{
+                    transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                  }}
+                >
+                  <VKFlex direction="column" gap="m">
+                    <VKTitle 
+                      level={5} 
+                      weight="semibold"
+                      style={{
+                        fontSize: 'var(--vk-font-size-sm)',
+                        fontWeight: 'var(--vk-font-weight-semibold)',
+                        color: 'var(--vk-color-text-secondary)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                      }}
+                    >
                       Завершено
                     </VKTitle>
-                    <VKTitle level={4} weight="bold">
+                    <VKTitle 
+                      level={4} 
+                      weight="bold"
+                      style={{
+                        fontSize: 'var(--vk-font-size-3xl)',
+                        fontWeight: 'var(--vk-font-weight-bold)',
+                        color: 'var(--vk-color-text-primary)',
+                        lineHeight: 'var(--vk-line-height-tight)',
+                      }}
+                    >
                       {dashboardData.tasks?.completed || 0}
                     </VKTitle>
                   </VKFlex>
@@ -108,32 +214,116 @@ export function DashboardPage() {
               </>
             ) : (
               <>
-                <VKAnimatedCard mode="shadow" padding="m" index={0} animationType="slide-up">
-                  <VKFlex direction="column" gap="s">
-                    <VKTitle level={5} weight="semibold">
+                <VKAnimatedCard 
+                  mode="shadow" 
+                  padding="l" 
+                  index={0} 
+                  animationType="slide-up"
+                  data-vk-card-hover-main
+                  style={{
+                    transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                  }}
+                >
+                  <VKFlex direction="column" gap="m">
+                    <VKTitle 
+                      level={5} 
+                      weight="semibold"
+                      style={{
+                        fontSize: 'var(--vk-font-size-sm)',
+                        fontWeight: 'var(--vk-font-weight-semibold)',
+                        color: 'var(--vk-color-text-secondary)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                      }}
+                    >
                       Мои задачи
                     </VKTitle>
-                    <VKTitle level={4} weight="bold">
+                    <VKTitle 
+                      level={4} 
+                      weight="bold"
+                      style={{
+                        fontSize: 'var(--vk-font-size-3xl)',
+                        fontWeight: 'var(--vk-font-weight-bold)',
+                        color: 'var(--vk-color-text-primary)',
+                        lineHeight: 'var(--vk-line-height-tight)',
+                      }}
+                    >
                       {dashboardData.tasks?.total || 0}
                     </VKTitle>
                   </VKFlex>
                 </VKAnimatedCard>
-                <VKAnimatedCard mode="shadow" padding="m" index={1} animationType="slide-up">
-                  <VKFlex direction="column" gap="s">
-                    <VKTitle level={5} weight="semibold">
+                <VKAnimatedCard 
+                  mode="shadow" 
+                  padding="l" 
+                  index={1} 
+                  animationType="slide-up"
+                  data-vk-card-hover-main
+                  style={{
+                    transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                  }}
+                >
+                  <VKFlex direction="column" gap="m">
+                    <VKTitle 
+                      level={5} 
+                      weight="semibold"
+                      style={{
+                        fontSize: 'var(--vk-font-size-sm)',
+                        fontWeight: 'var(--vk-font-weight-semibold)',
+                        color: 'var(--vk-color-text-secondary)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                      }}
+                    >
                       В работе
                     </VKTitle>
-                    <VKTitle level={4} weight="bold">
+                    <VKTitle 
+                      level={4} 
+                      weight="bold"
+                      style={{
+                        fontSize: 'var(--vk-font-size-3xl)',
+                        fontWeight: 'var(--vk-font-weight-bold)',
+                        color: 'var(--vk-color-text-primary)',
+                        lineHeight: 'var(--vk-line-height-tight)',
+                      }}
+                    >
                       {dashboardData.tasks?.in_progress || 0}
                     </VKTitle>
                   </VKFlex>
                 </VKAnimatedCard>
-                <VKAnimatedCard mode="shadow" padding="m" index={2} animationType="slide-up">
-                  <VKFlex direction="column" gap="s">
-                    <VKTitle level={5} weight="semibold">
+                <VKAnimatedCard 
+                  mode="shadow" 
+                  padding="l" 
+                  index={2} 
+                  animationType="slide-up"
+                  data-vk-card-hover-main
+                  style={{
+                    transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                  }}
+                >
+                  <VKFlex direction="column" gap="m">
+                    <VKTitle 
+                      level={5} 
+                      weight="semibold"
+                      style={{
+                        fontSize: 'var(--vk-font-size-sm)',
+                        fontWeight: 'var(--vk-font-weight-semibold)',
+                        color: 'var(--vk-color-text-secondary)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '0.5px',
+                      }}
+                    >
                       Завершено
                     </VKTitle>
-                    <VKTitle level={4} weight="bold">
+                    <VKTitle 
+                      level={4} 
+                      weight="bold"
+                      style={{
+                        fontSize: 'var(--vk-font-size-3xl)',
+                        fontWeight: 'var(--vk-font-weight-bold)',
+                        color: 'var(--vk-color-text-primary)',
+                        lineHeight: 'var(--vk-line-height-tight)',
+                      }}
+                    >
                       {dashboardData.tasks?.completed || 0}
                     </VKTitle>
                   </VKFlex>

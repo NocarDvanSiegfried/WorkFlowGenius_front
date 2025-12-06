@@ -12,6 +12,8 @@ export function GlobalHeader() {
       zIndex: 100, 
       backgroundColor: 'var(--vk-color-background-content)',
       borderBottom: '1px solid var(--vk-color-border-secondary)',
+      backdropFilter: 'blur(10px)',
+      transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
     }}>
       <VKContainer size="xl" style={{ maxWidth: '1440px', margin: '0 auto', width: '100%' }}>
         <VKGrid
@@ -20,14 +22,34 @@ export function GlobalHeader() {
           style={{
             gridTemplateColumns: 'auto 1fr',
             alignItems: 'center',
-            height: '64px',
-            minHeight: '64px',
+            height: '72px',
+            minHeight: '72px',
             width: '100%',
+            padding: '0 var(--vk-spacing-6)',
           }}
         >
           {/* Logo */}
-          <VKLink to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-            <VKTitle level={3} weight="semibold" style={{ margin: 0, whiteSpace: 'nowrap' }}>
+          <VKLink 
+            to="/" 
+            style={{ 
+              textDecoration: 'none', 
+              display: 'flex', 
+              alignItems: 'center',
+              transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+            }}
+          >
+            <VKTitle 
+              level={3} 
+              weight="semibold" 
+              style={{ 
+                margin: 0, 
+                whiteSpace: 'nowrap',
+                fontSize: 'var(--vk-font-size-xl)',
+                fontWeight: 'var(--vk-font-weight-semibold)',
+                color: 'var(--vk-color-text-primary)',
+                transition: 'color var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+              }}
+            >
               VK TaskFlow
             </VKTitle>
           </VKLink>
@@ -55,8 +77,22 @@ export function GlobalHeader() {
             </VKNavLink>
             {isAuthenticated && <NotificationsDropdown />}
             {!isAuthenticated && (
-              <VKLink to="/login" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
-                <VKButton variant="primary" size="m">
+              <VKLink 
+                to="/login" 
+                style={{ 
+                  textDecoration: 'none', 
+                  display: 'flex', 
+                  alignItems: 'center',
+                  transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                }}
+              >
+                <VKButton 
+                  variant="primary" 
+                  size="m"
+                  style={{
+                    transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                  }}
+                >
                   Войти
                 </VKButton>
               </VKLink>

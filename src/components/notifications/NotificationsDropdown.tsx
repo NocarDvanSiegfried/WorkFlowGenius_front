@@ -13,7 +13,10 @@ export function NotificationsDropdown() {
     queryKey: ['notifications'],
     queryFn: async () => {
       const response = await notificationsApi.getNotifications({ limit: 10 })
-      return response.data
+      return {
+        notifications: response.data.data || [],
+        unread_count: response.data.unread_count || 0,
+      }
     },
     refetchInterval: 30000, // Обновляем каждые 30 секунд
   })
@@ -36,7 +39,7 @@ export function NotificationsDropdown() {
     },
   })
 
-  const notifications = notificationsData?.data || []
+  const notifications = notificationsData?.notifications || []
   const unreadCount = notificationsData?.unread_count || 0
 
   const handleNotificationClick = (notification: any) => {

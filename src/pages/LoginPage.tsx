@@ -33,21 +33,33 @@ export function LoginPage() {
   }
 
   return (
-    <VKFlex direction="column" align="center" justify="center" style={{ minHeight: 'calc(100vh - 128px)' }}>
+    <VKFlex 
+      direction="column" 
+      align="center" 
+      justify="center" 
+      style={{ 
+        minHeight: 'calc(100vh - 128px)',
+        padding: 'var(--vk-spacing-8)',
+      }}
+    >
       <VKAnimatedCard 
         variant="elevated" 
         padding="l" 
         index={0} 
-        animationType="fade-in"
-        style={{ width: '100%', maxWidth: '420px' }}
-        data-vk-card-hover
+        animationType="scale-in"
+        style={{ 
+          width: '100%', 
+          maxWidth: '440px',
+          transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+        }}
+        data-vk-card-hover-main
       >
-        <VKFlex direction="column" gap="m">
-          <VKFlex justify="center">
+        <VKFlex direction="column" gap="l">
+          <VKFlex justify="center" style={{ marginBottom: 'var(--vk-spacing-2)' }}>
             <VKSectionHeader title="Вход" />
           </VKFlex>
           <form onSubmit={handleSubmit}>
-            <VKFlex direction="column" gap="m">
+            <VKFlex direction="column" gap="l">
               <VKFormItem label="Email" required>
                 <VKInput
                   id="email"
@@ -69,17 +81,30 @@ export function LoginPage() {
                 />
               </VKFormItem>
               {error && (
-                <VKText size="sm" color="primary" style={{ margin: 0 }}>
+                <VKText 
+                  size="sm" 
+                  color="danger" 
+                  style={{ 
+                    margin: 0,
+                    padding: 'var(--vk-spacing-3)',
+                    backgroundColor: 'var(--vk-color-background-accent)',
+                    borderRadius: 'var(--vk-radius-md)',
+                    transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                  }}
+                >
                   {error}
                 </VKText>
               )}
-              <VKFlex>
+              <VKFlex style={{ marginTop: 'var(--vk-spacing-2)' }}>
                 <VKButton
                   type="submit"
                   variant="primary"
-                  size="m"
+                  size="l"
                   loading={loading}
-                  style={{ width: '100%' }}
+                  style={{ 
+                    width: '100%',
+                    transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                  }}
                 >
                   Войти
                 </VKButton>

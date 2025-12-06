@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { VKFlex, VKButton, VKInput, VKSelect, VKCard } from '../../../components/vk'
+import { VKFlex, VKButton, VKInput, VKSelect, VKSpacing, VKTitle, VKAnimatedCard } from '../../../components/vk'
 import { AdminLayout, AdminTasksTable, AddTaskModal, EditTaskModal } from '../../../components/admin'
 import { ToastNotification } from '../../../components/admin/ToastNotification'
 import type { Task, AdminTab } from '../../../types/admin'
@@ -22,7 +22,10 @@ export function AdminTasksPage() {
   const { data: tasksData, isLoading, error } = useQuery({
     queryKey: ['tasks', searchQuery, statusFilter],
     queryFn: async () => {
-      const response = await tasksApi.getTasks(searchQuery, statusFilter === 'all' ? undefined : statusFilter)
+      const params: any = {}
+      if (searchQuery) params.search = searchQuery
+      if (statusFilter && statusFilter !== 'all') params.status = statusFilter
+      const response = await tasksApi.getTasks(params)
       return response.data.data
     },
   })
@@ -216,32 +219,67 @@ export function AdminTasksPage() {
 
   return (
     <AdminLayout activeTab={activeTab} onTabChange={handleTabChange}>
-      <VKFlex direction="column" gap="l">
-        {/* Панель управления: поиск, фильтры и кнопка создания */}
-        <VKCard variant="default" padding="m">
-          <VKFlex direction="column" gap="m">
-            <VKFlex align="center" gap="m" style={{ flexWrap: 'wrap' }}>
-              <VKInput
-                type="text"
-                placeholder="Поиск задач..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ flex: '1', minWidth: '200px' }}
-              />
-              <VKSelect
-                options={statusFilterOptions}
-                value={statusFilter}
-                onChange={(e) => setStatusFilter(e.target.value)}
-                style={{ minWidth: '150px' }}
-              />
-              <VKButton variant="primary" onClick={() => setIsAddModalOpen(true)}>
-                Создать задачу
-              </VKButton>
-            </VKFlex>
+      <VKSpacing size="l">
+        <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-10)', maxWidth: '1400px', margin: '0 auto' }}>
+          {/* Панель управления: поиск, фильтры и кнопка создания */}
+          <VKFlex justify="between" align="center" style={{ gap: 'var(--vk-spacing-6)', flexWrap: 'wrap' }}>
+            <VKTitle
+              level={2}
+              weight="bold"
+              style={{
+                margin: 0,
+                lineHeight: 'var(--vk-line-height-tight)',
+                fontSize: 'var(--vk-font-size-2xl)',
+                fontWeight: 'var(--vk-font-weight-bold)',
+                color: 'var(--vk-color-text-primary)',
+              }}
+            >
+              Управление задачами
+            </VKTitle>
+            <VKButton 
+              variant="primary" 
+              size="l" 
+              onClick={() => setIsAddModalOpen(true)}
+              style={{
+                transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+              }}
+            >
+              Создать задачу
+            </VKButton>
           </VKFlex>
-        </VKCard>
 
-        <AdminTasksTable tasks={tasks} onEdit={handleEdit} onDelete={handleDelete} onAssign={handleAssignTask} />
+          <VKAnimatedCard
+            mode="shadow"
+            padding="l"
+            index={0}
+            animationType="fade-in"
+            data-vk-card-hover-main
+            style={{
+              border: '1px solid var(--vk-color-border-secondary)',
+              borderRadius: 'var(--vk-radius-lg)',
+              transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+            }}
+          >
+            <VKFlex direction="column" style={{ gap: 'var(--vk-spacing-6)' }}>
+              <VKFlex align="center" style={{ gap: 'var(--vk-spacing-6)', flexWrap: 'wrap' }}>
+                <VKInput
+                  type="text"
+                  placeholder="Поиск задач..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  style={{ flex: '1', minWidth: '200px' }}
+                />
+                <VKSelect
+                  options={statusFilterOptions}
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  style={{ minWidth: '150px' }}
+                />
+              </VKFlex>
+            </VKFlex>
+          </VKAnimatedCard>
+
+          <AdminTasksTable tasks={tasks} onEdit={handleEdit} onDelete={handleDelete} onAssign={handleAssignTask} />
 
         <AddTaskModal
           isOpen={isAddModalOpen}
@@ -259,8 +297,9 @@ export function AdminTasksPage() {
           onSubmit={handleUpdateTask}
         />
 
-        <ToastNotification toast={toast} onClose={() => setToast(null)} />
-      </VKFlex>
+          <ToastNotification toast={toast} onClose={() => setToast(null)} />
+        </VKFlex>
+      </VKSpacing>
     </AdminLayout>
   )
 }

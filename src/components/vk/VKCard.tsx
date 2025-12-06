@@ -26,7 +26,7 @@ export function VKCard({
   const cardStyle: CSSProperties = {
     backgroundColor: 'var(--vk-color-background-content)',
     borderRadius: 'var(--vk-radius-lg)',
-    transition: 'all var(--vk-transition-base) var(--vk-motion-easing-standard)',
+    transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
     overflow: 'hidden',
     ...style,
   }

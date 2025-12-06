@@ -548,28 +548,110 @@ body {
 
 /* Hover анимации для карточек на главной странице */
 [data-vk-card-hover-main] {
-  transition: box-shadow 0.25s ease,
-              transform 0.25s ease,
-              opacity 0.25s ease;
+  transition: box-shadow var(--vk-motion-duration-base) var(--vk-motion-easing-standard),
+              transform var(--vk-motion-duration-base) var(--vk-motion-easing-standard),
+              opacity var(--vk-motion-duration-base) var(--vk-motion-easing-standard),
+              border-color var(--vk-motion-duration-base) var(--vk-motion-easing-standard);
   cursor: pointer;
 }
 
 [data-vk-card-hover-main]:hover {
-  box-shadow: var(--vk-shadow-elevation-3) !important;
-  transform: translateY(-4px) scale(1.02);
+  box-shadow: var(--vk-shadow-elevation-4) !important;
+  transform: translateY(calc(var(--vk-motion-translate-y-hover) * 1.5)) scale(var(--vk-motion-scale-hover));
+  border-color: var(--vk-color-border-accent);
 }
 
 /* Hover анимации для карточек в админке */
 [data-vk-card-hover-admin] {
-  transition: box-shadow 0.25s ease,
-              transform 0.25s ease,
-              opacity 0.25s ease;
+  transition: box-shadow var(--vk-motion-duration-base) var(--vk-motion-easing-standard),
+              transform var(--vk-motion-duration-base) var(--vk-motion-easing-standard),
+              opacity var(--vk-motion-duration-base) var(--vk-motion-easing-standard),
+              border-color var(--vk-motion-duration-base) var(--vk-motion-easing-standard),
+              background-color var(--vk-motion-duration-base) var(--vk-motion-easing-standard);
   cursor: pointer;
 }
 
 [data-vk-card-hover-admin]:hover {
-  box-shadow: var(--vk-shadow-elevation-2) !important;
-  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--vk-shadow-elevation-3) !important;
+  transform: translateY(var(--vk-motion-translate-y-hover)) scale(var(--vk-motion-scale-hover));
+  border-color: var(--vk-color-border-accent);
+  background-color: var(--vk-color-background-hover);
+}
+
+/* Hover эффекты для строк таблицы */
+[data-vk-row-hover] {
+  transition: background-color var(--vk-motion-duration-base) var(--vk-motion-easing-standard);
+  cursor: default;
+}
+
+[data-vk-row-hover]:hover {
+  background-color: var(--vk-color-background-hover) !important;
+}
+
+/* Улучшенное выравнивание для таблицы команды */
+[data-vk-team-table] {
+  display: grid;
+  grid-template-columns: 80px 1fr 140px 140px 100px 180px 120px 1fr;
+  gap: var(--vk-spacing-6);
+  width: 100%;
+  align-items: center;
+}
+
+[data-vk-team-table] > * {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color var(--vk-motion-duration-base) var(--vk-motion-easing-standard);
+  min-width: 0; /* Позволяет тексту обрезаться */
+}
+
+[data-vk-team-table] > *:first-child {
+  text-align: center;
+  font-weight: var(--vk-font-weight-medium);
+  justify-self: center;
+  min-width: 60px;
+}
+
+[data-vk-team-table] > *:nth-child(2) {
+  min-width: 150px;
+  max-width: 100%;
+}
+
+[data-vk-team-table] > *:nth-child(3),
+[data-vk-team-table] > *:nth-child(4),
+[data-vk-team-table] > *:nth-child(5),
+[data-vk-team-table] > *:nth-child(6),
+[data-vk-team-table] > *:nth-child(7) {
+  text-align: center;
+  justify-self: center;
+  font-weight: var(--vk-font-weight-medium);
+  min-width: 80px;
+}
+
+[data-vk-team-table] > *:last-child {
+  min-width: 150px;
+  max-width: 100%;
+}
+
+/* Адаптивность для таблицы команды */
+@media screen and (max-width: 1200px) {
+  [data-vk-team-table] {
+    grid-template-columns: 60px 1fr 120px 120px 80px 150px 100px 1fr;
+    gap: var(--vk-spacing-4);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  [data-vk-team-table] {
+    grid-template-columns: 1fr;
+    gap: var(--vk-spacing-2);
+  }
+  
+  [data-vk-team-table] > * {
+    text-align: left !important;
+    white-space: normal;
+  }
 }
 
 /* Адаптивность для задач на мобильных */

@@ -13,7 +13,7 @@ import { ClockIcon, TrendingUpIcon, DollarSignIcon } from '../components/icons'
 
 export function MainMenuPage() {
   return (
-    <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-12)' }}>
+    <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-16)' }}>
       {/* Hero Section - выровнены по высоте и ширине */}
       <VKGrid 
         columns={2}
@@ -21,9 +21,9 @@ export function MainMenuPage() {
           gridTemplateColumns: '1fr 1fr',
           alignItems: 'start',
           width: '100%',
-          gap: 'var(--vk-spacing-8)',
-          rowGap: 'var(--vk-spacing-8)',
-          columnGap: 'var(--vk-spacing-8)',
+          gap: 'var(--vk-spacing-10)',
+          rowGap: 'var(--vk-spacing-10)',
+          columnGap: 'var(--vk-spacing-10)',
         }}
         data-vk-hero-grid
       >
@@ -32,23 +32,52 @@ export function MainMenuPage() {
           padding="l" 
           index={0} 
           animationType="fade-in"
-          data-vk-card-hover
+          data-vk-card-hover-main
           style={{ 
             display: 'flex', 
             flexDirection: 'column', 
             justifyContent: 'center',
-            minHeight: '320px',
+            minHeight: '360px',
+            transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
           }}
         >
-          <VKFlex direction="column" gap="m">
-            <VKTitle level={2} weight="bold" style={{ margin: 0, lineHeight: '1.4', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+          <VKFlex direction="column" gap="l" style={{ width: '100%' }}>
+            <VKTitle 
+              level={2} 
+              weight="bold" 
+              style={{ 
+                margin: 0, 
+                lineHeight: 'var(--vk-line-height-tight)', 
+                wordWrap: 'break-word', 
+                overflowWrap: 'break-word',
+                fontSize: 'var(--vk-font-size-3xl)',
+                fontWeight: 'var(--vk-font-weight-bold)',
+                color: 'var(--vk-color-text-primary)',
+              }}
+            >
               VK TaskFlow для умного распределения задач
             </VKTitle>
-            <VKText size="base" color="secondary" style={{ margin: 0, lineHeight: '1.6', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+            <VKText 
+              size="base" 
+              color="secondary" 
+              style={{ 
+                margin: 0, 
+                lineHeight: 'var(--vk-line-height-relaxed)', 
+                wordWrap: 'break-word', 
+                overflowWrap: 'break-word',
+                fontSize: 'var(--vk-font-size-base)',
+              }}
+            >
               Используйте возможности ИИ для оптимизации рабочего процесса: учитывайте загрузку сотрудников, их предпочтения и компетенции. Это идеальное дополнение к VK WorkSpace, которое сделает вашу работу более эффективной и слаженной
             </VKText>
-            <VKLink to="/login" style={{ textDecoration: 'none' }}>
-              <VKButton variant="primary" size="l">
+            <VKLink to="/login" style={{ textDecoration: 'none', marginTop: 'var(--vk-spacing-2)' }}>
+              <VKButton 
+                variant="primary" 
+                size="l"
+                style={{
+                  transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
+                }}
+              >
                 Начать работу
               </VKButton>
             </VKLink>
@@ -60,12 +89,13 @@ export function MainMenuPage() {
           padding="l" 
           index={1} 
           animationType="slide-in-from-right"
-          data-vk-card-hover
+          data-vk-card-hover-main
           style={{ 
             display: 'flex', 
             alignItems: 'center', 
             justifyContent: 'center',
-            minHeight: '320px',
+            minHeight: '360px',
+            transition: 'all var(--vk-motion-duration-base) var(--vk-motion-easing-standard)',
           }}
         >
           <VKFlex direction="column" align="center" justify="center">
@@ -77,8 +107,8 @@ export function MainMenuPage() {
       </VKGrid>
 
       {/* Benefits Section - 3 cards in row, одинаковой высоты, увеличенные отступы */}
-      <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-8)', marginTop: 'var(--vk-spacing-12)' }}>
-        <VKFlex justify="center" style={{ marginBottom: 'var(--vk-spacing-8)' }}>
+      <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-10)' }}>
+        <VKFlex justify="center" style={{ marginBottom: 'var(--vk-spacing-6)' }}>
           <VKSectionHeader title="Преимущества для вашего бизнеса" />
         </VKFlex>
         <VKGrid 
@@ -86,9 +116,9 @@ export function MainMenuPage() {
           style={{
             gridTemplateColumns: 'repeat(3, 1fr)',
             alignItems: 'start',
-            gap: 'var(--vk-spacing-8)',
-            rowGap: 'var(--vk-spacing-8)',
-            columnGap: 'var(--vk-spacing-8)',
+            gap: 'var(--vk-spacing-10)',
+            rowGap: 'var(--vk-spacing-10)',
+            columnGap: 'var(--vk-spacing-10)',
           }}
           data-vk-feature-grid
         >
@@ -123,8 +153,8 @@ export function MainMenuPage() {
       </VKFlex>
 
       {/* Features Section - 2×2 grid на обычных экранах, 4 колонки на больших (1920+), четкая блочная сетка, равномерные отступы */}
-      <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-8)' }}>
-        <VKFlex justify="center" style={{ marginBottom: 'var(--vk-spacing-8)' }}>
+      <VKFlex direction="column" style={{ width: '100%', gap: 'var(--vk-spacing-10)' }}>
+        <VKFlex justify="center" style={{ marginBottom: 'var(--vk-spacing-6)' }}>
           <VKSectionHeader title="Ключевые возможности" />
         </VKFlex>
         <VKGrid 
@@ -132,9 +162,9 @@ export function MainMenuPage() {
           style={{
             gridTemplateColumns: 'repeat(2, 1fr)',
             alignItems: 'start',
-            gap: 'var(--vk-spacing-8)',
-            rowGap: 'var(--vk-spacing-8)',
-            columnGap: 'var(--vk-spacing-8)',
+            gap: 'var(--vk-spacing-10)',
+            rowGap: 'var(--vk-spacing-10)',
+            columnGap: 'var(--vk-spacing-10)',
           }}
           data-vk-features-grid
         >

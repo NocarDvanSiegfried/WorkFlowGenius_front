@@ -7,7 +7,7 @@ import { TaskComments } from '../components/tasks/TaskComments'
 import { TaskTags } from '../components/tasks/TaskTags'
 import { TimeTracking } from '../components/tasks/TimeTracking'
 import { TaskHistory } from '../components/tasks/TaskHistory'
-import { ProtectedRoute } from '../components/ProtectedRoute'
+// Без авторизации - убрали ProtectedRoute
 
 export function TaskDetailPage() {
   const { taskId } = useParams<{ taskId: string }>()
@@ -44,27 +44,23 @@ export function TaskDetailPage() {
   }
 
   if (isLoading) {
-    return (
-      <ProtectedRoute>
-        <VKFlex direction="column" gap="m" style={{ padding: 'var(--vk-spacing-8)', maxWidth: '1200px', margin: '0 auto' }}>
-          <VKSkeleton width="100%" height="40px" />
-          <VKSkeleton width="100%" height="200px" />
-          <VKSkeleton width="100%" height="150px" />
-        </VKFlex>
-      </ProtectedRoute>
-    )
+        return (
+          <VKFlex direction="column" gap="m" style={{ padding: 'var(--vk-spacing-8)', maxWidth: '1200px', margin: '0 auto' }}>
+            <VKSkeleton width="100%" height="40px" />
+            <VKSkeleton width="100%" height="200px" />
+            <VKSkeleton width="100%" height="150px" />
+          </VKFlex>
+        )
   }
 
   if (error || !taskData) {
     return (
-      <ProtectedRoute>
-        <VKFlex direction="column" align="center" gap="m" style={{ padding: 'var(--vk-spacing-8)' }}>
-          <VKText size="base" color="danger">Ошибка загрузки задачи</VKText>
-          <VKButton variant="secondary" onClick={() => navigate('/tasks')}>
-            Вернуться к задачам
-          </VKButton>
-        </VKFlex>
-      </ProtectedRoute>
+      <VKFlex direction="column" align="center" gap="m" style={{ padding: 'var(--vk-spacing-8)' }}>
+        <VKText size="base" color="danger">Ошибка загрузки задачи</VKText>
+        <VKButton variant="secondary" onClick={() => navigate('/tasks')}>
+          Вернуться к задачам
+        </VKButton>
+      </VKFlex>
     )
   }
 
@@ -90,8 +86,7 @@ export function TaskDetailPage() {
   const status = statusConfig[taskData.status] || statusConfig.pending
 
   return (
-    <ProtectedRoute>
-      <VKFlex direction="column" gap="l" style={{ padding: 'var(--vk-spacing-6)', maxWidth: '1200px', margin: '0 auto' }}>
+    <VKFlex direction="column" gap="l" style={{ padding: 'var(--vk-spacing-6)', maxWidth: '1200px', margin: '0 auto' }}>
         {/* Breadcrumb навигация */}
         <VKBreadcrumb
           items={[
@@ -235,7 +230,6 @@ export function TaskDetailPage() {
           <TaskHistory taskId={Number(taskId!)} />
         </VKFlex>
       </VKFlex>
-    </ProtectedRoute>
-  )
-}
+    )
+  }
 
